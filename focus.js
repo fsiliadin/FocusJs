@@ -9,10 +9,21 @@
 			} else {
 				siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
 			}
+			var parser = new DOMParser();
+			return parser.parseFromString(htmlStr, 'text/xml').children[0];
 		},
 
-		bindEvent: function () {
-
+		bindEvent: function (el, events) {
+			var eventsImplemented =  Object.keys(events);
+			eventsImplemented.forEach(function(type){
+				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
+					console.log("el", el);
+					console.log("target", event.target);
+					if (event.target == el) {
+						events[type](event);
+					}
+				}, false);
+			});
 		},
 		checkParent: function (parentEl) {
 			try {
@@ -43,14 +54,15 @@
 				container = [container[0]];
 			}
 			var self = this;
+			var generatedNode;
 			// for each node el taken in account is generated an html
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_button');
 				classes = descriptor.class.join(' ');
 				html = '<div id="'+descriptor.id+'" class ="'+classes+'" >'+descriptor.text+'</div>';
-				self.__proto__.generate(html, item, positionInNodeList);
+				generatedNode = self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== undefined) {
-					self.__proto__.bindEvent(item, descriptor.events);
+					self.__proto__.bindEvent(generatedNode, descriptor.events);
 				}
 			});
 		};

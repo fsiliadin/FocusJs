@@ -6,15 +6,21 @@
 
 	</head>
 	<body>
-	 <div id ="ap">	<p>fjdk</p><a href="www.google.fr">google</a> 	<p>fjdk</p><a href="www.google.fr" class ="cliquable">google</a> </div>
+	<!--  <div id ="ap">	<p>fjdk</p><a href="www.google.fr">google</a> 	<p>fjdk</p><a href="www.google.fr" class ="cliquable">google</a> </div>
 	 <div class ="cliquable"> empty div </div>
 	 <div class ="cliquable"> another empty div</div>
-	 <div class = "cliquable"> 3th empty div </div>
+	 <div class = "cliquable"> 3th empty div </div> -->
 	</body>
 	<script>
-		var myFirstButton = new Button(".cliquable", {
+		var myFirstButton = new Button( "body", {
 			text: "Fresh New Button",
-			class: ["shinny"]
+			class: ["shinny"],
+			events: {
+				click :function(event){
+					console.log('clicked', event.target);
+				}
+
+			}
 		}, 1);
 	</script>
 
