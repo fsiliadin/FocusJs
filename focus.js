@@ -9,22 +9,24 @@
 			} else {
 				siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
 			}
-			var parser = new DOMParser();
-			return parser.parseFromString(htmlStr, 'text/xml').children[0];
 		},
-
+		// generates a unique hash that is assigned to the created element
+		generateHash: function(){
+			var toReturn = (Math.floor(Math.pow(2,32))*Math.random()+1)/(Math.floor(1000)*Math.random()+1)*Math.exp((Math.floor(10)*Math.random()+1));
+			return toReturn;
+		},
+		// this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
 		bindEvent: function (el, events) {
 			var eventsImplemented =  Object.keys(events);
 			eventsImplemented.forEach(function(type){
 				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
-					console.log("el", el);
-					console.log("target", event.target);
-					if (event.target == el) {
+					if (event.target.dataset.hash===el) {
 						events[type](event);
 					}
 				}, false);
 			});
 		},
+		// check if the element containing the element to be created exists
 		checkParent: function (parentEl) {
 			try {
 				if (typeof parentEl === 'undefined') {
@@ -54,15 +56,17 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var generatedNode;
+			var hash;
 			// for each node el taken in account is generated an html
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_button');
 				classes = descriptor.class.join(' ');
-				html = '<div id="'+descriptor.id+'" class ="'+classes+'" >'+descriptor.text+'</div>';
-				generatedNode = self.__proto__.generate(html, item, positionInNodeList);
+				// creation of a hash to identify each element
+				hash = self.__proto__.generateHash();
+				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
+				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== undefined) {
-					self.__proto__.bindEvent(generatedNode, descriptor.events);
+					self.__proto__.bindEvent(hash, descriptor.events);
 				}
 			});
 		};
