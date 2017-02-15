@@ -20,7 +20,7 @@
 			var eventsImplemented =  Object.keys(events);
 			eventsImplemented.forEach(function(type){
 				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
-					if (event.target.dataset.hash===el) {
+					if (event.target.dataset.hash===el+'') {
 						events[type](event);
 					}
 				}, false);
