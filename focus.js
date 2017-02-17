@@ -29,9 +29,11 @@
 		// check if the element containing the element to be created exists
 		checkParent: function (parentEl) {
 			try {
-				if (typeof parentEl === 'undefined') {
+				if (parentEl == false) {
+					console.debug('i')
 					parentEl = document.querySelectorAll('body');
 				} else {
+					console.debug('fdfq');
 					parentEl = document.querySelectorAll(parentEl);
 				}
 				return parentEl;
@@ -52,7 +54,7 @@
 			var classes= '';
 			// if the programmer specifies an id, only the first node el is taken in account
 			// can't have several object with the same id
-			if(typeof descriptor.id !== "undefined") {
+			if(typeof descriptor.id !== 'undefined') {
 				container = [container[0]];
 			}
 			var self = this;
@@ -62,10 +64,11 @@
 				descriptor.class.push('basic_button');
 				classes = descriptor.class.join(' ');
 				// creation of a hash to identify each element
-				hash = self.__proto__.generateHash();
+				hash = self.generateHash();
+				self.hash = hash;
 				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
 				self.__proto__.generate(html, item, positionInNodeList);
-				if(typeof descriptor.events !== undefined) {
+				if(typeof descriptor.events !== 'undefined') {
 					self.__proto__.bindEvent(hash, descriptor.events);
 				}
 			});
@@ -75,27 +78,52 @@
 		this.generate(parentEl, obj);
 	}
 
-	function Banner(parentEl, obj){
+	function Banner(parentEl, obj, positionInNodeList){
+		parentEl = this.checkParent(parentEl);
+		this.generate = function (container, descriptor) {
+			var html = '';
+			var classes = ''; 
+			if(typeof descriptor.id !== 'undefined') {
+				container = [container[0]];
+			}
+			var self = this;
+			var hash;
+			Array.prototype.forEach.call(container, function(item, index){
+				descriptor.class.push('basic_banner');
+				classes = descriptor.class.join(' ');
+				console.log(classes)
+				hash = self.generateHash();
+				self.hash = hash;
+				html =  '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'""><div class = "shadow-top" style = "height:4px"></div><div class = "shadow-bottom" style = "height:15px"></div></div>';
+
+				self.__proto__.generate(html, item, positionInNodeList);
+				if(typeof descriptor.events !== 'undefined') {
+					self.__proto__.bindEvent(hash, descriptor.events);
+				}
+
+			});
+		}		
+		this.generate(parentEl, obj);
+
+
+	}
+
+	function ImageTextZone(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
 
 	}
 
-	function ImageTextZone(parentEl, obj){
+	function Footer(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
 
 	}
 
-	function Footer(parentEl, obj){
+	function Menu(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
 
 	}
 
-	function Menu(parentEl, obj){
-		parentEl = this.checkParent(parentEl);
-
-	}
-
-	function Grid(parentEl, obj){
+	function Grid(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
 
 	}

@@ -27,3 +27,15 @@
 	border-width: 0.2em;
 	border-color: #084792b3;
 }
+.basic_banner {
+	border-width: 0px 0 0px 0;
+	border-style : solid;
+	border-color: rgb(230,230,230);
+	height: 300px;
+}
+.shadow-top{
+	background: linear-gradient(rgba(255,255,255,0), rgb(190,190,190)); /* Standard syntax */
+}
+.shadow-bottom{
+	background: linear-gradient(rgb(190,190,190), rgba(255,255,255,0)); /* Standard syntax */
+}
