@@ -29,14 +29,7 @@
 		// check if the element containing the element to be created exists
 		checkParent: function (parentEl) {
 			try {
-				if (parentEl == false) {
-					console.debug('i')
-					parentEl = document.querySelectorAll('body');
-				} else {
-					console.debug('fdfq');
-					parentEl = document.querySelectorAll(parentEl);
-				}
-				return parentEl;
+				return parentEL ? document.querySelectorAll(parentEl) : document.querySelectorAll('body');
 			} catch (e) {
 				console.debug (e.message);
 			}
