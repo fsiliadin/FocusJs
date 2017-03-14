@@ -62,3 +62,12 @@
 .tdLast {
 	border-style: none !important;
 }
+
+.basic_grid .gridItem {
+	display: inline-table;
+	margin: 10px;
+	-moz-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	-webkit-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	-o-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	box-shadow: 10px 10px 5px 0px #cfcfcf;
+}

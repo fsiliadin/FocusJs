@@ -158,7 +158,36 @@
 
 	function Grid(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
-
+		this.generate = function (container, descriptor) {
+			var html = '';
+			var classes  = '';
+			if (typeof descriptor.id !== 'undefined') {
+				container = [container[0]];
+			}
+			var self = this;
+			var hash;
+			Array.prototype.forEach.call(container, function(item, index){
+				descriptor.class.push('basic_grid');
+				classes = descriptor.class.join(' ');
+				hash = self.generateHash();
+				self.hash = hash;
+				var L = descriptor.itemWidth;
+				var l = descriptor.itemHeight ? descriptor.itemHeight : L;
+				html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'">'
+				for (var i = 0; i < descriptor.nbItems; i++) {
+					html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
+				}
+				html += '</div>';
+				console.log('html: ', html);
+				console.log('item: ', item);
+				console.log('position', positionInNodeList);
+				self.__proto__.generate(html, item, positionInNodeList);
+				if(typeof descriptor.events !== 'undefined') {
+					self.__proto__.bindEvent(hash, descriptor.events);
+				}
+			});
+		}
+		this.generate(parentEl, obj);
 	}
 
 
