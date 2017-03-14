@@ -129,7 +129,7 @@
 					if (i === descriptor.nbCols - 1) {
 						i = 'Last';
 					}
-					html += '<td class ="td'+i+'">bla</td>';
+					html += '<td class ="td'+i+'">bldsfdsqfdsfdsqfqfqqddfdsqfdsfdsqfqsdfaedsfdqa</td>';
 				}
 				html += '</tr></table>';
 				self.__proto__.generate(html, item, positionInNodeList);
