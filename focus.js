@@ -30,10 +30,8 @@
 		checkParent: function (parentEl) {
 			try {
 				if (parentEl == false) {
-					console.debug('i')
 					parentEl = document.querySelectorAll('body');
 				} else {
-					console.debug('fdfq');
 					parentEl = document.querySelectorAll(parentEl);
 				}
 				return parentEl;
@@ -83,6 +81,7 @@
 		this.generate = function (container, descriptor) {
 			var html = '';
 			var classes = ''; 
+			// if the element to be create has an id so we only create one in the first matchin component
 			if(typeof descriptor.id !== 'undefined') {
 				container = [container[0]];
 			}
@@ -91,7 +90,6 @@
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_banner');
 				classes = descriptor.class.join(' ');
-				console.log(classes)
 				hash = self.generateHash();
 				self.hash = hash;
 				html =  '</div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
@@ -106,6 +104,41 @@
 		this.generate(parentEl, obj);
 
 
+	}
+
+
+
+	function Accordion (parentEl, obj, positionInNodeList){
+		parentEl = this.checkParent(parentEl);
+		this.generate = function (container, descriptor) {
+			var html = '';
+			var classes = '';
+			if (typeof descriptor.id !== 'undefined') {
+				container = [container[0]];
+			}
+			var self = this;
+			var hash;
+			Array.prototype.forEach.call(container, function(item, index){
+				descriptor.class.push('basic_accordion');
+				classes = descriptor.class.join(' ');
+				hash = self.generateHash();
+				self.hash = hash;
+				html = '<table class = "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
+				for (var i = 0; i < descriptor.nbCols; i++) {
+					console.log('i', i);
+					if (i === descriptor.nbCols - 1) {
+						i = 'Last';
+					}
+					html += '<td class ="td'+i+'">bla</td>';
+				}
+				html += '</tr></table>';
+				self.__proto__.generate(html, item, positionInNodeList);
+				if(typeof descriptor.events !== 'undefined') {
+					self.__proto__.bindEvent(hash, descriptor.events);
+				}
+			});
+		}
+		this.generate(parentEl, obj);
 	}
 
 	function ImageTextZone(parentEl, obj, positionInNodeList){
@@ -128,9 +161,11 @@
 
 	}
 
+
 	Button.prototype = focus;
 	Banner.prototype = focus;
 	ImageTextZone.prototype = focus;
 	Footer.prototype = focus;
 	Menu.prototype = focus;
 	Grid.prototype = focus;
+	Accordion.prototype = focus;
