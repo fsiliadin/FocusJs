@@ -1,19 +1,18 @@
 	// focus, the root object that all basic component inherit
 	// it defines generic methods 
 	var focus = {
-		generate : function (htmlStr, parentEl, positionInNodeList) {
+		generate : function generate(htmlStr, parentEl, positionInNodeList) {
 			var siblings = parentEl.children;
 			// if the programmer doesn't specify any position by default the position is the last
-			if (typeof positionInNodeList === 'undefined' || positionInNodeList >= siblings.length - 1) {
+			if (typeof positionInNodeList === 'undefined' || positionInNodeList > siblings.length - 1) {
 				parentEl.innerHTML += htmlStr;
 			} else {
 				siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
 			}
 		},
 		// generates a unique hash that is assigned to the created element
-		generateHash: function(){
-			var toReturn = (Math.floor(Math.pow(2,32))*Math.random()+1)/(Math.floor(1000)*Math.random()+1)*Math.exp((Math.floor(10)*Math.random()+1));
-			return toReturn;
+		generateHash: function generateHash(){
+			return (Math.floor(Math.pow(2,32))*Math.random()+1)/(Math.floor(1000)*Math.random()+1)*Math.exp((Math.floor(10)*Math.random()+1));
 		},
 		// this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
 		bindEvent: function (el, events) {
@@ -27,7 +26,7 @@
 			});
 		},
 		// check if the element containing the element to be created exists
-		checkParent: function (parentEl) {
+		checkParent: function checkParent(parentEl) {
 			try {
 				if (parentEl == false) {
 					parentEl = document.querySelectorAll('body');
@@ -40,7 +39,7 @@
 			}
 		},
 
-		render : function (){
+		render : function render(){
 
 		}
 	}
@@ -92,7 +91,7 @@
 				classes = descriptor.class.join(' ');
 				hash = self.generateHash();
 				self.hash = hash;
-				html =  '</div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
+				html =  '<div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
 
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
@@ -189,6 +188,7 @@
 		}
 		this.generate(parentEl, obj);
 	}
+
 
 
 	Button.prototype = focus;
