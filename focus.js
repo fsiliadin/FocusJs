@@ -170,7 +170,35 @@
 
 	function ImageTextZone(parentEl, obj, positionInNodeList){
 		parentEl = this.checkParent(parentEl);
-
+		this.generate = function (container, descriptor) {
+			var html = '';
+			var classes = '';
+			if (typeof descriptor.id !== 'undefined') {
+				container = [container[0]];
+			}
+			var self = this;
+			var hash;
+			Array.prototype.forEach.call(container, function(item, index){
+				descriptor.class.push('basic_imageTextZone');
+				classes = descriptor.class.join(' ');
+				hash = self.generateHash();
+				self.hash = hash;
+				html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr>';
+				if(descriptor.imageAfter) {
+					html += '<td class ="text">'+descriptor.text+'</td>';
+					html += '<td class ="image" ><img src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+				} else {
+					html += '<td class ="image" ><img src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+					html += '<td class ="text" >'+descriptor.text+'</td>';
+				}
+				html += '</tr></table>';
+				self.__proto__.generate(html, item, positionInNodeList);
+				if(typeof descriptor.events !== 'undefined') {
+					self.__proto__.bindEvent(hash, descriptor.events);
+				}
+			});
+		}
+		this.generate(parentEl, obj);
 	}
 
 	function Footer(parentEl, obj, positionInNodeList){

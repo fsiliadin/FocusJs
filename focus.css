@@ -84,13 +84,11 @@
 }
 
 .accordionPlaceholder {
-	border-style: solid;
 	height: 100%;
 	width: 100%;
 }
 .accordionContent {
 	display: none;
-	border-style: solid;
 	height: 100%;
 	width: 100%;
 }
@@ -100,4 +98,8 @@
 }
 .accordionItem:hover .accordionContent{
 	display:block;
+}
+.basic_imageTextZone .text {
+	text-align: justify;
+	padding: 1em;
 }
