@@ -20,6 +20,7 @@
 			eventsImplemented.forEach(function(type){
 				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
 					if (event.target.dataset.hash===el+'') {
+						console.log('type', type)
 						events[type](event);
 					}
 				}, false);
@@ -35,7 +36,7 @@
 				}
 				return parentEl;
 			} catch (e) {
-				console.debug (e.message);
+				console.error (e.message);
 			}
 		},
 
@@ -66,7 +67,7 @@
 				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
 		};
@@ -95,7 +96,7 @@
 
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 
 			});
@@ -124,18 +125,25 @@
 				self.hash = hash;
 				html = '<table class = "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
 				for (var i = 0; i < descriptor.nbCols; i++) {
-					console.log('i', i);
 					if (i === descriptor.nbCols - 1) {
 						i = 'Last';
 					}
-					html += '<td class ="td'+i+'">bldsfdsqfdsfdsqfqfqqddfdsqfdsfdsqfqsdfaedsfdqa</td>';
+					html += '<td class ="td'+i+'"><div class="accordionPlaceholder">'+descriptor.placeholderUnactive+'</div><div class= "accordionContent" style="display:none">'+descriptor.activeContent+'</div></td>';
 				}
 				html += '</tr></table>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
+		}
+		this.bindEvent = function () {
+			
+		}
+		obj.events ={};
+		obj.events.mouseover = function(){
+			document.querySelectorAll('.accordionPlaceholder')[0].style.display = "none";
+			document.querySelectorAll('.accordionContent')[0].style.display ="block";
 		}
 		this.generate(parentEl, obj);
 	}
@@ -177,12 +185,9 @@
 					html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
 				}
 				html += '</div>';
-				console.log('html: ', html);
-				console.log('item: ', item);
-				console.log('position', positionInNodeList);
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
 		}
