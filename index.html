@@ -10,8 +10,6 @@
 	</body>
 	
 	<script>
-		
-		
 		var firstBanner = new Banner ("", {
 			class: ['breah']
 		});
@@ -20,7 +18,9 @@
 			id: 'bonobo',
 			nbCols: 5,
 			class :['shouldBeOptional'],
-			height: '500px'
+			height: '500px',
+			placeholderUnactive: 'duuuuu!', 
+			activeContent: 'bllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah'
 		});
 		var grid = new Grid ("", {
 			class: ['super', 'style', 'grid'],
@@ -28,26 +28,27 @@
 			id:"badaboum",
 			itemWidth: '350px'
 		});
-var myFirstButton = new Button( ".gridItem", {
-			text: "Fresh New Button",
-			class: ["shinny"],
-			events: {
-				click :function(event){
-					console.log('clicked je fais pas les bails');
-				}
+		var myFirstButton = new Button( ".gridItem", {
+					text: "Fresh New Button",
+					class: ["shinny"],
+					events: {
+						click :function(event){
+							console.log('clicked je fais pas les bails');
+						}
 
-			}
-		});
-var secondButton = new Button ( ".gridItem ", {
-			text: "Fresh New Button2",
-			class: ["shinny"],
-			events: {
-				click :function(event){
-					console.log('clicked je fais les bails');
-				}
+					}
+				});
+		console.log('bt', myFirstButton);
+		var secondButton = new Button ( ".gridItem ", {
+					text: "Fresh New Button2",
+					class: ["shinny"],
+					events: {
+						click :function(event){
+							console.log('clicked je fais les bails');
+						}
 
-			}
-		},1);
+					}
+				},1);
 	</script>
 
 </html>

@@ -20,6 +20,7 @@
 			eventsImplemented.forEach(function(type){
 				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
 					if (event.target.dataset.hash===el+'') {
+						console.log('type', type)
 						events[type](event);
 					}
 				}, false);
@@ -35,7 +36,7 @@
 				}
 				return parentEl;
 			} catch (e) {
-				console.debug (e.message);
+				console.error (e.message);
 			}
 		},
 
@@ -55,7 +56,6 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var hash;
 			// for each node el taken in account is generated an html
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_button');
@@ -66,7 +66,7 @@
 				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
 		};
@@ -85,7 +85,6 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var hash;
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_banner');
 				classes = descriptor.class.join(' ');
@@ -95,14 +94,12 @@
 
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 
 			});
 		}		
 		this.generate(parentEl, obj);
-
-
 	}
 
 
@@ -116,7 +113,7 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var hash;
+
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_accordion');
 				classes = descriptor.class.join(' ');
@@ -124,35 +121,20 @@
 				self.hash = hash;
 				html = '<table class = "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
 				for (var i = 0; i < descriptor.nbCols; i++) {
-					console.log('i', i);
 					if (i === descriptor.nbCols - 1) {
 						i = 'Last';
 					}
-					html += '<td class ="td'+i+'">bldsfdsqfdsfdsqfqfqqddfdsqfdsfdsqfqsdfaedsfdqa</td>';
+					html += '<td class ="accordionItem"><div class="accordionPlaceholder">'+descriptor.placeholderUnactive+'</div><div class= "accordionContent" >'+descriptor.activeContent+'</div></td>';
 				}
 				html += '</tr></table>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
 		}
+
 		this.generate(parentEl, obj);
-	}
-
-	function ImageTextZone(parentEl, obj, positionInNodeList){
-		parentEl = this.checkParent(parentEl);
-
-	}
-
-	function Footer(parentEl, obj, positionInNodeList){
-		parentEl = this.checkParent(parentEl);
-
-	}
-
-	function Menu(parentEl, obj, positionInNodeList){
-		parentEl = this.checkParent(parentEl);
-
 	}
 
 	function Grid(parentEl, obj, positionInNodeList){
@@ -164,7 +146,6 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var hash;
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.push('basic_grid');
 				classes = descriptor.class.join(' ');
@@ -177,17 +158,45 @@
 					html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
 				}
 				html += '</div>';
-				console.log('html: ', html);
-				console.log('item: ', item);
-				console.log('position', positionInNodeList);
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.bindEvent(hash, descriptor.events);
 				}
 			});
 		}
 		this.generate(parentEl, obj);
 	}
+
+
+	function ImageTextZone(parentEl, obj, positionInNodeList){
+		parentEl = this.checkParent(parentEl);
+
+	}
+
+	function Footer(parentEl, obj, positionInNodeList){
+		parentEl = this.checkParent(parentEl);
+
+	}
+
+	function Menu(parentEl, obj, positionInNodeList){
+		//can be selectMenu too
+		parentEl = this.checkParent(parentEl);
+
+	}
+
+	function Popup(parentEl, obj, positionInNodeList) {
+		parentEl = this.checkParent(parentEl);
+	}
+
+
+	function Slider (parentEl, obj, positionInNodeList) {
+		parentEl = this.checkParent(parentEl);
+	}
+
+	function Scroller (parentEl, obj) {
+		parentEl = this.checkParent(parentEl);
+	}
+
 
 
 
@@ -198,3 +207,6 @@
 	Menu.prototype = focus;
 	Grid.prototype = focus;
 	Accordion.prototype = focus;
+	Popup.prototype = focus;
+	Slider.prototype = focus;
+	Scroller.prototype = focus;
