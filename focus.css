@@ -76,10 +76,28 @@
 	-o-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.basic_grid .gridItem:hover {
-	
+.basic_grid .gridItem:hover {	
 	-moz-box-shadow: 10px 10px 5px 0px #cfcfcf;
 	-webkit-box-shadow: 10px 10px 5px 0px #cfcfcf;
 	-o-box-shadow: 10px 10px 5px 0px #cfcfcf;
 	box-shadow: 10px 10px 5px 0px #cfcfcf;
+}
+
+.accordionPlaceholder {
+	border-style: solid;
+	height: 100%;
+	width: 100%;
+}
+.accordionContent {
+	display: none;
+	border-style: solid;
+	height: 100%;
+	width: 100%;
+}
+
+.accordionItem:hover .accordionPlaceholder{
+	display:none;
+}
+.accordionItem:hover .accordionContent{
+	display:block;
 }
