@@ -65,12 +65,11 @@
 				descriptor.class.indexOf('basic_button') === -1 ? descriptor.class.push('basic_button'): '';
 				classes = descriptor.class.join(' ');
 				// creation of a hash to identify each element
-				hash = self.generateHash();
-				self.hash = hash;
-				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
+				self.hash = self.generateHash();
+				html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+self.hash+'">'+descriptor.text+'</div>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.bindEvent(hash, descriptor.events);
+					self.bindEvent(self.hash, descriptor.events);
 				}
 			});
 		};
@@ -92,13 +91,12 @@
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.indexOf('basic_banner') === -1 ? descriptor.class.push('basic_banner'): '';
 				classes = descriptor.class.join(' ');
-				hash = self.generateHash();
-				self.hash = hash;
-				html =  '<div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
+				self.hash = self.generateHash();
+				html =  '<div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+self.hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
 
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.bindEvent(hash, descriptor.events);
+					self.bindEvent(self.hash, descriptor.events);
 				}
 
 			});
@@ -121,9 +119,8 @@
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.indexOf('basic_accordion') === -1 ? descriptor.class.push('basic_accordion'):'';
 				classes = descriptor.class.join(' ');
-				hash = self.generateHash();
-				self.hash = hash;
-				html = '<table class = "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
+				self.hash = self.generateHash();
+				html = '<table class = "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
 				for (var i = 0; i < descriptor.nbCols; i++) {
 					if (i === descriptor.nbCols - 1) {
 						i = 'Last';
@@ -133,7 +130,7 @@
 				html += '</tr></table>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.bindEvent(hash, descriptor.events);
+					self.bindEvent(self.hash, descriptor.events);
 				}
 			});
 		}
@@ -153,18 +150,17 @@
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
 				classes = descriptor.class.join(' ');
-				hash = self.generateHash();
-				self.hash = hash;
+				self.hash = self.generateHash();
 				var L = descriptor.itemWidth;
 				var l = descriptor.itemHeight ? descriptor.itemHeight : L;
-				html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'">'
+				html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+self.hash+'">'
 				for (var i = 0; i < descriptor.nbItems; i++) {
 					html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
 				}
 				html += '</div>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.bindEvent(hash, descriptor.events);
+					self.bindEvent(self.hash, descriptor.events);
 				}
 			});
 		}
@@ -181,13 +177,11 @@
 				container = [container[0]];
 			}
 			var self = this;
-			var hash;
 			Array.prototype.forEach.call(container, function(item, index){
 				descriptor.class.indexOf('basic_imageTextZone') === -1 ? descriptor.class.push('basic_imageTextZone'):'';
 				classes = descriptor.class.join(' ');
-				hash = self.generateHash();
-				self.hash = hash;
-				html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr>';
+				self.hash = self.generateHash();
+				html = '<table class= "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"><tr>';
 				if(descriptor.imageAfter) {
 					html += '<td class ="text">'+descriptor.text+'</td>';
 					html += '<td class ="image" ><img src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
@@ -198,11 +192,15 @@
 				html += '</tr></table>';
 				self.__proto__.generate(html, item, positionInNodeList);
 				if(typeof descriptor.events !== 'undefined') {
-					self.__proto__.bindEvent(hash, descriptor.events);
+					self.__proto__.bindEvent(self.hash, descriptor.events);
 				}
 			});
 		}
 		this.generate(parentEl, obj);
+	}
+
+	function Slider (parentEl, obj, positionInNodeList) {
+
 	}
 
 	function Footer(parentEl, obj, positionInNodeList){
@@ -216,17 +214,33 @@
 
 	}
 
-	function Popup(parentEl, obj, positionInNodeList) {
+	function Popup(parentEl, obj) {
 		parentEl = this.checkParent(parentEl);
 	}
 
-
-	function Slider (parentEl, obj, positionInNodeList) {
-		parentEl = this.checkParent(parentEl);
-	}
 
 	function Scroller (parentEl, obj) {
 		parentEl = this.checkParent(parentEl);
+		this.generate = function (container, descriptor) {
+			var html = '';
+			var classes = '';
+			if (typeof descriptor.id !== 'undefined') {
+				container = [container[0]];
+			}
+			var self = this;
+			Array.prototype.forEach.call(container, function (item, index) {
+				descriptor.class.push('basic_scroller');
+				classes = descriptor.class.join(' ');
+				self.hash = self.generateHash();
+				html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" class="'+classes+'"data-hash="'+self.hash+'">';
+				self.__proto__.generate(html, item);
+				if(typeof descriptor.events !== 'undefined'){
+					self.__proto__.bindEvent(self.hash, descriptor.events);
+				}
+			});
+		}
+		this.generate(parentEl, obj);
+		
 	}
 
 	Button.prototype = focus;

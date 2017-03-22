@@ -103,3 +103,16 @@
 	text-align: justify;
 	padding: 1em;
 }
+.basic_scroller {
+	width: 40px;
+	height: 40px;
+	display: block;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	opacity: 0.5;
+}
+
+.basic_scroller:hover {
+	opacity: 1;
+}
