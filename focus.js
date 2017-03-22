@@ -16,12 +16,10 @@
 		},
 		// this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
 		bindEvent: function (el, events) {
-			var eventsImplemented =  Object.keys(events);
-			eventsImplemented.forEach(function(type){
-				document.querySelectorAll('body')[0].addEventListener(type, function(event) {
-					if (event.target.dataset.hash===el+'') {
-						console.log('type', type)
-						events[type](event);
+			events.forEach(function(event){
+				document.querySelectorAll('body')[0].addEventListener(event.type, function(e) {
+					if (e.target.dataset.hash===el+'') {
+						event.handler(e);
 					}
 				}, false);
 			});
@@ -35,8 +33,8 @@
 					parentEl = document.querySelectorAll(parentEl);
 				}
 				return parentEl;
-			} catch (e) {
-				console.error (e.message);
+			} catch (error) {
+				console.error (error.message);
 			}
 		},
 
@@ -219,8 +217,8 @@
 	}
 
 
-	function Scroller (parentEl, obj) {
-		parentEl = this.checkParent(parentEl);
+	function Scroller (parentSelector, obj) {
+		var parentEl = this.checkParent(parentSelector);
 		this.generate = function (container, descriptor) {
 			var html = '';
 			var classes = '';
@@ -232,13 +230,32 @@
 				descriptor.class.push('basic_scroller');
 				classes = descriptor.class.join(' ');
 				self.hash = self.generateHash();
-				html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" class="'+classes+'"data-hash="'+self.hash+'">';
+				html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'"data-hash="'+self.hash+'">';
 				self.__proto__.generate(html, item);
 				if(typeof descriptor.events !== 'undefined'){
 					self.__proto__.bindEvent(self.hash, descriptor.events);
 				}
 			});
 		}
+		obj.events.push({
+			type: 'click',
+			handler: function(e) {
+				var targetEls= [];
+				// Here we determine the targets to go on click, according the targets array the user provides
+				// we define the area to browse according the scroller that is clicked
+				var scrollArea = parentEl[e.target.dataset.area];
+				var targetsInScrollArea; 
+				obj.targets.forEach(function(targetSelector){	//for each target selector in the target array 
+					// we get the matching target elements in the scroll area 
+					targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
+					// then we put all targets together in the same array
+					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));					
+				});
+				targetEls = targetEls.filter(function(targetElement){
+
+				});
+			}
+		})
 		this.generate(parentEl, obj);
 		
 	}

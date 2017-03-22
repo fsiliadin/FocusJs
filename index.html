@@ -31,22 +31,22 @@
 		var myFirstButton = new Button( ".gridItem", {
 					text: "Fresh New Button",
 					class: ["shinny"],
-					events: {
-						click :function(event){
+					events: [{
+						type:'click',
+						handler: function(event){
 							console.log('clicked je fais pas les bails');
 						}
-
-					}
+					}]
 				});
 		var secondButton = new Button ( ".gridItem ", {
 					text: "Fresh New Button2",
 					class: ["shinny"],
-					events: {
-						click :function(event){
+					events: [{
+						type: 'click',
+						handler: function(event){
 							console.log('clicked je fais les bails');
 						}
-
-					}
+					}]
 				},1);
 		var txtImg = new ImageTextZone ("", {
 			id: 'tchula',
@@ -61,9 +61,15 @@
 
 		});
 
-		var scrolla = new Scroller ("", {
-			id: 'aint', 
-			class: ['thci']
+		var scrolla = new Scroller ("div", {
+			class: ['thci'],
+			targets: ['div', '.basic_button'],
+			events: [{
+				type: 'mouseover',
+				handler: function(event){
+					alert(event);
+				}
+			}]
 		})
 	</script>
 
