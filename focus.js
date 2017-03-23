@@ -227,7 +227,8 @@
 			}
 			var self = this;
 			Array.prototype.forEach.call(container, function (item, index) {
-				descriptor.class.push('basic_scroller');
+				descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
+				descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
 				classes = descriptor.class.join(' ');
 				self.hash = self.generateHash();
 				html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'"data-hash="'+self.hash+'">';
