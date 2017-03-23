@@ -42,6 +42,10 @@
 
 		render : function render(){
 
+		},
+
+		hasClass : function hasClass (element, class) {
+			return element.classList.indexOf(class) > -1;
 		}
 	}
 
