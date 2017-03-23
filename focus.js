@@ -43,7 +43,7 @@
 		},
 
 		hasClass: function hasClass(element, _class) {
-			return element.classList.indexOf(_class) > -1;
+			return Array.prototype.indexOf.call(element.classList, _class) > -1;
 		}
 	}
 
@@ -241,7 +241,7 @@
 		obj.events.push({
 			type: 'click',
 			handler: function(e) {
-				var targetEls= [];
+				var targetEls= [], nextTarget;
 				// Here we determine the targets to go on click, according the targets array the user provides
 				// we define the area to browse according the scroller that is clicked
 				var scrollArea = parentEl[e.target.dataset.area];
@@ -252,9 +252,22 @@
 					// then we put all targets together in the same array
 					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));					
 				});
-				targetEls = targetEls.filter(function(targetElement){
 
+				var targetPositions = targetEls.map(function (target){
+					return target.offsetTop - scrollArea.scrollTop;
+				}).filter(function(position){
+					if(focus.hasClass(e.target, 'goingUp')){
+						return position < 0; 
+					} else {
+						return position > 0;
+					}
 				});
+				if (targetPositions[0] < 0) {
+					nextTarget = Math.max(...targetPositions);
+				} else {
+					nextTarget = Math.min(...targetPositions);
+				}
+				console.debug(nextTarget);
 			}
 		})
 		this.generate(parentEl, obj);
