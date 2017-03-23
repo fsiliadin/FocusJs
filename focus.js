@@ -40,12 +40,12 @@
 			}
 		},
 
-		render : function render(){
+		render: function render(){
 
 		},
 
-		hasClass : function hasClass (element, class) {
-			return element.classList.indexOf(class) > -1;
+		hasClass: function hasClass(element, _class) {
+			return element.classList.indexOf(_class) > -1;
 		}
 	}
 
@@ -62,7 +62,7 @@
 			var self = this;
 			// for each node el taken in account is generated an html
 			Array.prototype.forEach.call(container, function(item, index){
-				descriptor.class.push('basic_button');
+				descriptor.class.indexOf('basic_button') === -1 ? descriptor.class.push('basic_button'): '';
 				classes = descriptor.class.join(' ');
 				// creation of a hash to identify each element
 				hash = self.generateHash();
@@ -90,7 +90,7 @@
 			}
 			var self = this;
 			Array.prototype.forEach.call(container, function(item, index){
-				descriptor.class.push('basic_banner');
+				descriptor.class.indexOf('basic_banner') === -1 ? descriptor.class.push('basic_banner'): '';
 				classes = descriptor.class.join(' ');
 				hash = self.generateHash();
 				self.hash = hash;
@@ -119,7 +119,7 @@
 			var self = this;
 
 			Array.prototype.forEach.call(container, function(item, index){
-				descriptor.class.push('basic_accordion');
+				descriptor.class.indexOf('basic_accordion') === -1 ? descriptor.class.push('basic_accordion'):'';
 				classes = descriptor.class.join(' ');
 				hash = self.generateHash();
 				self.hash = hash;
@@ -151,7 +151,7 @@
 			}
 			var self = this;
 			Array.prototype.forEach.call(container, function(item, index){
-				descriptor.class.push('basic_grid');
+				descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
 				classes = descriptor.class.join(' ');
 				hash = self.generateHash();
 				self.hash = hash;
@@ -183,7 +183,7 @@
 			var self = this;
 			var hash;
 			Array.prototype.forEach.call(container, function(item, index){
-				descriptor.class.push('basic_imageTextZone');
+				descriptor.class.indexOf('basic_imageTextZone') === -1 ? descriptor.class.push('basic_imageTextZone'):'';
 				classes = descriptor.class.join(' ');
 				hash = self.generateHash();
 				self.hash = hash;
@@ -228,9 +228,6 @@
 	function Scroller (parentEl, obj) {
 		parentEl = this.checkParent(parentEl);
 	}
-
-
-
 
 	Button.prototype = focus;
 	Banner.prototype = focus;
