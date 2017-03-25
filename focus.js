@@ -12,7 +12,7 @@
 		},
 		// generates a unique hash that is assigned to the created element
 		generateHash: function generateHash(){
-			return (Math.floor(Math.pow(2,32))*Math.random()+1)/(Math.floor(1000)*Math.random()+1)*Math.exp((Math.floor(10)*Math.random()+1));
+			return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
 		},
 		// this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
 		bindEvent: function (el, events) {
