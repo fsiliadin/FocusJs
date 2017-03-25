@@ -15,7 +15,7 @@
 			return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
 		},
 		// this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
-		bindEvent: function (el, events) {
+		bindEvent: function bindEvent(el, events) {
 			events.forEach(function(event){
 				document.querySelectorAll('body')[0].addEventListener(event.type, function(e) {
 					if (e.target.dataset.hash===el+'') {
@@ -44,8 +44,24 @@
 
 		hasClass: function hasClass(element, _class) {
 			return Array.prototype.indexOf.call(element.classList, _class) > -1;
+		},
+
+		getPositionInArea: function getPositionInArea(el, area) {
+			var pos = {
+				top : 0,
+				left : 0
+			}
+			function getPosition(el){
+				pos.top += el.offsetTop;
+				pos.left += el.offestLeft;
+				if(el.parentElement !== area){
+					 getPosition(el.parentElement);
+				}
+				return pos;
+			}
+			return getPosition(el);
 		}
-	}
+	} //focus
 
 	function Button(parentEl, obj, positionInNodeList){
 		// function that creates the html of the button
@@ -241,7 +257,7 @@
 		obj.events.push({
 			type: 'click',
 			handler: function(e) {
-				var targetEls= [], nextTarget;
+				var targetEls= [], distanceToNextTarget = 0;
 				// Here we determine the targets to go on click, according the targets array the user provides
 				// we define the area to browse according the scroller that is clicked
 				var scrollArea = parentEl[e.target.dataset.area];
@@ -252,9 +268,8 @@
 					// then we put all targets together in the same array
 					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));					
 				});
-
-				var targetPositions = targetEls.map(function (target){
-					return target.offsetTop - scrollArea.scrollTop;
+				var targetRelativePosition = targetEls.map(function (target){
+					return focus.getPositionInArea(target, scrollArea).top - scrollArea.scrollTop;
 				}).filter(function(position){
 					if(focus.hasClass(e.target, 'goingUp')){
 						return position < 0; 
@@ -262,17 +277,19 @@
 						return position > 0;
 					}
 				});
-				if (targetPositions[0] < 0) {
-					nextTarget = Math.max(...targetPositions);
-				} else {
-					nextTarget = Math.min(...targetPositions);
+				if (targetRelativePosition[0] < 0) {
+					distanceToNextTarget = Math.max(...targetRelativePosition);
+				} else if (targetRelativePosition[0] > 0) {
+					distanceToNextTarget = Math.min(...targetRelativePosition);
 				}
-				console.debug(nextTarget);
+				window.scrollBy(0, distanceToNextTarget);
 			}
 		})
 		this.generate(parentEl, obj);
 		
 	}
+
+
 
 	Button.prototype = focus;
 	Banner.prototype = focus;
