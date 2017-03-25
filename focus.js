@@ -46,6 +46,8 @@
 			return Array.prototype.indexOf.call(element.classList, _class) > -1;
 		},
 
+		// this function returns the position of an element relative to the specified area
+		// the element shall exist in that area
 		getPositionInArea: function getPositionInArea(el, area) {
 			var pos = {
 				top : 0,
@@ -268,15 +270,19 @@
 					// then we put all targets together in the same array
 					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));					
 				});
+				//  we calculate the relative position of each target in order to determine the closest
 				var targetRelativePosition = targetEls.map(function (target){
 					return focus.getPositionInArea(target, scrollArea).top - scrollArea.scrollTop;
 				}).filter(function(position){
+					// whether we are moving down or moving up we look to the target above or under the current 
+					// scroll position
 					if(focus.hasClass(e.target, 'goingUp')){
 						return position < 0; 
 					} else {
 						return position > 0;
 					}
 				});
+				
 				if (targetRelativePosition[0] < 0) {
 					distanceToNextTarget = Math.max(...targetRelativePosition);
 				} else if (targetRelativePosition[0] > 0) {
