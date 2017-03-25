@@ -62,6 +62,22 @@
 				return pos;
 			}
 			return getPosition(el);
+		},
+
+		smoothScrollBy:  function smoothScrollBy (area, scrollDistances, duration) {
+			var animation;
+			var finalPositions = {
+				top: area.scrollTop + scrollDistances.top,
+				left: area.scrollLeft + scrollDistances.left
+			}
+			animation = setInterval(function(){		
+				area.scrollTop += (100 * scrollDistances.top/duration) < 1 ? 1 : (100 * scrollDistances.top/duration);
+				area.scrollLeft += 100 * scrollDistances.left/duration;
+				if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) || (scrollDistances.top <= 0 && area.scrollTop <= finalPositions.top)) && 
+					((scrollDistances.left >= 0 && area.scrollLeft >= finalPositions.left) || (scrollDistances.left <= 0 && area.scrollLeft <= finalPositions.left))) {
+					clearInterval(animation);
+				}
+			},100)
 		}
 	} //focus
 
@@ -237,6 +253,8 @@
 
 	function Scroller (parentSelector, obj) {
 		var parentEl = this.checkParent(parentSelector);
+
+
 		this.generate = function (container, descriptor) {
 			var html = '';
 			var classes = '';
@@ -282,13 +300,16 @@
 						return position > 0;
 					}
 				});
-				
+
 				if (targetRelativePosition[0] < 0) {
 					distanceToNextTarget = Math.max(...targetRelativePosition);
 				} else if (targetRelativePosition[0] > 0) {
 					distanceToNextTarget = Math.min(...targetRelativePosition);
 				}
-				window.scrollBy(0, distanceToNextTarget);
+				focus.smoothScrollBy(scrollArea, {
+					top: distanceToNextTarget,
+					left: 0
+				}, 1000);
 			}
 		})
 		this.generate(parentEl, obj);
