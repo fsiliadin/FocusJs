@@ -116,3 +116,9 @@
 .basic_scroller:hover {
 	opacity: 1;
 }
+.goingUp {
+	content: url(images/scroller_arrow_up.png)
+}
+.goingDown {
+	content: url(images/scroller_arrow_down.png)
+}

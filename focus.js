@@ -54,7 +54,6 @@
 
         addClass: function addClass (element, _class) {
             // _class could be an array of classes
-            console.log('i');
             element.className += ' '+_class.toString();
         },
 
@@ -279,16 +278,13 @@
 
     function Scroller (parentSelector, obj) {
         var parentEl = this.checkParent(parentSelector);
-
-
+        var self = this;
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
-            }
-            var self = this;
-            Array.prototype.forEach.call(container, function (item, index) {
+            }            Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
@@ -327,6 +323,7 @@
                     }
                 });
 
+
                 if (targetRelativePosition[0] < 0) {
                     distanceToNextTarget = Math.max(...targetRelativePosition);
                 } else if (targetRelativePosition[0] > 0) {
@@ -338,6 +335,8 @@
                 }, 1000);
             }
         });
+
+        // Scrolling a div
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
             scrollArea.addEventListener('scroll', function () {
                 var previousScrollPos = 0, scroller;
@@ -353,13 +352,12 @@
 
         // deal with left one day
         var previousScrollPos= {top:0} 
+        // Scrolling window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
             if (this.scrollY > previousScrollPos.top) {
-                scroller.src = 'images/scroller_arrow_down.png';
                 focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
             } else if (this.scrollY < previousScrollPos.top) {                
-                scroller.src = 'images/scroller_arrow_up.png';
                 focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
             }
             previousScrollPos.top = this.scrollY;
