@@ -46,6 +46,18 @@
 			return Array.prototype.indexOf.call(element.classList, _class) > -1;
 		},
 
+		removeClass: function removeClass (element, _class) {
+			element.className = element.className.replace(_class, '');
+			// we return focus so that we can chain function call
+			return this;
+		},
+
+		addClass: function addClass (element, _class) {
+			// _class could be an array of classes
+			console.log('i');
+			element.className += ' '+_class.toString();
+		},
+
 		// this function returns the position of an element relative to the specified area
 		// the element shall exist in that area
 		getPositionInArea: function getPositionInArea(el, area) {
@@ -74,7 +86,7 @@
 				left: area.scrollLeft + scrollDistances.left
 			}
 			animation = setInterval(function(){
-				// manage to scroll within the given duration		
+				// manage to scroll within the given duration       
 				area.scrollTop += (100 * scrollDistances.top/duration) < 1 ? 1 : (100 * scrollDistances.top/duration);
 				area.scrollLeft += 100 * scrollDistances.left/duration;
 				// if we reach the target or if we can't reach it because of the length of the page
@@ -146,7 +158,7 @@
 				}
 
 			});
-		}		
+		}       
 		this.generate(parentEl, obj);
 	}
 
@@ -296,11 +308,11 @@
 				// we define the area to browse according the scroller that is clicked
 				var scrollArea = parentEl[e.target.dataset.area];
 				var targetsInScrollArea; 
-				obj.targets.forEach(function(targetSelector){	//for each target selector in the target array 
+				obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
 					// we get the matching target elements in the scroll area 
 					targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
 					// then we put all targets together in the same array
-					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));					
+					targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
 				});
 				//  we calculate the relative position of each target in order to determine the closest
 				var targetRelativePosition = targetEls.map(function (target){
@@ -325,9 +337,35 @@
 					left: 0
 				}, 1000);
 			}
-		})
+		});
+		Array.prototype.forEach.call(parentEl, function(scrollArea) {
+			scrollArea.addEventListener('scroll', function () {
+				var previousScrollPos = 0, scroller;
+				scroller = this.querySelector('.basic_scroller');
+				if (this.scrollTop > previousScrollPos.top) {
+					focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+				} else if (this.scrollTop < previousScrollPos.top) {
+					focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+				}
+				previousScrollPos.top = this.scrollTop;
+			});
+		});
+
+		// deal with left one day
+		var previousScrollPos= {top:0} 
+		window.onscroll = function(){
+			var scroller = document.querySelector('body .basic_scroller');
+			if (this.scrollY > previousScrollPos.top) {
+				scroller.src = 'images/scroller_arrow_down.png';
+				focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+			} else if (this.scrollY < previousScrollPos.top) {                
+				scroller.src = 'images/scroller_arrow_up.png';
+				focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+			}
+			previousScrollPos.top = this.scrollY;
+
+		}        
 		this.generate(parentEl, obj);
-		
 	}
 
 
