@@ -84,10 +84,13 @@
                 top: area.scrollTop + scrollDistances.top,
                 left: area.scrollLeft + scrollDistances.left
             }
+            var incrementTop, incrementLeft;
             animation = setInterval(function(){
-                // manage to scroll within the given duration       
-                area.scrollTop += (100 * scrollDistances.top/duration) < 1 ? 1 : (100 * scrollDistances.top/duration);
-                area.scrollLeft += 100 * scrollDistances.left/duration;
+                // manage to scroll within the given duration     
+                incrementTop = 100 * scrollDistances.top/duration;
+                incrementLeft = 100 * scrollDistances.left/duration;
+                area.scrollTop += Math.abs(incrementTop) < 1 ? Math.abs(incrementTop)/incrementTop  : incrementTop;
+                area.scrollLeft += Math.abs(incrementLeft) < 1 ? Math.abs(incrementLeft)/incrementLeft  : incrementLeft;
                 // if we reach the target or if we can't reach it because of the length of the page
                 // we stop scrolling
                 if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) 
@@ -284,7 +287,8 @@
             var classes = '';
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
-            }            Array.prototype.forEach.call(container, function (item, index) {
+            }   
+            Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
@@ -329,6 +333,7 @@
                 } else if (targetRelativePosition[0] > 0) {
                     distanceToNextTarget = Math.min(...targetRelativePosition);
                 }
+
                 focus.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
                     left: 0
