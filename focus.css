@@ -63,9 +63,9 @@
 	border-style: none !important;
 }
 .basic_grid{
-	display: table;
-	position:relative;
-	margin: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 .basic_grid .gridItem {
 	display: inline-table;
