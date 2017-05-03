@@ -299,41 +299,66 @@
                     self.__proto__.bindEvent(self.hash, descriptor.events);
                 }
             });
-        }
-        obj.events.push({
-            type: 'click',
-            handler: function(e) {
-                var targetEls= [], distanceToNextTarget = 0;
-                // Here we determine the targets to go on click, according the targets array the user provides
-                // we define the area to browse according the scroller that is clicked
-                var scrollArea = parentEl[e.target.dataset.area];
-                var targetsInScrollArea; 
+        };
+
+        this.getTargets = function getTargets (scrollArea) {
+                var targetsInScrollArea, targetEls= [];
                 obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
                     // we get the matching target elements in the scroll area 
                     targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
                     // then we put all targets together in the same array
                     targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
                 });
-                //  we calculate the relative position of each target in order to determine the closest
-                var targetRelativePosition = targetEls.map(function (target){
-                    return focus.getPositionInArea(target, scrollArea).top - scrollArea.scrollTop;
-                }).filter(function(position){
+                return targetEls.map(function (target){
+                    return {
+                        el: target,
+                        pos: focus.getPositionInArea(target, scrollArea).top - scrollArea.scrollTop
+                    }
+                }).sort(function(a, b){
+                    return a.pos - b.pos;
+                });
+        };
+
+        this.getTargetsAbsolutePos =  function getTargetsAbsolutePos (scrollArea) {
+            var targetsInScrollArea, targetEls= [];
+                obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
+                    // we get the matching target elements in the scroll area 
+                    targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
+                    // then we put all targets together in the same array
+                    targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
+                });
+                return targetEls.map(function (target){
+                    return focus.getPositionInArea(target, scrollArea).top;
+                }).sort(function(a, b){
+                    return a - b;
+                });
+        };
+
+        obj.events.push({
+            type: 'click',
+            handler: function(e) {
+                var distanceToNextTarget = 0;
+                // Here we determine the targets to go on click, according the targets array the user provides
+                // we define the area to browse according the scroller that is clicked
+                var scrollArea = parentEl[e.target.dataset.area];
+                var targetRelativePosition = self.getTargets(scrollArea).filter(function(target){
                     // whether we are moving down or moving up we look to the target above or under the current 
                     // scroll position
                     if(focus.hasClass(e.target, 'goingUp')){
-                        return position < 0; 
+                        return target.pos < 0; 
                     } else {
-                        return position > 0;
+                        console.log(target)
+                        return target.pos > 0;
                     }
                 });
 
-
-                if (targetRelativePosition[0] < 0) {
-                    distanceToNextTarget = Math.max(...targetRelativePosition);
-                } else if (targetRelativePosition[0] > 0) {
-                    distanceToNextTarget = Math.min(...targetRelativePosition);
+                if (targetRelativePosition[0].pos < 0) {
+                    distanceToNextTarget = targetRelativePosition[targetRelativePosition.length - 1].pos;
+                console.log(distanceToNextTarget)
+                } else if (targetRelativePosition[0].pos > 0) {
+                    distanceToNextTarget = targetRelativePosition[0].pos;
+                console.log(distanceToNextTarget)
                 }
-
                 focus.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
                     left: 0
@@ -343,12 +368,22 @@
 
         // Scrolling a div
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
+            var previousScrollPos, scroller, highest, lowest, targets;
             scrollArea.addEventListener('scroll', function () {
-                var previousScrollPos = 0, scroller;
+                previousScrollPos = 0;
                 scroller = this.querySelector('.basic_scroller');
+                targets = self.getTargetsAbsolutePos(scrollArea);
+                highest = targets[0];
+                lowest = targets[targets.length - 1];
                 if (this.scrollTop > previousScrollPos.top) {
                     focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
                 } else if (this.scrollTop < previousScrollPos.top) {
+                    focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+                }
+                if (this.scrollTop < highest || this.scrollTop === 0) {
+                    focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+                }
+                if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop > lowest){
                     focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
                 }
                 previousScrollPos.top = this.scrollTop;
@@ -360,13 +395,23 @@
         // Scrolling window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
-            if (this.scrollY > previousScrollPos.top) {
+            var scrollArea = document.querySelector('body');
+            var targets = self.getTargetsAbsolutePos(scrollArea);
+            var highest = targets[0];
+            var lowest = targets[targets.length - 1];
+
+            if (this.scrollY > previousScrollPos.top ) {
                 focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
-            } else if (this.scrollY < previousScrollPos.top) {                
+            } else if (this.scrollY < previousScrollPos.top ) {
+                focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+            }
+            if (this.scrollY < highest || this.scrollY === 0) {
+                focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+            }
+            if (document.documentElement.scrollHeight === this.scrollY + document.documentElement.clientHeight || this.scrollY > lowest){
                 focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
             }
             previousScrollPos.top = this.scrollY;
-
         }        
         this.generate(parentEl, obj);
     }
