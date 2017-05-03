@@ -301,6 +301,14 @@
             });
         };
 
+        /**
+        * Gets the DOM elements corresponding to the targets in scrollArea and calculate their top position
+        * relative to the scrollArea scrollTop.
+        * @param {DOM Element} scrollArea.
+        * @return {Object[]} targetsEls - the targets in the scrollArea sorted by position.
+        * @return {Number} targetsEls.pos - the position of the target relative to scrollArea scrollTop.
+        * @return {DOM Element} targetsEls.el - the DOM Element corresponding to the target.
+        */
         this.getTargets = function getTargets (scrollArea) {
                 var targetsInScrollArea, targetEls= [];
                 obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
@@ -319,46 +327,55 @@
                 });
         };
 
+        /**
+        * Calculates the absolute top position of each target in the scrollArea. 
+        * @param {DOM Element} scrollArea.
+        * @return {Array} a sorted array of the absolute position top of all targets in scrollArea.
+        */
         this.getTargetsAbsolutePos =  function getTargetsAbsolutePos (scrollArea) {
             var targetsInScrollArea, targetEls= [];
-                obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
-                    // we get the matching target elements in the scroll area 
-                    targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
-                    // then we put all targets together in the same array
-                    targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
-                });
-                return targetEls.map(function (target){
-                    return focus.getPositionInArea(target, scrollArea).top;
-                }).sort(function(a, b){
-                    return a - b;
-                });
+            // for each target selector in the obj.targets array 
+            obj.targets.forEach(function(targetSelector){   
+                // we get the matching target elements in the scroll area 
+                targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
+                // then we put all targets together in the same array
+                targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
+            });
+            // for each target element, we calculate it's absolute position in the scrollArea
+            // that we return as a sorted array of numbers
+            return targetEls.map(function (target){
+                return focus.getPositionInArea(target, scrollArea).top;
+            }).sort(function(a, b){
+                return a - b;
+            });
         };
 
+        // Push a click event in the events array
         obj.events.push({
             type: 'click',
-            handler: function(e) {
+            handler: 
+            // On click we scroll to the nearest target according the direction of the scroller 
+            function(e) {
                 var distanceToNextTarget = 0;
-                // Here we determine the targets to go on click, according the targets array the user provides
+                // Here we determine the targets to go on click, according the targets array the user provides as selectors in obj.targets
                 // we define the area to browse according the scroller that is clicked
                 var scrollArea = parentEl[e.target.dataset.area];
+                // then we get the relative position of the targets
                 var targetRelativePosition = self.getTargets(scrollArea).filter(function(target){
-                    // whether we are moving down or moving up we look to the target above or under the current 
-                    // scroll position
+                    // whether we are moving down or moving up we look to the target above or under the current scroll position
                     if(focus.hasClass(e.target, 'goingUp')){
                         return target.pos < 0; 
                     } else {
-                        console.log(target)
                         return target.pos > 0;
                     }
                 });
-
+                // we are going up
                 if (targetRelativePosition[0].pos < 0) {
                     distanceToNextTarget = targetRelativePosition[targetRelativePosition.length - 1].pos;
-                console.log(distanceToNextTarget)
                 } else if (targetRelativePosition[0].pos > 0) {
                     distanceToNextTarget = targetRelativePosition[0].pos;
-                console.log(distanceToNextTarget)
                 }
+                // scroll the scrollArea
                 focus.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
                     left: 0
@@ -366,7 +383,7 @@
             }
         });
 
-        // Scrolling a div
+        // on scroll of 
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
             var previousScrollPos, scroller, highest, lowest, targets;
             scrollArea.addEventListener('scroll', function () {
@@ -392,7 +409,7 @@
 
         // deal with left one day
         var previousScrollPos= {top:0} 
-        // Scrolling window
+        Scrolling window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
             var scrollArea = document.querySelector('body');
