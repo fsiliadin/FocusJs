@@ -409,7 +409,7 @@
 
         // deal with left one day
         var previousScrollPos= {top:0} 
-        Scrolling window
+        // Scrolling window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
             var scrollArea = document.querySelector('body');
