@@ -280,6 +280,7 @@
 
 
     function Scroller (parentSelector, obj) {
+        var positionInNodeList = 0;
         var parentEl = this.checkParent(parentSelector);
         var self = this;
         this.generate = function (container, descriptor) {
@@ -294,7 +295,7 @@
                 classes = descriptor.class.join(' ');
                 self.hash = self.generateHash();
                 html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'"data-hash="'+self.hash+'">';
-                self.__proto__.generate(html, item);
+                self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.bindEvent(self.hash, descriptor.events);
                 }
