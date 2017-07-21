@@ -58,6 +58,11 @@
             // _class could be an array of classes
             element.className += ' '+_class.toString();
         },
+        removeUnity: function removeUnity (str) {
+            var strArr = str.split('');
+            strArr.splice(strArr.length - 2, 2);
+            return strArr.join('') | 0;
+        },
 
         // this function returns the position of an element relative to the specified area
         // the element shall exist in that area
@@ -301,6 +306,7 @@
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.bindEvent(self.hash, descriptor.events);
                 }
+                generatedEl.style.top = focus.removeUnity(item.style.height) - 40 + 'px';              
 
             });
         };
