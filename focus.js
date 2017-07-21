@@ -6,8 +6,10 @@
             // if the programmer doesn't specify any position by default the position is the last
             if (typeof positionInNodeList === 'undefined' || positionInNodeList > siblings.length - 1) {
                 parentEl.innerHTML += htmlStr;
+                return parentEl.lastChild;
             } else {
                 siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
+                return parentEl.children[positionInNodeList];
             }
         },
         // generates a unique hash that is assigned to the created element
@@ -295,10 +297,11 @@
                 classes = descriptor.class.join(' ');
                 self.hash = self.generateHash();
                 html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'"data-hash="'+self.hash+'">';
-                self.__proto__.generate(html, item, positionInNodeList);
+                var generatedEl = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.bindEvent(self.hash, descriptor.events);
                 }
+
             });
         };
 
