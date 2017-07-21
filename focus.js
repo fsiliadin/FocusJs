@@ -397,7 +397,7 @@
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
             var previousScrollPos, scroller, highest, lowest, targets;
             scrollArea.addEventListener('scroll', function () {
-                previousScrollPos = 0;
+                previousScrollPos = {top:0};
                 scroller = this.querySelector('.basic_scroller');
                 targets = self.getTargetsAbsolutePos(scrollArea);
                 highest = targets[0];
@@ -413,6 +413,7 @@
                 if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop > lowest){
                     focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
                 }
+                scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
                 previousScrollPos.top = this.scrollTop;
             });
         });
@@ -438,8 +439,10 @@
             if (document.documentElement.scrollHeight === this.scrollY + document.documentElement.clientHeight || this.scrollY > lowest){
                 focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
             }
+            scroller.style.top = focus.removeUnity(scroller.style.top) + (this.scrollY - previousScrollPos.top) + 'px';
             previousScrollPos.top = this.scrollY;
         }        
+
         this.generate(parentEl, obj);
     }
 
