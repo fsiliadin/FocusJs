@@ -40,8 +40,8 @@ window.onload = function(){
 						}
 					}]
 				},1);
-		var txtImg = new ImageTextZone ("", {
-			id: 'tchula',
+		var txtImg = new ImageTextZone (".gridItem", {
+			// id: 'tchula',
 			class: ['dope'],
 			imageAfter: true,
 			imageWidth: '220px',
@@ -53,7 +53,7 @@ window.onload = function(){
 
 		});
 
-		var scrolla = new Scroller ("body", {
+		var scrolla = new Scroller (".gridItem, body", {
 			class: ['thci'],
 			targets: ['.basic_button', '.accordionPlaceholder'],
 			events: [{
