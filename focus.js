@@ -306,7 +306,7 @@
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.bindEvent(self.hash, descriptor.events);
                 }
-                generatedEl.style.top = focus.removeUnity(item.style.height) - 40 + 'px';              
+                generatedEl.style.top = (item.tagName === 'BODY' ? document.documentElement.clientHeight : focus.removeUnity(item.style.height)) - 50 + 'px';              
 
             });
         };
