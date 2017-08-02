@@ -63,11 +63,13 @@
 	border-style: none !important;
 }
 .basic_grid{
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 }
 .basic_grid .gridItem {
+	position: relative;
 	display: block;
 	overflow-x: hidden;
 	margin: 10px;
