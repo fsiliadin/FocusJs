@@ -73,7 +73,7 @@
             }
             function getPosition(el){
                 pos.top += el.offsetTop;
-                pos.left += el.offestLeft;
+                pos.left += el.offsetLeft;
                 if(el.parentElement !== area){
                      getPosition(el.parentElement);
                 }
