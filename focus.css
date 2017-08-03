@@ -38,6 +38,7 @@
 	background: linear-gradient(rgb(255,255,255), rgb(190,190,190)); /* Standard syntax */
 }
 .basic_accordion {
+	position: relative;
 	table-layout: fixed;
 	width: 100%;
 	border-style: solid;
@@ -87,10 +88,12 @@
 }
 
 .accordionPlaceholder {
+	position: relative;
 	height: 100%;
 	width: 100%;
 }
 .accordionContent {
+	position: relative;
 	display: none;
 	height: 100%;
 	width: 100%;
@@ -103,6 +106,7 @@
 	display:block;
 }
 .basic_imageTextZone .text {
+	position: relative;
 	text-align: justify;
 	padding: 1em;
 }
