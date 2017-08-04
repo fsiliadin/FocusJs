@@ -55,7 +55,7 @@ window.onload = function(){
 
 		var scrolla = new Scroller (".gridItem, body", {
 			class: ['thci'],
-			targets: ['.basic_button', '.accordionPlaceholder'],
+			targets: ['.basic_button', '.accordionPlaceholder', '.bli'],
 			events: [{
 				type: 'mouseover',
 				handler: function(event){

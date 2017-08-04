@@ -251,9 +251,9 @@
                 html = '<table class= "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"><tr>';
                 if(descriptor.imageAfter) {
                     html += '<td class ="text">'+descriptor.text+'</td>';
-                    html += '<td class ="image" ><img src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+                    html += '<td class ="image" ><img class ="bli" src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                 } else {
-                    html += '<td class ="image" ><img src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+                    html += '<td class ="image" ><img class ="bli" src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                     html += '<td class ="text" >'+descriptor.text+'</td>';
                 }
                 html += '</tr></table>';
@@ -380,6 +380,7 @@
                     }
                 });
 
+                console.log('targets pos ', targetRelativePosition);
                 // if there is no targets to go, we return
                 if (targetRelativePosition.length === 0) {
                     return;
