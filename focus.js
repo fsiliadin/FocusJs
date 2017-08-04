@@ -379,6 +379,11 @@
                         return target.pos > 0;
                     }
                 });
+
+                // if there is no targets to go, we return
+                if (targetRelativePosition.length === 0) {
+                    return;
+                }
                 // we are going up
                 if (targetRelativePosition[0].pos < 0) {
                     distanceToNextTarget = targetRelativePosition[targetRelativePosition.length - 1].pos;
