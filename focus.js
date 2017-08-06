@@ -308,9 +308,6 @@
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
-            if (typeof descriptor.id !== 'undefined') {
-                container = [container[0]];
-            }   
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
