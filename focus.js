@@ -126,6 +126,9 @@
             if(typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
+            if (!('class' in descriptor)) {
+                descriptor.class = [];
+            }
             var self = this;
             // for each node el taken in account is generated an html
             Array.prototype.forEach.call(container, function(item, index){
