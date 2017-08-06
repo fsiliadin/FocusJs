@@ -187,6 +187,9 @@
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
+            if (!('class' in descriptor)) {
+                descriptor.class = [];
+            }
             var self = this;
 
             Array.prototype.forEach.call(container, function(item, index){
