@@ -121,6 +121,7 @@
         this.generate = function (container, descriptor) {
             var html= '';
             var classes= '';
+            var res = [], ret;
             // if the programmer specifies an id, only the first node el is taken in account
             // can't have several object with the same id
             if(typeof descriptor.id !== 'undefined') {
@@ -135,17 +136,23 @@
                 descriptor.class.indexOf('basic_button') === -1 ? descriptor.class.push('basic_button'): '';
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
-                self.hash = self.generateHash();
-                html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+self.hash+'">'+descriptor.text+'</div>';
-                self.__proto__.generate(html, item, positionInNodeList);
+                var hash = self.generateHash();
+                html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
+                ret = self.__proto__.generate(html, item, positionInNodeList);
+                res.push({
+                    hash: hash,
+                    element: ret,
+                    container: item
+                });
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(self.hash, descriptor.events);
+                    self.bindEvent(hash, descriptor.events);
                 }
             });
+            return res;
         };
 
         parentEl = this.checkParent(parentEl);
-        this.generate(parentEl, obj);
+        this.generated = this.generate(parentEl, obj);
     }
 
     function Banner(parentEl, obj, positionInNodeList){
