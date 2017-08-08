@@ -226,6 +226,7 @@
         this.generate = function (container, descriptor) {
             var html = '';
             var classes  = '';
+            var res = [], ret;
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
@@ -236,21 +237,30 @@
             Array.prototype.forEach.call(container, function(item, index){
                 descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
+                var hash = self.generateHash();
                 var L = descriptor.itemWidth;
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
-                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+self.hash+'">'
+                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'">'
                 for (var i = 0; i < descriptor.nbItems; i++) {
                     html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
                 }
                 html += '</div>';
-                self.__proto__.generate(html, item, positionInNodeList);
+                ret = self.__proto__.generate(html, item, positionInNodeList);
+                res.push({
+                    hash: hash,
+                    element: {
+                        grid: ret,
+                        gridItems: ret.children
+                    },
+                    container: item
+                });
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(self.hash, descriptor.events);
+                    self.bindEvent(hash, descriptor.events);
                 }
             });
+        return res;
         }
-        this.generate(parentEl, obj);
+        this.generated = this.generate(parentEl, obj);
     }
 
 

@@ -30,7 +30,7 @@ window.onload = function(){
 						}
 					}]
 				});
-	console.log('fjsk', myFirstButton);
+	console.log('fjsk', grid);
 		var secondButton = new Button ( ".gridItem ", {
 					text: "Fresh New Button2",
 					class: ["shinny"],
