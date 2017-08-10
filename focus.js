@@ -82,7 +82,7 @@
             return getPosition(el);
         },
 
-        smoothScrollBy:  function smoothScrollBy (area, scrollDistances, duration) {
+        smoothScrollBy:  function smoothScrollBy (area, scrollDistances) {
             var animation, previousScrollPos = {
                 top: area.scrollTop,
                 left: area.scrollLeft
@@ -91,13 +91,23 @@
                 top: area.scrollTop + scrollDistances.top,
                 left: area.scrollLeft + scrollDistances.left
             }
-            var incrementTop, incrementLeft;
+            var increment= {
+                top: 0,
+                left: 0
+            };
+            var cumul={
+                top:0,
+                left:0
+            };
             animation = setInterval(function(){
-                // manage to scroll within the given duration     
-                incrementTop = 100 * scrollDistances.top/duration;
-                incrementLeft = 100 * scrollDistances.left/duration;
-                area.scrollTop += Math.abs(incrementTop) < 1 ? Math.abs(incrementTop)/incrementTop  : incrementTop;
-                area.scrollLeft += Math.abs(incrementLeft) < 1 ? Math.abs(incrementLeft)/incrementLeft  : incrementLeft;
+                // manage to scroll
+                increment.top = (scrollDistances.top - cumul.top)*0.3 ;                
+                increment.left = (scrollDistances.left - area.scrollLeft)*0.3 ;
+
+                area.scrollTop += Math.abs(increment.top) < 1 ? Math.abs(increment.top)/increment.top  : increment.top;
+                area.scrollLeft += Math.abs(increment.left) < 1 ? Math.abs(increment.left)/increment.left  : increment.left;
+                cumul.top += increment.top;
+                cumul.left += increment.left;
                 // if we reach the target or if we can't reach it because of the length of the page
                 // we stop scrolling
                 if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) 
@@ -424,7 +434,7 @@
                 focus.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
                     left: 0
-                }, 1000);
+                });
             }
         });
 
