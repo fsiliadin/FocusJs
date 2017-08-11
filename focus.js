@@ -252,7 +252,7 @@
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
                 html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'">'
                 for (var i = 0; i < descriptor.nbItems; i++) {
-                    html += '<div class= "gridItem" style= "width:'+L+'; height:'+l+';"></div>';
+                    html += self.buildItem(descriptor.itemWidth, descriptor.itemHeight);
                 }
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
@@ -268,7 +268,22 @@
                     self.bindEvent(hash, descriptor.events);
                 }
             });
-        return res;
+            return res;
+        }
+        this.addItem = function (gridItem, grid) {
+            var itemHtml = this.buildItem(gridItem.width, gridItem.height);
+            var self = this;
+            if (grid) {
+                this.__proto__.generate(itemHtml, grid, gridItem.positionInNodeList);
+            } else {
+               this.generated.forEach(function (grid){
+                self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
+               });
+            }
+
+        }
+        this.buildItem = function (width, height) {
+            return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";"></div>';
         }
         this.generated = this.generate(parentEl, obj);
     }
