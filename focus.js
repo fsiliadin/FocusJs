@@ -271,7 +271,7 @@
             return res;
         }
         this.addItem = function (gridItem, grid) {
-            var itemHtml = this.buildItem(gridItem.width, gridItem.height);
+            var itemHtml = this.buildItem(gridItem.width, gridItem.height, gridItem.content || '');
             var self = this;
             if (grid) {
                 this.__proto__.generate(itemHtml, grid, gridItem.positionInNodeList);
@@ -282,8 +282,8 @@
             }
 
         }
-        this.buildItem = function (width, height) {
-            return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";"></div>';
+        this.buildItem = function (width, height, content) {
+            return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";">'+(content||"")+'</div>';
         }
         this.generated = this.generate(parentEl, obj);
     }
