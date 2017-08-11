@@ -250,7 +250,7 @@
                 var hash = self.generateHash();
                 var L = descriptor.itemWidth;
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
-                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'">'
+                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-gridindex="'+index+'">'
                 for (var i = 0; i < descriptor.nbItems; i++) {
                     html += self.buildItem(descriptor.itemWidth, descriptor.itemHeight);
                 }
@@ -260,7 +260,7 @@
                     hash: hash,
                     element: {
                         grid: ret,
-                        gridItems: ret.children
+                        gridItems: Array.prototype.slice.call(ret.children)
                     },
                     container: item
                 });
@@ -274,13 +274,21 @@
             var itemHtml = this.buildItem(gridItem.width, gridItem.height, gridItem.content || '');
             var self = this;
             if (grid) {
-                this.__proto__.generate(itemHtml, grid, gridItem.positionInNodeList);
+                if (!isNaN(gridItem.positionInNodeList)) {
+                    this.generated[grid.dataset.gridindex].element.gridItems.splice(gridItem.positionInNodeList, 0, this.__proto__.generate(itemHtml, grid, gridItem.positionInNodeList));
+                } else {
+                    this.generated[grid.dataset.gridindex].element.gridItems.push(this.__proto__.generate(itemHtml, grid, gridItem.positionInNodeList));
+                }
             } else {
-               this.generated.forEach(function (grid){
-                self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
+               this.generated.forEach(function (grid) {
+                    if (!isNaN(gridItem.positionInNodeList)) {
+                        grid.element.gridItems.splice(gridItem.positionInNodeList, 0, self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
+                    } else {
+                        grid.element.gridItems.push(self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
+                    }
                });
             }
-
+            return this.generated;
         }
         this.buildItem = function (width, height, content) {
             return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";">'+(content||"")+'</div>';
