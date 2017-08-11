@@ -290,6 +290,18 @@
             }
             return this.generated;
         }
+        this.removeItem = function (positionInNodeList, grid) {
+            var toRemove;
+            if (grid) {
+                 toRemove = this.generated[grid.dataset.gridindex].element.gridItems.splice(positionInNodeList, 1);
+                 toRemove[0].parentElement.removeChild(toRemove[0]);
+            } else {
+                this.generated.forEach(function(grid) {
+                    toRemove = grid.element.gridItems.splice(positionInNodeList, 1);
+                    toRemove[0].parentElement.removeChild(toRemove[0]);
+                });
+            }
+        }
         this.buildItem = function (width, height, content) {
             return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";">'+(content||"")+'</div>';
         }
