@@ -306,6 +306,9 @@
             }
         }
         this.buildItem = function (gridItem) {
+            if(typeof gridItem.content === 'object') {
+                gridItem.content = gridItem.content.generated[0].element.outerHTML;
+            }
             return '<div class= "gridItem" style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
         }
         this.generated = this.generate(parentEl, obj);
