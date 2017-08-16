@@ -252,7 +252,10 @@
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
                 html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-gridindex="'+index+'">'
                 for (var i = 0; i < descriptor.nbItems; i++) {
-                    html += self.buildItem(descriptor.itemWidth, descriptor.itemHeight);
+                    html += self.buildItem({
+                        width: descriptor.itemWidth, 
+                        height: descriptor.itemHeight
+                    });
                 }
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
@@ -271,7 +274,7 @@
             return res;
         }
         this.addItem = function (gridItem, grid) {
-            var itemHtml = this.buildItem(gridItem.width, gridItem.height, gridItem.content || '');
+            var itemHtml = this.buildItem(gridItem);
             var self = this;
             if (grid) {
                 if (!isNaN(gridItem.positionInNodeList)) {
@@ -302,8 +305,8 @@
                 });
             }
         }
-        this.buildItem = function (width, height, content) {
-            return '<div class= "gridItem" style= "width:' + width +'; height:'+(height || width)+'";">'+(content||"")+'</div>';
+        this.buildItem = function (gridItem) {
+            return '<div class= "gridItem" style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
         }
         this.generated = this.generate(parentEl, obj);
     }
