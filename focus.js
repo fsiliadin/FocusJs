@@ -275,32 +275,14 @@
         }
         this.addItem = function (gridItem, grid) {
             var itemHtml = this.buildItem(gridItem);
-            var self = this;
-            
+            var self = this;            
             if (grid) {
-                // explicitly make length poperty of NodeList writable
-                Object.defineProperty(grid.element.gridItems, 'length', {
-                    writable: true
-                });
-                if (!isNaN(gridItem.positionInNodeList)) {
-                    Array.prototype.splice.call(this.generated[grid.element.grid.dataset.gridindex].element.gridItems, gridItem.positionInNodeList, 0, this.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
-                } else {
-                    Array.prototype.push.call(this.generated[grid.element.grid.dataset.gridindex].element.gridItems, this.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
-                }
+                this.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
             } else {
                this.generated.forEach(function (grid) {
-                    // explicitly make length poperty of NodeList writable
-                    Object.defineProperty(grid.element.gridItems, 'length', {
-                        writable: true
-                    });
-                    if (!isNaN(gridItem.positionInNodeList)) {
-                        Array.prototype.splice.call(grid.element.gridItems, gridItem.positionInNodeList, 0, self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
-                    } else {
-                        Array.prototype.push.call(grid.element.gridItems, self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList));
-                    }
+                    self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
                });
             }
-            return this.generated;
         }
         this.removeItem = function (positionInNodeList, grid) {
             var toRemove;
@@ -311,14 +293,17 @@
                 });
                  toRemove = Array.prototype.splice.call(this.generated[grid.element.grid.dataset.gridindex].element.gridItems, positionInNodeList, 1);
                  // we may don't have to do this anymore
-                 toRemove[0].parentElement.removeChild(toRemove[0]);
+                 // toRemove[0].parentElement.removeChild(toRemove[0]);
             } else {
                 this.generated.forEach(function(grid) {
                     // explicitly make length poperty of NodeList writable
                     Object.defineProperty(grid.element.gridItems, 'length', {
                         writable: true
                     });
+                    grid.element.gridItems.length = 7;
+                    console.log('grrrrrri', grid, positionInNodeList);
                     toRemove = Array.prototype.splice.call(grid.element.gridItems, positionInNodeList, 1);
+                    console.log('fjlkdf', toRemove);
                     // we may don't have to do this anymore
                     toRemove[0].parentElement.removeChild(toRemove[0]);
                 });
