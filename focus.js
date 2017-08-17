@@ -12,7 +12,7 @@
                 return parentEl.children[positionInNodeList];
             }
         },
-        delete: function delete (parentEl, positionInNodeList) {
+        remove: function remove (parentEl, positionInNodeList) {
            return parentEl.removeChild(parentEl.children[positionInNodeList]);
         },
         // generates a unique hash that is assigned to the created element
@@ -289,26 +289,12 @@
         }
         this.removeItem = function (positionInNodeList, grid) {
             var toRemove;
+            var self = this;
             if (grid) {
-                // explicitly make length poperty of NodeList writable
-                Object.defineProperty(grid.element.gridItems, 'length', {
-                    writable: true
-                });
-                 toRemove = Array.prototype.splice.call(this.generated[grid.element.grid.dataset.gridindex].element.gridItems, positionInNodeList, 1);
-                 // we may don't have to do this anymore
-                 // toRemove[0].parentElement.removeChild(toRemove[0]);
+                this.remove(grid.element.grid, positionInNodeList);
             } else {
                 this.generated.forEach(function(grid) {
-                    // explicitly make length poperty of NodeList writable
-                    Object.defineProperty(grid.element.gridItems, 'length', {
-                        writable: true
-                    });
-                    grid.element.gridItems.length = 7;
-                    console.log('grrrrrri', grid, positionInNodeList);
-                    toRemove = Array.prototype.splice.call(grid.element.gridItems, positionInNodeList, 1);
-                    console.log('fjlkdf', toRemove);
-                    // we may don't have to do this anymore
-                    toRemove[0].parentElement.removeChild(toRemove[0]);
+                    self.remove(grid.element.grid, positionInNodeList);
                 });
             }
         }
