@@ -276,25 +276,25 @@
             });
             return res;
         }
-        this.addItem = function (gridItem, grid) {
-            var itemHtml = this.buildItem(gridItem);
+        this.addItem = function (params) {
+            var itemHtml = this.buildItem(params);
             var self = this;            
-            if (grid) {
-                this.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
+            if (params.to) {
+                this.__proto__.generate(itemHtml, params.to.element.grid, params.positionInNodeList);
             } else {
                this.generated.forEach(function (grid) {
-                    self.__proto__.generate(itemHtml, grid.element.grid, gridItem.positionInNodeList);
+                    self.__proto__.generate(itemHtml, grid.element.grid, params.positionInNodeList);
                });
             }
         }
-        this.removeItem = function (positionInNodeList, grid) {
+        this.removeItem = function (params) {
             var toRemove;
             var self = this;
-            if (grid) {
-                this.remove(grid.element.grid, positionInNodeList);
+            if (params.from) {
+                this.remove(params.from.element.grid, params.positionInNodeList);
             } else {
                 this.generated.forEach(function(grid) {
-                    self.remove(grid.element.grid, positionInNodeList);
+                    self.remove(grid.element.grid, params.positionInNodeList);
                 });
             }
         }
