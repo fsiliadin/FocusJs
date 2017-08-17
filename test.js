@@ -1,6 +1,12 @@
 window.onload = function(){
 	var jst = new Button("",{
-			class: ['pouh']
+			class: ['pouh'],
+			events: [{
+				type: 'click',
+				handler: function(){
+					console.log('"undefined" button clicked')
+				}
+			}]
 		});
 		var firstBanner = new Banner ("", {
 			class: ['breah']
@@ -20,6 +26,17 @@ window.onload = function(){
 			id:"badaboum",
 			itemWidth: '350px'
 		});
+		grid.addItem({
+			width: '600px',
+			height:'440px',
+			content: jst,
+			positionInNodeList:2,
+			to: grid.generated[0]
+		});
+		 grid.removeItem({
+		 	positionInNodeList:3,
+		 	from: grid.generated[0]
+		 });
 		var myFirstButton = new Button( ".gridItem", {
 					text: "Fresh New Button",
 					class: ["shinny"],
