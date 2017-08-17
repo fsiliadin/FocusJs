@@ -263,15 +263,7 @@
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
                 Array.prototype.forEach.call(ret.children, function(child){
-                    child.addContent = function(content) {
-                        if(typeof content.el === 'object') {
-                            content.el = content.el.outerHTML;
-                        }
-                        self.__proto__.generate(content.el, this, content.positionInNodeList);
-                    };
-                    child.clearContent = function() {
-                        this.innerHTML = '';
-                    }
+                    self.addGridItemMethods(child);
                 });
                 res.push({
                     hash: hash,
@@ -287,14 +279,27 @@
             });
             return res;
         }
+
+        this.addGridItemMethods = function (gridItem) {
+            var self = this;
+            gridItem.addContent = function(content) {
+                if(typeof content.el === 'object') {
+                    content.el = content.el.outerHTML;
+                }
+                self.__proto__.generate(content.el, this, content.positionInNodeList);
+            };
+            gridItem.clearContent = function() {
+                this.innerHTML = '';
+            }
+        }
         this.addItem = function (params) {
             var itemHtml = this.buildItem(params);
-            var self = this;            
+            var self = this;         
             if (params.to) {
-                this.__proto__.generate(itemHtml, params.to.element.grid, params.positionInNodeList);
+                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element.grid, params.positionInNodeList));
             } else {
                this.generated.forEach(function (grid) {
-                    self.__proto__.generate(itemHtml, grid.element.grid, params.positionInNodeList);
+                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element.grid, params.positionInNodeList));
                });
             }
         }
