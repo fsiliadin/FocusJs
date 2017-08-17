@@ -262,6 +262,17 @@
                 }
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
+                Array.prototype.forEach.call(ret.children, function(child){
+                    child.addContent = function(content) {
+                        if(typeof content.el === 'object') {
+                            content.el = content.el.outerHTML;
+                        }
+                        self.__proto__.generate(content.el, this, content.positionInNodeList);
+                    };
+                    child.clearContent = function() {
+                        this.innerHTML = '';
+                    }
+                });
                 res.push({
                     hash: hash,
                     element: {
