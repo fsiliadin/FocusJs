@@ -12,6 +12,9 @@
                 return parentEl.children[positionInNodeList];
             }
         },
+        delete: function delete (parentEl, positionInNodeList) {
+           return parentEl.removeChild(parentEl.children[positionInNodeList]);
+        },
         // generates a unique hash that is assigned to the created element
         generateHash: function generateHash(){
             return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
