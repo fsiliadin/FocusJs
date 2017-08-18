@@ -37,6 +37,7 @@ window.onload = function(){
 		 	positionInNodeList:3,
 		 	from: grid.generated[0]
 		 });
+
 		var myFirstButton = new Button( ".gridItem", {
 					text: "Fresh New Button",
 					class: ["shinny"],
@@ -47,7 +48,6 @@ window.onload = function(){
 						}
 					}]
 				});
-	console.log('fjsk', grid);
 		var secondButton = new Button ( ".gridItem ", {
 					text: "Fresh New Button2",
 					class: ["shinny"],
@@ -70,7 +70,23 @@ window.onload = function(){
 
 
 		});
+		grid.populate({
+		 	grid: grid.generated[0],
+		 	contents: [{
+		 		el: jst,
+		 		positionInNodeList: 3
+		 	}, {
+		 		el: 'yaparitaneeeeeeeh'
+		 	}, {
+		 		el: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 		positionInNodeList:0
+		 	}]
+		 });
 
+		grid.generated[0].element.gridItems[2].modify({
+			width: "600px",
+			height: '600px'
+		});
 		var scrolla = new Scroller (".gridItem, body", {
 			class: ['thci'],
 			targets: ['.basic_button', '.accordionPlaceholder', '.bli'],
