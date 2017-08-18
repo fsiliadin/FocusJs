@@ -284,7 +284,7 @@
             var self = this;
             gridItem.addContent = function(content) {
                 if(typeof content.el === 'object') {
-                    content.el = content.el.outerHTML;
+                    content.el = content.el.generated[0].element.outerHTML;
                 }
                 self.__proto__.generate(content.el, this, content.positionInNodeList);
             };
