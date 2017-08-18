@@ -303,6 +303,30 @@
                });
             }
         }
+        this.populate = function (params) {
+            if (params.grid) {
+                try {
+                    Array.prototype.forEach.call(params.grid.element.gridItems, function (gridItem, index) {
+                        if (index === params.contents.length) {
+                            throw ''
+                        } 
+                        gridItem.addContent(params.contents[index]);
+                    });
+                } catch(e){}
+                
+            } else {
+                this.generated.forEach(function (grid) {
+                    try {
+                        Array.prototype.forEach.call(grid.element.gridItems, function (gridItem, index) {
+                            if (index === params.contents.length) {
+                                throw ''
+                            } 
+                            gridItem.addContent(params.contents[index]);
+                        });
+                    } catch(e){} 
+                });
+            }
+        }
         this.removeItem = function (params) {
             var toRemove;
             var self = this;
