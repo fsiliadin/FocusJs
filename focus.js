@@ -290,7 +290,11 @@
             };
             gridItem.clearContent = function() {
                 this.innerHTML = '';
-            }
+            };
+            gridItem.modify = function(dimensions) {
+                this.style.height = dimensions.height;
+                this.style.width =  dimensions.width;
+            };
         }
         this.addItem = function (params) {
             var itemHtml = this.buildItem(params);
