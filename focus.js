@@ -274,10 +274,8 @@
                 });
                 res.push({
                     hash: hash,
-                    element: {
-                        grid: ret,
-                        gridItems: ret.children
-                    },
+                    element: ret,
+                    gridItems: ret.children,
                     container: item
                 });
                 if(typeof descriptor.events !== 'undefined') {
@@ -307,17 +305,17 @@
             var itemHtml = this.buildItem(params);
             var self = this;         
             if (params.to) {
-                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element.grid, params.positionInNodeList));
+                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
             } else {
                this.generated.forEach(function (grid) {
-                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element.grid, params.positionInNodeList));
+                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
                });
             }
         }
         this.populate = function (params) {
             if (params.grid) {
                 try {
-                    Array.prototype.forEach.call(params.grid.element.gridItems, function (gridItem, index) {
+                    Array.prototype.forEach.call(params.grid.gridItems, function (gridItem, index) {
                         if (index === params.contents.length) {
                             throw ''
                         } 
@@ -328,7 +326,7 @@
             } else {
                 this.generated.forEach(function (grid) {
                     try {
-                        Array.prototype.forEach.call(grid.element.gridItems, function (gridItem, index) {
+                        Array.prototype.forEach.call(grid.gridItems, function (gridItem, index) {
                             if (index === params.contents.length) {
                                 throw ''
                             } 
@@ -342,10 +340,10 @@
             var toRemove;
             var self = this;
             if (params.from) {
-                this.remove(params.from.element.grid, params.positionInNodeList);
+                this.remove(params.from.element, params.positionInNodeList);
             } else {
                 this.generated.forEach(function(grid) {
-                    self.remove(grid.element.grid, params.positionInNodeList);
+                    self.remove(grid.element, params.positionInNodeList);
                 });
             }
         }
