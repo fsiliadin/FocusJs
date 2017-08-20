@@ -339,6 +339,15 @@
             }
         }
 
+        /**
+        * populate a grid with an array of contents
+        * @params {Object} - params
+        *   grid:   the grid to populate, since the Grid constructor generates a grid per parent, there could be several grid generated.
+        *           Therefore we should specify the one we want to populate,
+        *           otherwise every generated grid will be populated
+        *   contents: an array of content, each content is an object with a property 'content' that can be passed as html string or as any focus-generated element
+        *             while the 'positionInNodeList' poperty defines the position of the content within the item children
+        */
         this.populate = function (params) {
             if (params.grid) {
                 try {
