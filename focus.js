@@ -302,6 +302,11 @@
             return res;
         }
 
+        /**
+        * Attach methods to grid items
+        * @param {DOM Element} - the grid item element
+        *
+        */
         this.addGridItemMethods = function (gridItem) {
             var self = this;
             gridItem.addContent = function(obj) {
