@@ -302,6 +302,11 @@
             return res;
         }
 
+        /**
+        * Attach methods to grid items
+        * @param {DOM Element} - the grid item element
+        *
+        */
         this.addGridItemMethods = function (gridItem) {
             var self = this;
             gridItem.addContent = function(obj) {
@@ -341,7 +346,7 @@
 
         /**
         * populate a grid with an array of contents
-        * @params {Object} - params
+        * @param {Object} - params
         *   grid:   the grid to populate, since the Grid constructor generates a grid per parent, there could be several grid generated.
         *           Therefore we should specify the one we want to populate,
         *           otherwise every generated grid will be populated
