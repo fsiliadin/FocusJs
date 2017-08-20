@@ -583,9 +583,8 @@
 
         // on scroll of 
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
-            var previousScrollPos, scroller, highest, lowest, targets;
+            var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
             scrollArea.addEventListener('scroll', function () {
-                previousScrollPos = {top:0};
                 scroller = this.querySelector('.basic_scroller');
                 targets = self.getTargetsAbsolutePos(scrollArea);
                 highest = targets[0];
