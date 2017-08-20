@@ -234,8 +234,25 @@
         this.generate(parentEl, obj);
     }
 
+    /**
+    * Generates a Grid
+    * @constructor
+    * @param {String} parentEl - the selector that will determine the container(s) of the grid(s)
+    * @param {Object} obj - the grid descriptor
+    * @param {Number} positionInNodeList - the position of the grid between its siblings
+    */
     function Grid(parentEl, obj, positionInNodeList){
         parentEl = this.checkParent(parentEl);
+        /**
+        * Generates grid html and insert it in the proper container in the DOM
+        * @params {NodeList} container - contains element grids will be generated in one grid per element
+        * @params {Object} descriptor - the grid descriptor
+        * @return {Array} an array of grid data:
+        *   hash: the hash of the generated grid
+        *   element: the grid element as it is in the DOM
+        *   gridItems: a NodeList of the grid items   
+        *   container: the parent element of each generated grid
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes  = '';
