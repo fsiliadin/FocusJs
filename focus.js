@@ -383,6 +383,16 @@
                 });
             }
         }
+        /**
+        * build the html of a grid item
+        * @param {Object} - params 
+        *   width: the width of the item (passed as css value), if not specified the grid item will wrap its content
+        *   height: the height of the item (passed as css value), if not specified whereas width is specified the height will be equal to the width
+        *           otherwise the grid item will wrap its content
+        *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
+        *
+        * @return {String} - the item to be generated html
+        */
         this.buildItem = function (gridItem) {
             if(typeof gridItem.content === 'object') {
                 gridItem.content = gridItem.content.generated[0].element.outerHTML;
