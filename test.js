@@ -22,9 +22,21 @@ window.onload = function(){
 		});
 		var grid = new Grid ("", {
 			class: ['super', 'style', 'grid'],
-			nbItems: 6,
 			id:"badaboum",
-			itemWidth: '350px'
+			itemWidth: '350px',
+			nbItems:6,
+			conternts: [{
+		 		content: jst,
+		 		positionInNodeList: 3,
+		 		width: "300px"
+		 	}, {
+		 		content: 'yaparitaneeeeeeeh',
+		 		width: '200px',
+		 		height:' 400px'
+		 	}, {
+		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 		positionInNodeList:0
+		 	}]
 		});
 		grid.addItem({
 			width: '600px',
@@ -73,17 +85,17 @@ window.onload = function(){
 		grid.populate({
 		 	grid: grid.generated[0],
 		 	contents: [{
-		 		el: jst,
+		 		content: jst,
 		 		positionInNodeList: 3
 		 	}, {
-		 		el: 'yaparitaneeeeeeeh'
+		 		content: 'yaparitaneeeeeeeh'
 		 	}, {
-		 		el: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
 		 		positionInNodeList:0
 		 	}]
 		 });
 
-		grid.generated[0].element.gridItems[2].modify({
+		grid.generated[0].gridItems[2].modify({
 			width: "600px",
 			height: '600px'
 		});
