@@ -289,11 +289,11 @@
 
         this.addGridItemMethods = function (gridItem) {
             var self = this;
-            gridItem.addContent = function(content) {
-                if(typeof content.el === 'object') {
-                    content.el = content.el.generated[0].element.outerHTML;
+            gridItem.addContent = function(obj) {
+                if(typeof obj.content === 'object') {
+                    obj.content = obj.content.generated[0].element.outerHTML;
                 }
-                self.__proto__.generate(content.el, this, content.positionInNodeList);
+                self.__proto__.generate(obj.content, this, obj.positionInNodeList);
             };
             gridItem.clearContent = function() {
                 this.innerHTML = '';
