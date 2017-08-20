@@ -318,6 +318,15 @@
                 this.style.width =  dimensions.width;
             };
         }
+        /**
+        * Add specified item to the grid
+        * @param {Object} - params 
+        *   to: the grid to add the item to, since this constructor generates a grid per parent, there could be several grid generated.
+        *       Therefore we should specify the one we want to add the item to,
+        *       otherwise the item will be added to every generated grid
+        *
+        *   positionInNodeList: the position of the item withing the other items in the grid
+        */
         this.addItem = function (params) {
             var itemHtml = this.buildItem(params);
             var self = this;         
