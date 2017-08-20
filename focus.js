@@ -247,22 +247,29 @@
                 descriptor.class = [];
             }
             var self = this;
-            Array.prototype.forEach.call(container, function(item, index){
+            Array.prototype.forEach.call(container, function (item, index){
                 descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
                 classes = descriptor.class.join(' ');
                 var hash = self.generateHash();
                 var L = descriptor.itemWidth;
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
                 html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-gridindex="'+index+'">'
-                for (var i = 0; i < descriptor.nbItems; i++) {
-                    html += self.buildItem({
-                        width: descriptor.itemWidth, 
-                        height: descriptor.itemHeight
-                    });
+                if (!('contents' in descriptor)) {
+                    for (var i = 0; i < descriptor.nbItems; i++) {
+                        html += self.buildItem({
+                            width: descriptor.itemWidth, 
+                            height: descriptor.itemHeight
+                        });
+                    }
+                } else {
+                    descriptor.contents.forEach(function (content) {
+                        html += self.buildItem(content);
+                    })
                 }
+                
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
-                Array.prototype.forEach.call(ret.children, function(child){
+                Array.prototype.forEach.call(ret.children, function (child){
                     self.addGridItemMethods(child);
                 });
                 res.push({
