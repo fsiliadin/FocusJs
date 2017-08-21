@@ -638,6 +638,20 @@
 
     function RateSlider (parentSelector, obj) {
         var parentEl = this.checkParent(parentSelector);
+        this.generate = function (container, descriptor) {
+            var html = '';
+            var classes = '';
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
+            Array.prototype.forEach.call(container, function (item, index) {
+                descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
+                classes = descriptor.class.join(' ');
+                self.hash = self.generateHash();
+                
+            });
+        }
+        this.generate(parentEl, obj);
     }
 
     Button.prototype = focus;
