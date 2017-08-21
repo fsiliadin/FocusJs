@@ -30,12 +30,12 @@
             });
         },
         // check if the element containing the element to be created exists
-        checkParent: function checkParent(parentEl) {
+        checkParent: function checkParent(parentSelector) {
             try {
-                if (parentEl == false) {
+                if (parentSelector == false) {
                     parentEl = document.querySelectorAll('body');
                 } else {
-                    parentEl = document.querySelectorAll(parentEl);
+                    parentEl = document.querySelectorAll(parentSelector);
                 }
                 return parentEl;
             } catch (error) {
@@ -129,7 +129,7 @@
         }
     } //focus
 
-    function Button(parentEl, obj, positionInNodeList){
+    function Button(parentSelector, obj, positionInNodeList){
         // function that creates the html of the button
         this.generate = function (container, descriptor) {
             var html= '';
@@ -164,12 +164,12 @@
             return res;
         };
 
-        parentEl = this.checkParent(parentEl);
+        var parentEl = this.checkParent(parentSelector);
         this.generated = this.generate(parentEl, obj);
     }
 
-    function Banner(parentEl, obj, positionInNodeList){
-        parentEl = this.checkParent(parentEl);
+    function Banner(parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = ''; 
@@ -199,8 +199,8 @@
 
 
 
-    function Accordion (parentEl, obj, positionInNodeList){
-        parentEl = this.checkParent(parentEl);
+    function Accordion (parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -237,12 +237,12 @@
     /**
     * Generates a Grid
     * @constructor
-    * @param {String} parentEl - the selector that will determine the container(s) of the grid(s)
+    * @param {String} parentSelector - the selector that will determine the container(s) of the grid(s)
     * @param {Object} obj - the grid descriptor
     * @param {Number} positionInNodeList - the position of the grid between its siblings
     */
-    function Grid(parentEl, obj, positionInNodeList){
-        parentEl = this.checkParent(parentEl);
+    function Grid(parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
         /**
         * Generates grid html and insert it in the proper container in the DOM
         * @params {NodeList} container - contains element grids will be generated in one grid per element
@@ -417,8 +417,8 @@
     }
 
 
-    function ImageTextZone(parentEl, obj, positionInNodeList){
-        parentEl = this.checkParent(parentEl);
+    function ImageTextZone(parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -451,23 +451,23 @@
         this.generate(parentEl, obj);
     }
 
-    function Slider (parentEl, obj, positionInNodeList) {
+    function Slider (parentSelector, obj, positionInNodeList) {
+        var parentEl = this.checkParent(parentSelector);
+    }
+
+    function Footer(parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
 
     }
 
-    function Footer(parentEl, obj, positionInNodeList){
-        parentEl = this.checkParent(parentEl);
-
-    }
-
-    function Menu(parentEl, obj, positionInNodeList){
+    function Menu(parentSelector, obj, positionInNodeList){
         //can be selectMenu too
-        parentEl = this.checkParent(parentEl);
+        var parentEl = this.checkParent(parentSelector);
 
     }
 
-    function Popup(parentEl, obj) {
-        parentEl = this.checkParent(parentEl);
+    function Popup(parentSelector, obj) {
+        var parentEl = this.checkParent(parentSelector);
     }
 
 
