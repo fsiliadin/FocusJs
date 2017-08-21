@@ -140,8 +140,8 @@
             if(typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
-            if (!('class' in descriptor)) {
-                descriptor.class = [];
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
             }
             var self = this;
             // for each node el taken in account is generated an html
@@ -177,8 +177,8 @@
             if(typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
-            if (!('class' in descriptor)) {
-                descriptor.class = [];
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
             }
             var self = this;
             Array.prototype.forEach.call(container, function(item, index){
@@ -207,8 +207,8 @@
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
-            if (!('class' in descriptor)) {
-                descriptor.class = [];
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
             }
             var self = this;
 
@@ -260,8 +260,8 @@
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
-            if (!('class' in descriptor)) {
-                descriptor.class = [];
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
             }
             var self = this;
             Array.prototype.forEach.call(container, function (item, index){
@@ -425,8 +425,8 @@
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
-            if (!('class' in descriptor)) {
-                descriptor.class = [];
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
             }
             var self = this;
             Array.prototype.forEach.call(container, function(item, index){
@@ -478,6 +478,9 @@
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
