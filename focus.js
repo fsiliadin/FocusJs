@@ -636,8 +636,9 @@
         this.generate(parentEl, obj);
     }
 
-    function RateSlider (parentSelector, obj) {
+    function RateSlider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
+        var self = this;
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -647,8 +648,13 @@
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
-                
+                var hash = self.generateHash();
+                html = '<div class="' + classes + '" data-hash=' + hash + '>';
+                for (var i = 1; i <= descriptor.maxRate; i++) {
+                    html += '<div class="rateItem" data-rate=' + i + '>' + descriptor.pattern + '</div>'
+                }
+                html += '</div>';
+                self.__proto__.generate(html, item, positionInNodeList);
             });
         }
         this.generate(parentEl, obj);

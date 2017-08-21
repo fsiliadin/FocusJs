@@ -108,4 +108,9 @@ window.onload = function(){
 				}
 			}]
 		});
+
+		var n = new RateSlider('', {
+			pattern: "&#57361;",
+			maxRate: 3
+		});
 	}
