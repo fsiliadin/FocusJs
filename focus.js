@@ -636,7 +636,9 @@
         this.generate(parentEl, obj);
     }
 
-
+    function RateSlider (parentSelector, obj) {
+        var parentEl = this.checkParent(parentSelector);
+    }
 
     Button.prototype = focus;
     Banner.prototype = focus;
@@ -648,3 +650,4 @@
     Popup.prototype = focus;
     Slider.prototype = focus;
     Scroller.prototype = focus;
+    RateSlider.prototype = focus;
