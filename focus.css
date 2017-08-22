@@ -128,3 +128,12 @@
 .goingDown {
 	content: url(images/scroller_arrow_down.png)
 }
+.basic_rateSlider {
+	font-size: 1.3em;
+	display: inline-flex;
+	flex-direction: row;
+	padding: 2px;
+}
+.rateItem {
+	color: rgb(190, 190, 190);
+}

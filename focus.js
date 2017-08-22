@@ -545,6 +545,9 @@
             });
         };
 
+        if (!(obj.events instanceof Array)){
+            obj.events = [];
+        }
         // Push a click event in the events array
         obj.events.push({
             type: 'click',
@@ -639,6 +642,19 @@
     function RateSlider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         var self = this;
+        if (!(obj.events instanceof Array)){
+            obj.events = [];
+        }
+        // Push a click event in the events array
+        obj.events.push({
+            type: 'mouseout',
+            handler: 
+            function (e) {
+                Array.prototype.forEach.call(e.target.children, function (child) {
+                    child.style.color = "rgb(190, 190, 190)";
+                });
+            }
+        });
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -654,7 +670,20 @@
                     html += '<div class="rateItem" data-rate=' + i + '>' + descriptor.pattern + '</div>'
                 }
                 html += '</div>';
-                self.__proto__.generate(html, item, positionInNodeList);
+                var ret = self.__proto__.generate(html, item, positionInNodeList);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.bindEvent(hash, descriptor.events);
+                }
+                Array.prototype.forEach.call(ret.children, function (rateItem, index, siblings) {
+                    rateItem.addEventListener('mouseenter', function (e) {
+                        for (i=1; i<= e.target.dataset.rate; i++) {
+                            siblings[i - 1].style.color = descriptor.activeColor
+                        }
+                        for(i; i<= siblings.length; i++) {
+                            siblings[i - 1].style.color = "rgb(190, 190, 190)"
+                        }
+                    });
+                })
             });
         }
         this.generate(parentEl, obj);

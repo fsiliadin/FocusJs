@@ -110,7 +110,8 @@ window.onload = function(){
 		});
 
 		var n = new RateSlider('', {
-			pattern: "&#57361;",
-			maxRate: 3
+			pattern: "€",
+			maxRate: 5,
+			activeColor: 'green'
 		});
 	}
