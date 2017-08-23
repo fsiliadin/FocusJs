@@ -132,7 +132,7 @@
 	font-size: 1.3em;
 	display: inline-flex;
 	flex-direction: row;
-	padding: 2px;
+	padding: 1em;
 }
 .rateItem {
 	color: rgb(190, 190, 190);
