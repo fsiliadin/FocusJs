@@ -650,9 +650,7 @@
             type: 'mouseout',
             handler: 
             function (e) {
-                Array.prototype.forEach.call(e.target.children, function (child) {
-                    child.style.color = "rgb(190, 190, 190)";
-                });
+                self.fill(e.target.dataset.rate, e.target.children);
             }
         });
         this.generate = function (container, descriptor) {
@@ -661,6 +659,7 @@
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
+            var res = [];
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
                 classes = descriptor.class.join(' ');
@@ -674,19 +673,33 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.bindEvent(hash, descriptor.events);
                 }
+                self.fill(obj.initialValue, ret.children);
                 Array.prototype.forEach.call(ret.children, function (rateItem, index, siblings) {
                     rateItem.addEventListener('mouseenter', function (e) {
-                        for (i=1; i<= e.target.dataset.rate; i++) {
-                            siblings[i - 1].style.color = descriptor.activeColor
-                        }
-                        for(i; i<= siblings.length; i++) {
-                            siblings[i - 1].style.color = "rgb(190, 190, 190)"
-                        }
+                        self.fill(e.target.dataset.rate, siblings);
                     });
-                })
+                    rateItem.addEventListener('click', function (e) {
+                        ret.dataset.rate = e.target.dataset.rate; 
+                    });
+                });
+                res.push({
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    rate: ret.dataset.rate
+                });
             });
+            return res;
         }
-        this.generate(parentEl, obj);
+        this.fill = function (rate, siblings) {
+            for (var i=1; i<= rate; i++) {
+                siblings[i - 1].style.color = obj.activeColor
+            }
+            for(i; i<= obj.maxRate; i++) {
+                siblings[i - 1].style.color = "rgb(190, 190, 190)"
+            }
+        }
+        this.generated = this.generate(parentEl, obj);
     }
 
     Button.prototype = focus;

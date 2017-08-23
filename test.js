@@ -99,19 +99,17 @@ window.onload = function(){
 			width: "600px",
 			height: '600px'
 		});
-		var scrolla = new Scroller (".gridItem, body", {
-			class: ['thci'],
-			targets: ['.basic_button', '.accordionPlaceholder', '.bli'],
-			events: [{
-				type: 'mouseover',
-				handler: function(event){
-				}
-			}]
-		});
 
 		var n = new RateSlider('', {
 			pattern: "€",
 			maxRate: 5,
-			activeColor: 'green'
+			activeColor: 'orange',
+			initialValue: 02
 		});
+		console.log(n);
+		var scrolla = new Scroller (".gridItem, body", {
+			class: ['thci'],
+			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
+		});
+
 	}
