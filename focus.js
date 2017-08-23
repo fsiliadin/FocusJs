@@ -673,20 +673,20 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.bindEvent(hash, descriptor.events);
                 }
-                self.fill(obj.initialValue, ret.children);
-                Array.prototype.forEach.call(ret.children, function (rateItem, index, siblings) {
+                self.fill(descriptor.initialValue, ret.children);
+                Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
                     rateItem.addEventListener('mouseenter', function (e) {
                         self.fill(e.target.dataset.rate, siblings);
                     });
                     rateItem.addEventListener('click', function (e) {
-                        ret.dataset.rate = e.target.dataset.rate; 
+                        self.generated[index].rate = e.target.dataset.rate; 
                     });
                 });
                 res.push({
                     hash: hash,
                     element: ret,
                     container: item,
-                    rate: ret.dataset.rate
+                    rate: descriptor.initialValue
                 });
             });
             return res;
