@@ -104,13 +104,11 @@ window.onload = function(){
 			class: ['thci'],
 			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
 		});
-		var n = new RateSlider('', {
-			pattern: "€",
+		var n = new RateSlider('.gridItem', {
 			maxRate: 5,
-			activeColor: 'orange',
 			initialValue: 02,
 			readOnly: false
-		});
+		}, 0);
 		console.log(n);
 
 	}

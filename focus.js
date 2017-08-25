@@ -645,7 +645,6 @@
         if (!(obj.events instanceof Array)){
             obj.events = [];
         }
-        // Push a click event in the events array
         obj.events.push({
             type: 'mouseout',
             handler: 
@@ -666,7 +665,7 @@
                 var hash = self.generateHash();
                 html = '<div class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
                 for (var i = 1; i <= descriptor.maxRate; i++) {
-                    html += '<div class="rateItem" data-rate=' + i + '>' + descriptor.pattern + '</div>'
+                    html += '<div class="rateItem" data-rate=' + i + '>' + (descriptor.pattern || "&#9733") + '</div>'
                 }
                 html += '</div>';
                 var ret = self.__proto__.generate(html, item, positionInNodeList);
@@ -696,7 +695,7 @@
         }
         this.fill = function (rate, siblings) {
             for (var i=1; i<= rate; i++) {
-                siblings[i - 1].style.color = obj.activeColor
+                siblings[i - 1].style.color = obj.activeColor || "rgb(255, 221, 153)";
             }
             for(i; i<= obj.maxRate; i++) {
                 siblings[i - 1].style.color = "rgb(190, 190, 190)"
