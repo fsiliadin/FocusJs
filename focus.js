@@ -639,6 +639,14 @@
         this.generate(parentEl, obj);
     }
 
+    /**
+    * Generates one or many RateSliders
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the slider(s)
+    * @param {Object} obj - the slider descriptor
+    * @param {Number} positionInNodeList - the position of the slider between its siblings
+    */
+
     function RateSlider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         var self = this;
@@ -652,6 +660,22 @@
                 self.fill(self.generated[e.target.dataset.index].rate, e.target.children);
             }
         });
+
+        /**
+        * Generates rateslider html and insert it in the proper container in the DOM
+        * @params {NodeList} container - contains element rateslider will be generated in, one rateslider per element
+        * @params {Object} descriptor - the rateslider descriptor:
+        *   maxRate: the maximum rate on the rateslider, as a number
+        *   initialValue: initial value of the rateslider, as a number
+        *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
+        *   pattern: the pattern of the rateslider (star, dollars...) can be passed as a string or as an unicode utf-8 value. default value is: &#9733
+        *   activeColor: the color of the active items. Default value is : rgb(255, 221, 153) 
+        * @return {Array} an array of rateslider data:
+        *   hash: the hash of the generated rateslider
+        *   element: the rateslider element as it is in the DOM
+        *   rate: the value of the rateslider as a number   
+        *   container: the parent element the generated rateslider
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -693,6 +717,12 @@
             });
             return res;
         }
+        /**
+        * Set the value of the specified rateslider
+        * @param {Number} rate - the value to set
+        * @param {Object} rateSlider - a rateSlider data object as it is returned in this.generated Array
+        *                              if there is no rateSlider specified every element of this.generated will be set
+        */
         this.setValue =  function (rate, rateSlider) {
             if (rateSlider) {
                 rateSlider.rate = rate;
