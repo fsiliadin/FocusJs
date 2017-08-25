@@ -5,7 +5,11 @@
             var siblings = parentEl.children;
             // if the programmer doesn't specify any position by default the position is the last
             if (typeof positionInNodeList === 'undefined' || positionInNodeList > siblings.length - 1) {
-                parentEl.innerHTML += htmlStr;
+                if (siblings.length) {
+                    siblings[siblings.length - 1].insertAdjacentHTML("afterend", htmlStr);
+                } else {
+                    parentEl.innerHTML += htmlStr;
+                }
                 return parentEl.lastChild;
             } else {
                 siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
@@ -486,7 +490,7 @@
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
                 self.hash = self.generateHash();
-                html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'"data-hash="'+self.hash+'">';
+                html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'" data-hash="'+self.hash+'">';
                 var generatedEl = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.bindEvent(self.hash, descriptor.events);
