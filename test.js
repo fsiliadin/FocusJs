@@ -108,7 +108,8 @@ window.onload = function(){
 			pattern: "€",
 			maxRate: 5,
 			activeColor: 'orange',
-			initialValue: 02
+			initialValue: 02,
+			readOnly: false
 		});
 		console.log(n);
 

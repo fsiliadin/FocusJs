@@ -674,14 +674,17 @@
                     self.bindEvent(hash, descriptor.events);
                 }
                 self.fill(descriptor.initialValue, ret.children);
-                Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
-                    rateItem.addEventListener('mouseenter', function (e) {
-                        self.fill(e.target.dataset.rate, siblings);
+                if (!descriptor.readOnly) {
+                    Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
+                        rateItem.addEventListener('mouseenter', function (e) {
+                            self.fill(e.target.dataset.rate, siblings);
+                        });
+                        rateItem.addEventListener('click', function (e) {
+                            self.generated[index].rate = e.target.dataset.rate; 
+                        });
                     });
-                    rateItem.addEventListener('click', function (e) {
-                        self.generated[index].rate = e.target.dataset.rate; 
-                    });
-                });
+                }
+                
                 res.push({
                     hash: hash,
                     element: ret,
