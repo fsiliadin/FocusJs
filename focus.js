@@ -650,7 +650,7 @@
             type: 'mouseout',
             handler: 
             function (e) {
-                self.fill(e.target.dataset.rate, e.target.children);
+                self.fill(self.generated[e.target.dataset.index].rate, e.target.children);
             }
         });
         this.generate = function (container, descriptor) {
@@ -664,7 +664,7 @@
                 descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
                 classes = descriptor.class.join(' ');
                 var hash = self.generateHash();
-                html = '<div class="' + classes + '" data-hash=' + hash + '>';
+                html = '<div class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
                 for (var i = 1; i <= descriptor.maxRate; i++) {
                     html += '<div class="rateItem" data-rate=' + i + '>' + descriptor.pattern + '</div>'
                 }

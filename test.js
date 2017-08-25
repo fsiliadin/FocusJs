@@ -100,6 +100,10 @@ window.onload = function(){
 			height: '600px'
 		});
 
+		var scrolla = new Scroller (".gridItem, body", {
+			class: ['thci'],
+			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
+		});
 		var n = new RateSlider('', {
 			pattern: "€",
 			maxRate: 5,
@@ -107,9 +111,5 @@ window.onload = function(){
 			initialValue: 02
 		});
 		console.log(n);
-		var scrolla = new Scroller (".gridItem, body", {
-			class: ['thci'],
-			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
-		});
 
 	}
