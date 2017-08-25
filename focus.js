@@ -643,13 +643,20 @@
         this.generate(parentEl, obj);
     }
 
+    /**
+    * Generates one or many RateSliders
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the slider(s)
+    * @param {Object} obj - the slider descriptor
+    * @param {Number} positionInNodeList - the position of the slider between its siblings
+    */
+
     function RateSlider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         var self = this;
         if (!(obj.events instanceof Array)){
             obj.events = [];
         }
-        // Push a click event in the events array
         obj.events.push({
             type: 'mouseout',
             handler: 
@@ -657,6 +664,22 @@
                 self.fill(self.generated[e.target.dataset.index].rate, e.target.children);
             }
         });
+
+        /**
+        * Generates rateslider html and insert it in the proper container in the DOM
+        * @params {NodeList} container - contains element rateslider will be generated in, one rateslider per element
+        * @params {Object} descriptor - the rateslider descriptor:
+        *   maxRate: the maximum rate on the rateslider, as a number
+        *   initialValue: initial value of the rateslider, as a number
+        *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
+        *   pattern: the pattern of the rateslider (star, dollars...) can be passed as a string or as an unicode utf-8 value. default value is: &#9733
+        *   activeColor: the color of the active items. Default value is : rgb(255, 221, 153) 
+        * @return {Array} an array of rateslider data:
+        *   hash: the hash of the generated rateslider
+        *   element: the rateslider element as it is in the DOM
+        *   rate: the value of the rateslider as a number   
+        *   container: the parent element the generated rateslider
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
@@ -670,7 +693,7 @@
                 var hash = self.generateHash();
                 html = '<div class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
                 for (var i = 1; i <= descriptor.maxRate; i++) {
-                    html += '<div class="rateItem" data-rate=' + i + '>' + descriptor.pattern + '</div>'
+                    html += '<div class="rateItem" data-rate=' + i + '>' + (descriptor.pattern || "&#9733") + '</div>'
                 }
                 html += '</div>';
                 var ret = self.__proto__.generate(html, item, positionInNodeList);
@@ -678,14 +701,17 @@
                     self.bindEvent(hash, descriptor.events);
                 }
                 self.fill(descriptor.initialValue, ret.children);
-                Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
-                    rateItem.addEventListener('mouseenter', function (e) {
-                        self.fill(e.target.dataset.rate, siblings);
+                if (!descriptor.readOnly) {
+                    Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
+                        rateItem.addEventListener('mouseenter', function (e) {
+                            self.fill(e.target.dataset.rate, siblings);
+                        });
+                        rateItem.addEventListener('click', function (e) {
+                            self.generated[index].rate = e.target.dataset.rate; 
+                        });
                     });
-                    rateItem.addEventListener('click', function (e) {
-                        self.generated[index].rate = e.target.dataset.rate; 
-                    });
-                });
+                }
+                
                 res.push({
                     hash: hash,
                     element: ret,
@@ -695,9 +721,26 @@
             });
             return res;
         }
+        /**
+        * Set the value of the specified rateslider
+        * @param {Number} rate - the value to set
+        * @param {Object} rateSlider - a rateSlider data object as it is returned in this.generated Array
+        *                              if there is no rateSlider specified every element of this.generated will be set
+        */
+        this.setValue =  function (rate, rateSlider) {
+            if (rateSlider) {
+                rateSlider.rate = rate;
+                this.fill(rate, rateSlider.element.children);
+            } else {
+                var self = this;
+                this.generated.forEach(function (rateSlider) {
+                    self.setValue(rate, rateSlider);
+                })
+            }
+        }
         this.fill = function (rate, siblings) {
             for (var i=1; i<= rate; i++) {
-                siblings[i - 1].style.color = obj.activeColor
+                siblings[i - 1].style.color = obj.activeColor || "rgb(255, 221, 153)";
             }
             for(i; i<= obj.maxRate; i++) {
                 siblings[i - 1].style.color = "rgb(190, 190, 190)"
