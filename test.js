@@ -110,5 +110,6 @@ window.onload = function(){
 			readOnly: false
 		}, 0);
 		console.log(n);
+		n.setValue(5, n.generated[3]);
 
 	}

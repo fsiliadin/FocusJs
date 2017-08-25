@@ -693,6 +693,17 @@
             });
             return res;
         }
+        this.setValue =  function (rate, rateSlider) {
+            if (rateSlider) {
+                rateSlider.rate = rate;
+                this.fill(rate, rateSlider.element.children);
+            } else {
+                var self = this;
+                this.generated.forEach(function (rateSlider) {
+                    self.setValue(rate, rateSlider);
+                })
+            }
+        }
         this.fill = function (rate, siblings) {
             for (var i=1; i<= rate; i++) {
                 siblings[i - 1].style.color = obj.activeColor || "rgb(255, 221, 153)";
