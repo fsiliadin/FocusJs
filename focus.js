@@ -33,6 +33,12 @@
                 }, false);
             });
         },
+
+        getUndelegatedEvents: function getUndelegatedEvents (el) {
+            var events = el.keys.filter(function (key) {
+                return key.indexOf('on') === 0 && el[key] !== null;
+            });
+        },
         // check if the element containing the element to be created exists
         checkParent: function checkParent(parentSelector) {
             try {
@@ -413,6 +419,7 @@
         */
         this.buildItem = function (gridItem) {
             if(typeof gridItem.content === 'object') {
+                console.log(gridItem.content)
                 gridItem.content = gridItem.content.generated[0].element.outerHTML;
             }
             return '<div class= "gridItem" style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
