@@ -249,8 +249,8 @@
         var parentEl = this.checkParent(parentSelector);
         /**
         * Generates grid html and insert it in the proper container in the DOM
-        * @params {NodeList} container - contains element grids will be generated in one grid per element
-        * @params {Object} descriptor - the grid descriptor
+        * @param {NodeList} container - contains element grids will be generated in one grid per element
+        * @param {Object} descriptor - the grid descriptor
         * @return {Array} an array of grid data:
         *   hash: the hash of the generated grid
         *   element: the grid element as it is in the DOM
@@ -667,8 +667,8 @@
 
         /**
         * Generates rateslider html and insert it in the proper container in the DOM
-        * @params {NodeList} container - contains element rateslider will be generated in, one rateslider per element
-        * @params {Object} descriptor - the rateslider descriptor:
+        * @param {NodeList} container - contains element rateslider will be generated in, one rateslider per element
+        * @param {Object} descriptor - the rateslider descriptor:
         *   maxRate: the maximum rate on the rateslider, as a number
         *   initialValue: initial value of the rateslider, as a number
         *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
