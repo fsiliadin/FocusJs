@@ -34,8 +34,12 @@
                 }, false);
             });
         },
-        bindEvent: function bindEvent(el, events) {
-
+        bindEvent: function bindEvent(el, event) {
+            focus.eventsArray.push({
+                hash: el.dataset.hash,
+                event: event
+            });
+            el.addEventListener(event.type, event.handler, event.capture);
         },
         getUndelegatedEvents: function getUndelegatedEvents (el) {
             el.addEventListener('click', function() {
