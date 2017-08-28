@@ -1,7 +1,7 @@
     // focus, the root object that all basic component inherit
     // it defines generic methods 
     var focus = {
-        eventsArray: [];
+        eventsArray: [],
         generate : function generate(htmlStr, parentEl, positionInNodeList) {
             var siblings = parentEl.children;
             // if the programmer doesn't specify any position by default the position is the last
