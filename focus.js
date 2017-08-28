@@ -27,11 +27,14 @@
         // this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
         delegateEvent: function delegateEvent(el, events) {
             events.forEach(function(event){
-                document.querySelectorAll('body')[0].addEventListener(event.type, function(e) {
-                    if (e.target.dataset.hash===el+'') {
-                        event.handler(e);
+                focus.bindEvent(document.querySelector('body'), {
+                    type: event.type,
+                    handler: function(e) {
+                        if (e.target.dataset.hash===el+'') {
+                            event.handler(e);
+                        }
                     }
-                }, false);
+                });
             });
         },
         bindEvent: function bindEvent(el, event) {
