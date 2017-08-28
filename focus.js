@@ -180,7 +180,7 @@
                 descriptor.class.indexOf('basic_button') === -1 ? descriptor.class.push('basic_button'): '';
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
-                var hash = self.generateHash();
+                var hash = focus.generateHash();
                 html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
                 res.push({
@@ -215,7 +215,7 @@
             Array.prototype.forEach.call(container, function(item, index){
                 descriptor.class.indexOf('basic_banner') === -1 ? descriptor.class.push('basic_banner'): '';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
+                self.hash = focus.generateHash();
                 html =  '<div><div class = "shadow-top" style = "height:4px"></div><div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+self.hash+'""></div><div class = "shadow-bottom" style = "height:15px"></div>';
 
                 self.__proto__.generate(html, item, positionInNodeList);
@@ -246,13 +246,13 @@
             Array.prototype.forEach.call(container, function(item, index){
                 descriptor.class.indexOf('basic_accordion') === -1 ? descriptor.class.push('basic_accordion'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
+                self.hash = focus.generateHash();
                 html = '<table class = "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"style = "height:'+descriptor.height+'"><tr>';
                 for (var i = 0; i < descriptor.nbCols; i++) {
                     if (i === descriptor.nbCols - 1) {
                         i = 'Last';
                     }
-                    html += '<td class ="accordionItem"><div class="accordionPlaceholder">'+descriptor.placeholderUnactive+'</div><div class= "accordionContent" >'+descriptor.activeContent+'</div></td>';
+                    html += '<td class ="accordionItem" data-hash='+focus.generateHash()+'><div class="accordionPlaceholder" data-hash='+focus.generateHash()+'>'+descriptor.placeholderUnactive+'</div><div class= "accordionContent" data-hash='+focus.generateHash()+'>'+descriptor.activeContent+'</div></td>';
                 }
                 html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
@@ -298,7 +298,7 @@
             Array.prototype.forEach.call(container, function (item, index){
                 descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
                 classes = descriptor.class.join(' ');
-                var hash = self.generateHash();
+                var hash = focus.generateHash();
                 var L = descriptor.itemWidth;
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
                 html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-gridindex="'+index+'">'
@@ -443,7 +443,7 @@
                 console.log(gridItem.content)
                 gridItem.content = gridItem.content.generated[0].element.outerHTML;
             }
-            return '<div class= "gridItem" style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
+            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
         }
         this.generated = this.generate(parentEl, obj);
     }
@@ -464,14 +464,14 @@
             Array.prototype.forEach.call(container, function(item, index){
                 descriptor.class.indexOf('basic_imageTextZone') === -1 ? descriptor.class.push('basic_imageTextZone'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
+                self.hash = focus.generateHash();
                 html = '<table class= "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"><tr>';
                 if(descriptor.imageAfter) {
-                    html += '<td class ="text">'+descriptor.text+'</td>';
-                    html += '<td class ="image" ><img class ="bli" src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+                    html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
+                    html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                 } else {
-                    html += '<td class ="image" ><img class ="bli" src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
-                    html += '<td class ="text" >'+descriptor.text+'</td>';
+                    html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
+                    html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
                 }
                 html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
@@ -517,7 +517,7 @@
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = self.generateHash();
+                self.hash = focus.generateHash();
                 html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'" data-hash="'+self.hash+'">';
                 var generatedEl = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
@@ -721,10 +721,10 @@
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
                 classes = descriptor.class.join(' ');
-                var hash = self.generateHash();
+                var hash = focus.generateHash();
                 html = '<div class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
                 for (var i = 1; i <= descriptor.maxRate; i++) {
-                    html += '<div class="rateItem" data-rate=' + i + '>' + (descriptor.pattern || "&#9733") + '</div>'
+                    html += '<div class="rateItem" data-hash='+focus.generateHash()+'  data-rate=' + i + '>' + (descriptor.pattern || "&#9733") + '</div>'
                 }
                 html += '</div>';
                 var ret = self.__proto__.generate(html, item, positionInNodeList);
