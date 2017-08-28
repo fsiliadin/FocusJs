@@ -255,7 +255,7 @@
         var parentEl = this.checkParent(parentSelector);
         /**
         * Generates grid html and insert it in the proper container in the DOM
-        * @param {NodeList} container - contains element grids will be generated in one grid per element
+        * @param {NodeList} container - contains element grids will be generated in. (one grid per element)
         * @param {Object} descriptor - the grid descriptor
         * @return {Array} an array of grid data:
         *   hash: the hash of the generated grid
