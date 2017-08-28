@@ -24,7 +24,7 @@
             return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
         },
         // this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
-        bindEvent: function bindEvent(el, events) {
+        delegateEvent: function delegateEvent(el, events) {
             events.forEach(function(event){
                 document.querySelectorAll('body')[0].addEventListener(event.type, function(e) {
                     if (e.target.dataset.hash===el+'') {
@@ -33,11 +33,24 @@
                 }, false);
             });
         },
+        bindEvent: function bindEvent(el, events) {
 
+        },
         getUndelegatedEvents: function getUndelegatedEvents (el) {
-            var events = el.keys.filter(function (key) {
-                return key.indexOf('on') === 0 && el[key] !== null;
+            el.addEventListener('click', function() {
+                alert('should')
             });
+            console.log(el.onclick);
+            var events = [];
+            for (var key in el ) {
+                if (key.indexOf('on') === 0) {
+                    events.push({
+                        key: key,
+                        handler: el[key]
+                    });
+                }
+            }
+            console.log('events', events);
         },
         // check if the element containing the element to be created exists
         checkParent: function checkParent(parentSelector) {
@@ -168,7 +181,7 @@
                     container: item
                 });
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(hash, descriptor.events);
+                    self.delegateEvent(hash, descriptor.events);
                 }
             });
             return res;
@@ -199,7 +212,7 @@
 
                 self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(self.hash, descriptor.events);
+                    self.delegateEvent(self.hash, descriptor.events);
                 }
 
             });
@@ -236,7 +249,7 @@
                 html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(self.hash, descriptor.events);
+                    self.delegateEvent(self.hash, descriptor.events);
                 }
             });
         }
@@ -306,7 +319,7 @@
                     container: item
                 });
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(hash, descriptor.events);
+                    self.delegateEvent(hash, descriptor.events);
                 }
             });
             return res;
@@ -455,7 +468,7 @@
                 html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
-                    self.__proto__.bindEvent(self.hash, descriptor.events);
+                    self.__proto__.delegateEvent(self.hash, descriptor.events);
                 }
             });
         }
@@ -500,7 +513,7 @@
                 html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'" data-hash="'+self.hash+'">';
                 var generatedEl = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
-                    self.__proto__.bindEvent(self.hash, descriptor.events);
+                    self.__proto__.delegateEvent(self.hash, descriptor.events);
                 }
                 generatedEl.style.top = (item.tagName === 'BODY' ? document.documentElement.clientHeight : focus.removeUnity(item.style.height)) - 50 + 'px';              
 
@@ -705,7 +718,7 @@
                 html += '</div>';
                 var ret = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
-                    self.bindEvent(hash, descriptor.events);
+                    self.delegateEvent(hash, descriptor.events);
                 }
                 self.fill(descriptor.initialValue, ret.children);
                 if (!descriptor.readOnly) {
@@ -716,6 +729,7 @@
                         rateItem.addEventListener('click', function (e) {
                             self.generated[index].rate = e.target.dataset.rate; 
                         });
+                        focus.getUndelegatedEvents(rateItem);
                     });
                 }
                 
