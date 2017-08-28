@@ -619,24 +619,27 @@
         // on scroll of 
         Array.prototype.forEach.call(parentEl, function(scrollArea) {
             var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
-            scrollArea.addEventListener('scroll', function () {
-                scroller = this.querySelector('.basic_scroller');
-                targets = self.getTargetsAbsolutePos(scrollArea);
-                highest = targets[0];
-                lowest = targets[targets.length - 1];
-                if (this.scrollTop > previousScrollPos.top) {
-                    focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
-                } else if (this.scrollTop < previousScrollPos.top) {
-                    focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+            focus.bindEvent(scrollArea, {
+                type: 'scroll',
+                handler: function () {
+                    scroller = this.querySelector('.basic_scroller');
+                    targets = self.getTargetsAbsolutePos(scrollArea);
+                    highest = targets[0];
+                    lowest = targets[targets.length - 1];
+                    if (this.scrollTop > previousScrollPos.top) {
+                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+                    } else if (this.scrollTop < previousScrollPos.top) {
+                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+                    }
+                    if (this.scrollTop <= highest || this.scrollTop === 0) {
+                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+                    }
+                    if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop >= lowest){
+                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+                    }
+                    scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
+                    previousScrollPos.top = this.scrollTop;
                 }
-                if (this.scrollTop <= highest || this.scrollTop === 0) {
-                    focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
-                }
-                if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop >= lowest){
-                    focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
-                }
-                scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
-                previousScrollPos.top = this.scrollTop;
             });
         });
 
