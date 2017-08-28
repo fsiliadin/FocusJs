@@ -111,5 +111,6 @@ window.onload = function(){
 		}, 0);
 		console.log(n);
 		n.setValue(5, n.generated[3]);
+		console.log('events', focus.eventsArray);
 
 	}

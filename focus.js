@@ -44,22 +44,6 @@
             });
             el.addEventListener(event.type, event.handler, event.capture);
         },
-        getUndelegatedEvents: function getUndelegatedEvents (el) {
-            el.addEventListener('click', function() {
-                alert('should')
-            });
-            console.log(el.onclick);
-            var events = [];
-            for (var key in el ) {
-                if (key.indexOf('on') === 0) {
-                    events.push({
-                        key: key,
-                        handler: el[key]
-                    });
-                }
-            }
-            console.log('events', events);
-        },
         // check if the element containing the element to be created exists
         checkParent: function checkParent(parentSelector) {
             try {
