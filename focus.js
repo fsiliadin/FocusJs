@@ -731,13 +731,18 @@
                 self.fill(descriptor.initialValue, ret.children);
                 if (!descriptor.readOnly) {
                     Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
-                        rateItem.addEventListener('mouseenter', function (e) {
-                            self.fill(e.target.dataset.rate, siblings);
+                        focus.bindEvent(rateItem, {
+                            type: 'mouseenter',
+                            handler: function (e) {
+                                self.fill(e.target.dataset.rate, siblings);
+                            }
                         });
-                        rateItem.addEventListener('click', function (e) {
-                            self.generated[index].rate = e.target.dataset.rate; 
+                        focus.bindEvent(rateItem, {
+                            type: 'click',
+                            handler: function (e) {
+                                self.generated[index].rate = e.target.dataset.rate; 
+                            }
                         });
-                        focus.getUndelegatedEvents(rateItem);
                     });
                 }
                 
