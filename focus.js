@@ -28,23 +28,21 @@
         },
         // this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
         delegateEvent: function delegateEvent(el, events) {
-            // events.forEach(function(event){
-            //     focus.bindEvent(document.querySelector('body'), {
-            //         type: event.type,
-            //         handler: function(e) {
-            //             if (e.target.dataset.hash===el+'') {
-            //                 event.handler(e);
-            //             }
-            //         }
-            //     });
-            // });
             events.forEach(function(event){
-                focus.bindEvent(document.querySelector("[data-hash='"+el+"']"), event);
+                focus.bindEvent(document.querySelector('body'), {
+                    type: event.type,
+                    handler: function(e) {
+                        if (e.target.dataset.hash===el+'') {
+                            event.handler(e);
+                        }
+                    }
+                });
             });
+            // events.forEach(function(event){
+            //     focus.bindEvent(document.querySelector("[data-hash='"+el+"']"), event);
+            // });
         },
         bindEvent: function bindEvent(el, event) {
-            console.log(el);
-            console.log(event);
             focus.eventsArray.push({
                 hash: el.dataset.hash,
                 event: event
@@ -53,12 +51,13 @@
         },
         rebindEvents: function rebindEvents(el) {
             focus.eventsArray.filter(function (event) {
-                return event.hash === el.dataset.hash;
+                return event.hash == el.dataset.hash;
             }).forEach(function(event) {
+                console.log('event', el)
                 el.addEventListener(event.type, event.handler, event.capture);
             });
             if (el.children.length) {
-                el.children.forEach(function(child) {
+                Array.prototype.forEach.call(el.children, function(child) {
                     focus.rebindEvents(child);
                 })
             }
@@ -443,7 +442,6 @@
         */
         this.buildItem = function (gridItem) {
             if(typeof gridItem.content === 'object') {
-                console.log(gridItem.content)
                 gridItem.content = gridItem.content.generated[0].element.outerHTML;
             }
             return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';

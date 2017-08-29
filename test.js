@@ -25,7 +25,7 @@ window.onload = function(){
 			id:"badaboum",
 			itemWidth: '350px',
 			nbItems:6,
-			conternts: [{
+			contents: [{
 		 		content: jst,
 		 		positionInNodeList: 3,
 		 		width: "300px"
@@ -111,6 +111,15 @@ window.onload = function(){
 		}, 0);
 		console.log(n);
 		n.setValue(5, n.generated[3]);
-		console.log('events', focus.eventsArray);
 
+		var grid2 = new Grid ("", {
+			class: ['super', 'style', 'grid'],
+			id:"badabousm",
+			itemWidth: '350px',
+			nbItems:3
+		});
+		console.log('INSERTIONNNNNNNN');
+		grid2.generated[0].gridItems[1].addContent({
+			content: grid
+		});
 	}
