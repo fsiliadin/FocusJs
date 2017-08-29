@@ -11,9 +11,11 @@
                 } else {
                     parentEl.innerHTML += htmlStr;
                 }
+                this.rebindEvents(parentEl.lastChild);
                 return parentEl.lastChild;
             } else {
                 siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
+                this.rebindEvents(parentEl.children[positionInNodeList]);
                 return parentEl.children[positionInNodeList];
             }
         },
@@ -43,6 +45,18 @@
                 event: event
             });
             el.addEventListener(event.type, event.handler, event.capture);
+        },
+        rebindEvents: function rebindEvents(el) {
+            focus.eventsArray.filter(function (event) {
+                return event.hash === el.dataset.hash;
+            }).forEach(function(event) {
+                el.addEventListener(event.type, event.handler, event.capture);
+            });
+            if (el.children.length) {
+                el.children.forEach(function(child) {
+                    focus.rebindEvents(child);
+                })
+            }
         },
         // check if the element containing the element to be created exists
         checkParent: function checkParent(parentSelector) {
