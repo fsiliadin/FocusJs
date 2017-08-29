@@ -51,11 +51,14 @@
         },
         rebindEvents: function rebindEvents(el) {
             focus.eventsArray.filter(function (event) {
-                return event.hash == el.dataset.hash;
+
+                // console.log('el', el.dataset.hash);
+                // console.log('el2', event.hash);
+                return event.hash && (event.hash == el.dataset.hash);
             }).forEach(function(event) {
-                console.log('event', el)
-                el.addEventListener(event.type, event.handler, event.capture);
+                el.addEventListener(event.event.type, event.event.handler);
             });
+            if(el)
             if (el.children.length) {
                 Array.prototype.forEach.call(el.children, function(child) {
                     focus.rebindEvents(child);

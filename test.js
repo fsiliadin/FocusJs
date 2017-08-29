@@ -24,31 +24,31 @@ window.onload = function(){
 			class: ['super', 'style', 'grid'],
 			id:"badaboum",
 			itemWidth: '350px',
-			nbItems:6,
-			contents: [{
-		 		content: jst,
-		 		positionInNodeList: 3,
-		 		width: "300px"
-		 	}, {
-		 		content: 'yaparitaneeeeeeeh',
-		 		width: '200px',
-		 		height:' 400px'
-		 	}, {
-		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
-		 		positionInNodeList:0
-		 	}]
+			nbItems:1
+			// contents: [{
+		 // 		content: 'jst',
+		 // 		positionInNodeList: 3,
+		 // 		width: "300px"
+		 // 	}, {
+		 // 		content: 'yaparitaneeeeeeeh',
+		 // 		width: '200px',
+		 // 		height:' 400px'
+		 // 	}, {
+		 // 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 // 		positionInNodeList:0
+		 // 	}]
 		});
-		grid.addItem({
-			width: '600px',
-			height:'440px',
-			content: jst,
-			positionInNodeList:2,
-			to: grid.generated[0]
-		});
-		 grid.removeItem({
-		 	positionInNodeList:3,
-		 	from: grid.generated[0]
-		 });
+		// grid.addItem({
+		// 	width: '600px',
+		// 	height:'440px',
+		// 	content: 'jst',
+		// 	positionInNodeList:2,
+		// 	to: grid.generated[0]
+		// });
+		//  grid.removeItem({
+		//  	positionInNodeList:3,
+		//  	from: grid.generated[0]
+		//  });
 
 		var myFirstButton = new Button( ".gridItem", {
 					text: "Fresh New Button",
@@ -60,7 +60,7 @@ window.onload = function(){
 						}
 					}]
 				});
-		var secondButton = new Button ( ".gridItem ", {
+		var secondButton = new Button ( "", {
 					text: "Fresh New Button2",
 					class: ["shinny"],
 					events: [{
@@ -70,7 +70,7 @@ window.onload = function(){
 						}
 					}]
 				},1);
-		var txtImg = new ImageTextZone (".gridItem", {
+		var txtImg = new ImageTextZone ("", {
 			// id: 'tchula',
 			class: ['dope'],
 			imageAfter: true,
@@ -82,23 +82,23 @@ window.onload = function(){
 
 
 		});
-		grid.populate({
-		 	grid: grid.generated[0],
-		 	contents: [{
-		 		content: jst,
-		 		positionInNodeList: 3
-		 	}, {
-		 		content: 'yaparitaneeeeeeeh'
-		 	}, {
-		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
-		 		positionInNodeList:0
-		 	}]
-		 });
+		// grid.populate({
+		//  	grid: grid.generated[0],
+		//  	contents: [{
+		//  		content: 'jst',
+		//  		positionInNodeList: 3
+		//  	}, {
+		//  		content: 'yaparitaneeeeeeeh'
+		//  	}, {
+		//  		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		//  		positionInNodeList:0
+		//  	}]
+		//  });
 
-		grid.generated[0].gridItems[2].modify({
-			width: "600px",
-			height: '600px'
-		});
+		// grid.generated[0].gridItems[2].modify({
+		// 	width: "600px",
+		// 	height: '600px'
+		// });
 
 		var scrolla = new Scroller (".gridItem, body", {
 			class: ['thci'],
