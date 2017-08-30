@@ -713,7 +713,7 @@
             type: 'mouseout',
             handler: 
             function (e) {
-                self.fill(self.generated[e.target.dataset.index].rate, e.target.children);
+                self.fill(self.generated()[e.target.dataset.index].rate, e.target.children);
             }
         });
 
@@ -764,7 +764,7 @@
                         focus.bindEvent(rateItem, {
                             type: 'click',
                             handler: function (e) {
-                                self.generated[index].rate = e.target.dataset.rate; 
+                                self.generated()[index].rate = e.target.dataset.rate; 
                             }
                         });
                     });
@@ -791,7 +791,7 @@
                 this.fill(rate, rateSlider.element.children);
             } else {
                 var self = this;
-                this.generated.forEach(function (rateSlider) {
+                this.generated().forEach(function (rateSlider) {
                     self.setValue(rate, rateSlider);
                 })
             }
@@ -804,7 +804,18 @@
                 siblings[i - 1].style.color = "rgb(190, 190, 190)"
             }
         }
-        this.generated = this.generate(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
     Button.prototype = focus;
