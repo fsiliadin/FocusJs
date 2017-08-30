@@ -8,6 +8,19 @@
             focus.elDataArray.push(elData);
             return res;
         },
+        updateElData: function (el) {
+            var dataToUpdate = focus.elDataArray.filter(function (elData) {
+                return elData.hash == el.dataset.hash;
+            })[0];
+            if(dataToUpdate) {
+                dataToUpdate.element = el;
+                dataToUpdate.container = el.parentElement;
+                if('gridItems' in dataToUpdate) {
+                    dataToUpdate.gridItems = el.children;
+                }
+            }
+            
+        },
         generate : function generate(htmlStr, parentEl, positionInNodeList) {
             var siblings = parentEl.children;
             // if the programmer doesn't specify any position by default the position is the last
@@ -56,6 +69,7 @@
             el.addEventListener(event.type, event.handler, event.capture);
         },
         rebindEvents: function rebindEvents(el) {
+            focus.updateElData(el);
             focus.eventsArray.filter(function (event) {
                 return event.hash && (event.hash == el.dataset.hash);
             }).forEach(function(event) {
