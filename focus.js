@@ -363,10 +363,14 @@
         this.addGridItemMethods = function (gridItem) {
             var self = this;
             gridItem.addContent = function(obj) {
+                var content;
                 if(typeof obj.content === 'object') {
-                    obj.content = obj.content.generated[0].element.outerHTML;
+                    content = obj.content.generated[0].element.outerHTML;
+                    obj.content.generated[0].element.remove();
+                } else {
+                    content = obj.content;
                 }
-                self.__proto__.generate(obj.content, this, obj.positionInNodeList);
+                self.__proto__.generate(content, this, obj.positionInNodeList);
             };
             gridItem.clearContent = function() {
                 this.innerHTML = '';
@@ -461,10 +465,14 @@
         * @return {String} - the item to be generated html
         */
         this.buildItem = function (gridItem) {
+            var content;
             if(typeof gridItem.content === 'object') {
-                gridItem.content = gridItem.content.generated[0].element.outerHTML;
+                content = gridItem.content.generated[0].element.outerHTML;
+                // gridItem.content.generated[0].element.remove();
+            } else {
+                content = gridItem.content;
             }
-            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(gridItem.content||"")+'</div>';
+            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
         }
         this.generated = this.generate(parentEl, obj);
     }
