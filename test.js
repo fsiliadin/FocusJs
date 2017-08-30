@@ -43,11 +43,11 @@ window.onload = function(){
 		// 	height:'440px',
 		// 	content: 'jst',
 		// 	positionInNodeList:2,
-		// 	to: grid.generated[0]
+		// 	to: grid.generated()[0]
 		// });
 		//  grid.removeItem({
 		//  	positionInNodeList:3,
-		//  	from: grid.generated[0]
+		//  	from: grid.generated()[0]
 		//  });
 
 		var myFirstButton = new Button( ".gridItem", {
@@ -83,7 +83,7 @@ window.onload = function(){
 
 		});
 		// grid.populate({
-		//  	grid: grid.generated[0],
+		//  	grid: grid.generated()[0],
 		//  	contents: [{
 		//  		content: 'jst',
 		//  		positionInNodeList: 3
@@ -95,7 +95,7 @@ window.onload = function(){
 		//  	}]
 		//  });
 
-		// grid.generated[0].gridItems[2].modify({
+		// grid.generated()[0].gridItems[2].modify({
 		// 	width: "600px",
 		// 	height: '600px'
 		// });
@@ -110,15 +110,16 @@ window.onload = function(){
 			readOnly: false
 		}, 0);
 		console.log(n);
-		n.setValue(5, n.generated[3]);
+		n.setValue(5, n.generated()[3]);
 
+		console.log('GRID', grid);
 		var grid2 = new Grid ("", {
 			class: ['super', 'style', 'grid'],
 			id:"badabousm",
 			itemWidth: '350px',
 			nbItems:3
 		});
-		grid2.generated[0].gridItems[1].addContent({
+		grid2.generated()[0].gridItems[1].addContent({
 			content: grid
 		});
 	}

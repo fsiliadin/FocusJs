@@ -296,6 +296,7 @@
     */
     function Grid(parentSelector, obj, positionInNodeList){
         var parentEl = this.checkParent(parentSelector);
+        var self = this;
         /**
         * Generates grid html and insert it in the proper container in the DOM
         * @param {NodeList} container - contains element grids will be generated in. (one grid per element)
@@ -316,7 +317,6 @@
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
-            var self = this;
             Array.prototype.forEach.call(container, function (item, index){
                 descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
                 classes = descriptor.class.join(' ');
@@ -342,12 +342,13 @@
                 Array.prototype.forEach.call(ret.children, function (child){
                     self.addGridItemMethods(child);
                 });
-                res.push({
+                var elData = {
                     hash: hash,
                     element: ret,
-                    gridItems: ret.children,
-                    container: item
-                });
+                    container: item,
+                    gridItems: ret.children
+                };
+                res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(hash, descriptor.events);
                 }
@@ -365,8 +366,8 @@
             gridItem.addContent = function(obj) {
                 var content;
                 if(typeof obj.content === 'object') {
-                    content = obj.content.generated[0].element.outerHTML;
-                    obj.content.generated[0].element.remove();
+                    content = obj.content.generated()[0].element.outerHTML;
+                    obj.content.generated()[0].element.remove();
                 } else {
                     content = obj.content;
                 }
@@ -467,14 +468,25 @@
         this.buildItem = function (gridItem) {
             var content;
             if(typeof gridItem.content === 'object') {
-                content = gridItem.content.generated[0].element.outerHTML;
-                // gridItem.content.generated[0].element.remove();
+                content = gridItem.content.generated()[0].element.outerHTML;
+                gridItem.content.generated()[0].element.remove();
             } else {
                 content = gridItem.content;
             }
             return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
         }
-        this.generated = this.generate(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
 
