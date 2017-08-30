@@ -205,11 +205,12 @@
                 var hash = focus.generateHash();
                 html = '<div id="'+descriptor.id+'" class ="'+classes+'" data-hash="'+hash+'">'+descriptor.text+'</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
-                res.push({
+                var elData = {
                     hash: hash,
                     element: ret,
                     container: item
-                });
+                };
+                res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(hash, descriptor.events);
                 }
@@ -218,7 +219,18 @@
         };
 
         var parentEl = this.checkParent(parentSelector);
-        this.generated = this.generate(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
     function Banner(parentSelector, obj, positionInNodeList){
