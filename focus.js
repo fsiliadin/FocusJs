@@ -754,11 +754,11 @@
                 }
                 self.fill(descriptor.initialValue, ret.children);
                 if (!descriptor.readOnly) {
-                    Array.prototype.forEach.call(ret.children, function (rateItem, id, siblings) {
+                    Array.prototype.forEach.call(ret.children, function (rateItem, id) {
                         focus.bindEvent(rateItem, {
                             type: 'mouseenter',
                             handler: function (e) {
-                                self.fill(e.target.dataset.rate, siblings);
+                                self.fill(e.target.dataset.rate, self.generated()[index].element.children);
                             }
                         });
                         focus.bindEvent(rateItem, {
