@@ -118,7 +118,6 @@ window.onload = function(){
 			itemWidth: '350px',
 			nbItems:3
 		});
-		console.log('INSERTIONNNNNNNN');
 		grid2.generated[0].gridItems[1].addContent({
 			content: grid
 		});

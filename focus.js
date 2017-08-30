@@ -2,6 +2,12 @@
     // it defines generic methods 
     var focus = {
         eventsArray: [],
+        elDataArray: [],
+        recordElData: function (elData, res) {
+            res.push(elData);
+            focus.elDataArray.push(elData);
+            return res;
+        },
         generate : function generate(htmlStr, parentEl, positionInNodeList) {
             var siblings = parentEl.children;
             // if the programmer doesn't specify any position by default the position is the last
@@ -51,14 +57,11 @@
         },
         rebindEvents: function rebindEvents(el) {
             focus.eventsArray.filter(function (event) {
-
-                // console.log('el', el.dataset.hash);
-                // console.log('el2', event.hash);
                 return event.hash && (event.hash == el.dataset.hash);
             }).forEach(function(event) {
+
                 el.addEventListener(event.event.type, event.event.handler);
             });
-            if(el)
             if (el.children.length) {
                 Array.prototype.forEach.call(el.children, function(child) {
                     focus.rebindEvents(child);
@@ -752,13 +755,13 @@
                         });
                     });
                 }
-                
-                res.push({
+                var elData = {
                     hash: hash,
                     element: ret,
                     container: item,
                     rate: descriptor.initialValue
-                });
+                };
+                res = focus.recordElData(elData, res);
             });
             return res;
         }
