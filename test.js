@@ -24,19 +24,19 @@ window.onload = function(){
 			class: ['super', 'style', 'grid'],
 			id:"badaboum",
 			itemWidth: '350px',
-			nbItems:1
-			// contents: [{
-		 // 		content: 'jst',
-		 // 		positionInNodeList: 3,
-		 // 		width: "300px"
-		 // 	}, {
-		 // 		content: 'yaparitaneeeeeeeh',
-		 // 		width: '200px',
-		 // 		height:' 400px'
-		 // 	}, {
-		 // 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
-		 // 		positionInNodeList:0
-		 // 	}]
+			nbItems:1,
+			contents: [{
+		 		content: 'jst',
+		 		positionInNodeList: 3,
+		 		width: "300px"
+		 	}, {
+		 		content: 'yaparitaneeeeeeeh',
+		 		width: '200px',
+		 		height:' 400px'
+		 	}, {
+		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 		positionInNodeList:0
+		 	}]
 		});
 		// grid.addItem({
 		// 	width: '600px',
@@ -70,7 +70,7 @@ window.onload = function(){
 						}
 					}]
 				},1);
-		var txtImg = new ImageTextZone ("", {
+		var txtImg = new ImageTextZone (".gridItem", {
 			// id: 'tchula',
 			class: ['dope'],
 			imageAfter: true,
@@ -100,17 +100,14 @@ window.onload = function(){
 		// 	height: '600px'
 		// });
 
-		var scrolla = new Scroller (".gridItem, body", {
-			class: ['thci'],
-			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
-		});
+		
 		var n = new RateSlider('.gridItem', {
 			maxRate: 5,
 			initialValue: 02,
 			readOnly: false
 		}, 0);
 		console.log(n);
-		n.setValue(5, n.generated()[3]);
+		n.setValue(5, n.generated()[2]);
 
 		console.log('GRID', grid);
 		var grid2 = new Grid ("", {
@@ -118,6 +115,10 @@ window.onload = function(){
 			id:"badabousm",
 			itemWidth: '350px',
 			nbItems:3
+		});
+		var scrolla = new Scroller (".gridItem, body", {
+			class: ['thci'],
+			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
 		});
 		grid2.generated()[0].gridItems[1].addContent({
 			content: grid
