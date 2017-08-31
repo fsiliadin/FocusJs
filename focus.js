@@ -335,7 +335,7 @@
                 var hash = focus.generateHash();
                 var L = descriptor.itemWidth;
                 var l = descriptor.itemHeight ? descriptor.itemHeight : L;
-                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-gridindex="'+index+'">'
+                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-index="'+index+'">'
                 if (!('contents' in descriptor)) {
                     for (var i = 0; i < descriptor.nbItems; i++) {
                         html += self.buildItem({
@@ -566,19 +566,27 @@
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
+            var res = [], ret;
             Array.prototype.forEach.call(container, function (item, index) {
                 descriptor.class.indexOf('basic_scroller') === -1 ? descriptor.class.push('basic_scroller'):'';
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = focus.generateHash();
-                html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-area='+index+' class="'+classes+'" data-hash="'+self.hash+'">';
-                var generatedEl = self.__proto__.generate(html, item, positionInNodeList);
+                var hash = focus.generateHash();
+                html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-index='+index+' class="'+classes+'" data-hash="'+hash+'">';
+                ret = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
-                    self.__proto__.delegateEvent(self.hash, descriptor.events);
+                    self.__proto__.delegateEvent(hash, descriptor.events);
                 }
-                generatedEl.style.top = (item.tagName === 'BODY' ? document.documentElement.clientHeight : focus.removeUnity(item.style.height)) - 50 + 'px';              
-
+                ret.style.top = (item.tagName === 'BODY' ? document.documentElement.clientHeight : focus.removeUnity(item.style.height)) - 50 + 'px';              
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    targets: descriptor.targets
+                };
+                res = focus.recordElData(elData, res);
             });
+            return res;
         };
 
         /**
@@ -589,11 +597,13 @@
         * @return {Number} targetsEls.pos - the position of the target relative to scrollArea scrollTop.
         * @return {DOM Element} targetsEls.el - the DOM Element corresponding to the target.
         */
-        this.getTargets = function getTargets (scrollArea) {
+        this.getTargets = function getTargets (scrollerId) {
                 var targetsInScrollArea, targetEls= [];
-                obj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
+                var scrollerObj = self.generated()[scrollerId];
+                var scrollArea = scrollerObj.container;
+                scrollerObj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
                     // we get the matching target elements in the scroll area 
-                    targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
+                    targetsInScrollArea = scrollArea.querySelectorAll(targetSelector);
                     // then we put all targets together in the same array
                     targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
                 });
@@ -612,12 +622,13 @@
         * @param {DOM Element} scrollArea.
         * @return {Array} a sorted array of the absolute position top of all targets in scrollArea.
         */
-        this.getTargetsAbsolutePos =  function getTargetsAbsolutePos (scrollArea) {
+        this.getTargetsAbsolutePos =  function getTargetsAbsolutePos (scrollerObj) {
             var targetsInScrollArea, targetEls= [];
+            var scrollArea = scrollerObj.container;
             // for each target selector in the obj.targets array 
-            obj.targets.forEach(function(targetSelector){   
+            scrollerObj.targets.forEach(function(targetSelector){   
                 // we get the matching target elements in the scroll area 
-                targetsInScrollArea = scrollArea.querySelectorAll(parentSelector+' '+targetSelector);
+                targetsInScrollArea = scrollArea.querySelectorAll(targetSelector);
                 // then we put all targets together in the same array
                 targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
             });
@@ -642,9 +653,9 @@
                 var distanceToNextTarget = 0;
                 // Here we determine the targets to go on click, according the targets array the user provides as selectors in obj.targets
                 // we define the area to browse according the scroller that is clicked
-                var scrollArea = parentEl[e.target.dataset.area];
+                var scrollArea = e.target.parentElement;
                 // then we get the relative position of the targets
-                var targetRelativePosition = self.getTargets(scrollArea).filter(function(target){
+                var targetRelativePosition = self.getTargets(e.target.dataset.index).filter(function(target){
                     // whether we are moving down or moving up we look to the target above or under the current scroll position
                     if(focus.hasClass(e.target, 'goingUp')){
                         return target.pos < 0; 
@@ -672,40 +683,15 @@
             }
         });
 
-        // on scroll of 
-        Array.prototype.forEach.call(parentEl, function(scrollArea) {
-            var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
-            focus.bindEvent(scrollArea, {
-                type: 'scroll',
-                handler: function () {
-                    scroller = this.querySelector('.basic_scroller');
-                    targets = self.getTargetsAbsolutePos(scrollArea);
-                    highest = targets[0];
-                    lowest = targets[targets.length - 1];
-                    if (this.scrollTop > previousScrollPos.top) {
-                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
-                    } else if (this.scrollTop < previousScrollPos.top) {
-                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
-                    }
-                    if (this.scrollTop <= highest || this.scrollTop === 0) {
-                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
-                    }
-                    if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop >= lowest){
-                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
-                    }
-                    scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
-                    previousScrollPos.top = this.scrollTop;
-                }
-            });
-        });
+       
 
         // deal with left one day
         var previousScrollPos= {top:0} 
         // Scrolling window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
-            var scrollArea = document.querySelector('body');
-            var targets = self.getTargetsAbsolutePos(scrollArea);
+            var scrollerObj = self.generated()[scroller.dataset.index];
+            var targets = self.getTargetsAbsolutePos(scrollerObj);
             var highest = targets[0];
             var lowest = targets[targets.length - 1];
 
@@ -724,7 +710,45 @@
             previousScrollPos.top = this.scrollY;
         }        
 
-        this.generate(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
+         // on scroll of 
+        Array.prototype.forEach.call(self.generated(), function(scrollObj) {
+            var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
+            var scrollArea = scrollObj.container;
+            focus.bindEvent(scrollArea, {
+                type: 'scroll',
+                handler: function () {
+                    scroller = scrollObj.element;
+                    targets = self.getTargetsAbsolutePos(scrollObj);
+                    highest = targets[0];
+                    lowest = targets[targets.length - 1];
+                    if (this.scrollTop > previousScrollPos.top) {
+                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+                    } else if (this.scrollTop < previousScrollPos.top) {
+                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+                    }
+                    if (this.scrollTop <= highest || this.scrollTop === 0) {
+                        focus.hasClass(scroller, 'goingDown') ? '' : focus.removeClass(scroller, 'goingUp').addClass(scroller, 'goingDown'); 
+                    }
+                    if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop >= lowest){
+                        focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
+                    }
+                    scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
+                    previousScrollPos.top = this.scrollTop;
+                }
+            });
+        });
     }
 
     /**
