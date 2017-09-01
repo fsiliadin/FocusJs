@@ -136,50 +136,8 @@
                 return pos;
             }
             return getPosition(el);
-        },
-
-        smoothScrollBy:  function smoothScrollBy (area, scrollDistances) {
-            var animation, previousScrollPos = {
-                top: area.scrollTop,
-                left: area.scrollLeft
-            };
-            var finalPositions = {
-                top: area.scrollTop + scrollDistances.top,
-                left: area.scrollLeft + scrollDistances.left
-            }
-            var increment= {
-                top: 0,
-                left: 0
-            };
-            var cumul={
-                top:0,
-                left:0
-            };
-            animation = setInterval(function(){
-                // manage to scroll
-                increment.top = (scrollDistances.top - cumul.top)*0.3 ;                
-                increment.left = (scrollDistances.left - area.scrollLeft)*0.3 ;
-
-                area.scrollTop += Math.abs(increment.top) < 1 ? Math.abs(increment.top)/increment.top  : increment.top;
-                area.scrollLeft += Math.abs(increment.left) < 1 ? Math.abs(increment.left)/increment.left  : increment.left;
-                cumul.top += increment.top;
-                cumul.left += increment.left;
-                // if we reach the target or if we can't reach it because of the length of the page
-                // we stop scrolling
-                if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) 
-                    || (scrollDistances.top <= 0 && area.scrollTop <= finalPositions.top)) 
-                    && ((scrollDistances.left >= 0 && area.scrollLeft >= finalPositions.left)
-                    || (scrollDistances.left <= 0 && area.scrollLeft <= finalPositions.left))
-                    || (scrollDistances.top === 0 && previousScrollPos.left === area.scrollLeft
-                    || scrollDistances.left === 0 && previousScrollPos.top === area.scrollTop
-                    || scrollDistances.top !== 0 && scrollDistances.left !== 0
-                    && previousScrollPos.left === area.scrollLeft && previousScrollPos.top === area.scrollTop)) {
-                    clearInterval(animation);
-                }
-                previousScrollPos.top = area.scrollTop;
-                previousScrollPos.left = area.scrollLeft;
-            },100)
         }
+
     } //focus
 
     function Button(parentSelector, obj, positionInNodeList){
@@ -601,7 +559,48 @@
             });
             return res;
         };
+        this.smoothScrollBy = function smoothScrollBy (area, scrollDistances) {
+            var animation, previousScrollPos = {
+                top: area.scrollTop,
+                left: area.scrollLeft
+            };
+            var finalPositions = {
+                top: area.scrollTop + scrollDistances.top,
+                left: area.scrollLeft + scrollDistances.left
+            }
+            var increment= {
+                top: 0,
+                left: 0
+            };
+            var cumul={
+                top:0,
+                left:0
+            };
+            animation = setInterval(function(){
+                // manage to scroll
+                increment.top = (scrollDistances.top - cumul.top)*0.3 ;                
+                increment.left = (scrollDistances.left - area.scrollLeft)*0.3 ;
 
+                area.scrollTop += Math.abs(increment.top) < 1 ? Math.abs(increment.top)/increment.top  : increment.top;
+                area.scrollLeft += Math.abs(increment.left) < 1 ? Math.abs(increment.left)/increment.left  : increment.left;
+                cumul.top += increment.top;
+                cumul.left += increment.left;
+                // if we reach the target or if we can't reach it because of the length of the page
+                // we stop scrolling
+                if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) 
+                    || (scrollDistances.top <= 0 && area.scrollTop <= finalPositions.top)) 
+                    && ((scrollDistances.left >= 0 && area.scrollLeft >= finalPositions.left)
+                    || (scrollDistances.left <= 0 && area.scrollLeft <= finalPositions.left))
+                    || (scrollDistances.top === 0 && previousScrollPos.left === area.scrollLeft
+                    || scrollDistances.left === 0 && previousScrollPos.top === area.scrollTop
+                    || scrollDistances.top !== 0 && scrollDistances.left !== 0
+                    && previousScrollPos.left === area.scrollLeft && previousScrollPos.top === area.scrollTop)) {
+                    clearInterval(animation);
+                }
+                previousScrollPos.top = area.scrollTop;
+                previousScrollPos.left = area.scrollLeft;
+            },100)
+        }
         /**
         * Gets the DOM elements corresponding to the targets in scrollArea and calculate their top position
         * relative to the scrollArea scrollTop.
@@ -678,7 +677,7 @@
                     distanceToNextTarget = targetRelativePosition[0];
                 }
                 // scroll the scrollArea
-                focus.smoothScrollBy(scrollArea, {
+                self.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
                     left: 0
                 });
