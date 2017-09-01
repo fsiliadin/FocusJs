@@ -582,7 +582,20 @@
                     hash: hash,
                     element: ret,
                     container: item,
-                    targets: descriptor.targets
+                    targets: descriptor.targets.slice(),
+                    addTarget: function (selector) {
+                        console.log(this);
+                        if(this.targets.indexOf(selector) === -1) {
+                            this.targets.push(selector);
+                        }
+                    },
+                    removeTarget: function (selector) {
+                        console.log(this);
+                        var index= this.targets.indexOf(selector);
+                        if (index !== -1) {
+                            this.targets.splice(index, 1);                            
+                        }
+                    }
                 };
                 res = focus.recordElData(elData, res);
             });
@@ -617,6 +630,19 @@
                 });
         };
 
+        this.addTarget = function addTarget (selector) {
+            console.log(yup);
+            this.generated().forEach(function (scrollerObj) {
+                scrollerObj.addTarget(selector);
+            });
+        };
+
+        this.removeTarget = function removeTarget (selector) {
+            console.log(yup);
+            this.generated().forEach(function (scrollerObj) {
+                scrollerObj.removeTarget(selector);
+            })
+        };
         /**
         * Calculates the absolute top position of each target in the scrollArea. 
         * @param {DOM Element} scrollArea.
