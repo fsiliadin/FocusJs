@@ -758,7 +758,6 @@
     * @param {Object} obj - the slider descriptor
     * @param {Number} positionInNodeList - the position of the slider between its siblings
     */
-
     function RateSlider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         var self = this;
@@ -775,7 +774,7 @@
 
         /**
         * Generates rateslider html and insert it in the proper container in the DOM
-        * @param {NodeList} container - contains element rateslider will be generated in, one rateslider per element
+        * @param {NodeList} container - contains element(s) rateslider will be generated in, one rateslider per element
         * @param {Object} descriptor - the rateslider descriptor:
         *   maxRate: the maximum rate on the rateslider, as a number
         *   initialValue: initial value of the rateslider, as a number
@@ -835,10 +834,11 @@
             });
             return res;
         }
+
         /**
         * Set the value of the specified rateslider
         * @param {Number} rate - the value to set
-        * @param {Object} rateSlider - a rateSlider data object as it is returned in this.generated Array
+        * @param {Object} rateSlider - a rateSlider data object as it is returned by this.generated()
         *                              if there is no rateSlider specified every element of this.generated will be set
         */
         this.setValue =  function (rate, rateSlider) {
@@ -852,6 +852,12 @@
                 })
             }
         }
+
+        /**
+        *   Colores the rateSlider according its rate
+        *   @param {Number} rate - the rate of the rateSlider
+        *   @param {NodeList} siblings - the rateSlider's rateItems
+        */
         this.fill = function (rate, siblings) {
             for (var i=1; i<= rate; i++) {
                 siblings[i - 1].style.color = obj.activeColor || "rgb(255, 221, 153)";
@@ -860,15 +866,25 @@
                 siblings[i - 1].style.color = "rgb(190, 190, 190)"
             }
         }
+
         var generated = this.generate(parentEl, obj);
+
+        /**
+        *   Gets the widget data up to date
+        */
         this.generated = function () {
             var toReturn = [];
+            /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
+                since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
+                elDataArray which elements are kept up to date on every widget modification in the DOM 
+            */
             generated.forEach(function(generatedEl){
+                // searches the generated widget referential array and returns the one corresponding to the specified hash
                 toReturn.push(focus.elDataArray.filter(function(elData){
                     return elData.hash == generatedEl.hash
                 })[0])
             });
-            //generatedEl is just for debug, don't base anything on it
+            // /!\generatedEl is just for debug, don't base anything on it /!\
             self.generatedEl = toReturn;
             return toReturn;
         };
