@@ -201,13 +201,18 @@
         var parentEl = this.checkParent(parentSelector);
         var generated = this.generate(parentEl, obj);
         this.generated = function () {
+            /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
+                since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
+                elDataArray which elements are kept up to date on every widget modification in the DOM 
+            */
             var toReturn = [];
             generated.forEach(function(generatedEl){
+                // searches the generated widget referential array and returns the one corresponding to the specified hash
                 toReturn.push(focus.elDataArray.filter(function(elData){
                     return elData.hash == generatedEl.hash
                 })[0])
             });
-            //generatedEl is just for debug, don't base anything on it
+            // /!\generatedEl is just for debug, don't base anything on it /!\
             self.generatedEl = toReturn;
             return toReturn;
         };
