@@ -140,8 +140,24 @@
 
     } //focus
 
+    /**
+    * Generates one or several Button(s).
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the button(s)
+    * @param {Object} obj - the Button descriptor
+    * @param {Number} positionInNodeList - the position of the button between its siblings
+    */
     function Button(parentSelector, obj, positionInNodeList){
-        // function that creates the html of the button
+        /**
+        * Generates button html and inserts it in the proper container in the DOM
+        * @param {NodeList} container - contains element buttons will be generated in. (one button per element)
+        * @param {Object} descriptor - the button descriptor
+        * @return {Array} an array of button data:
+        *   hash: the hash of the generated button
+        *   element: the button element as it is in the DOM
+        *   text: the text of the button   
+        *   container: the parent element of each generated button
+        */
         this.generate = function (container, descriptor) {
             var html= '';
             var classes= '';
@@ -257,207 +273,7 @@
         this.generate(parentEl, obj);
     }
 
-    /**
-    * Generates a Grid
-    * @constructor
-    * @param {String} parentSelector - the selector that will determine the container(s) of the grid(s)
-    * @param {Object} obj - the grid descriptor
-    * @param {Number} positionInNodeList - the position of the grid between its siblings
-    */
-    function Grid(parentSelector, obj, positionInNodeList){
-        var parentEl = this.checkParent(parentSelector);
-        var self = this;
-        /**
-        * Generates grid html and insert it in the proper container in the DOM
-        * @param {NodeList} container - contains element grids will be generated in. (one grid per element)
-        * @param {Object} descriptor - the grid descriptor
-        * @return {Array} an array of grid data:
-        *   hash: the hash of the generated grid
-        *   element: the grid element as it is in the DOM
-        *   gridItems: a NodeList of the grid items   
-        *   container: the parent element of each generated grid
-        */
-        this.generate = function (container, descriptor) {
-            var html = '';
-            var classes  = '';
-            var res = [], ret;
-            if (typeof descriptor.id !== 'undefined') {
-                container = [container[0]];
-            }
-            if (!(descriptor.class instanceof Array)) {
-                descriptor.class = []
-            }
-            Array.prototype.forEach.call(container, function (item, index){
-                descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
-                classes = descriptor.class.join(' ');
-                var hash = focus.generateHash();
-                var L = descriptor.itemWidth;
-                var l = descriptor.itemHeight ? descriptor.itemHeight : L;
-                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-index="'+index+'">'
-                if (!('contents' in descriptor)) {
-                    for (var i = 0; i < descriptor.nbItems; i++) {
-                        html += self.buildItem({
-                            width: descriptor.itemWidth, 
-                            height: descriptor.itemHeight
-                        });
-                    }
-                } else {
-                    descriptor.contents.forEach(function (content) {
-                        html += self.buildItem(content);
-                    })
-                }
-                
-                html += '</div>';
-                ret = self.__proto__.generate(html, item, positionInNodeList);
-                Array.prototype.forEach.call(ret.children, function (child){
-                    self.addGridItemMethods(child);
-                });
-                var elData = {
-                    hash: hash,
-                    element: ret,
-                    container: item,
-                    gridItems: ret.children
-                };
-                res = focus.recordElData(elData, res);
-                if(typeof descriptor.events !== 'undefined') {
-                    self.delegateEvent(hash, descriptor.events);
-                }
-            });
-            return res;
-        }
-
-        /**
-        * Attach methods to grid items
-        * @param {DOM Element} - the grid item element
-        *
-        */
-        this.addGridItemMethods = function (gridItem) {
-            var self = this;
-            gridItem.addContent = function(obj) {
-                var content;
-                if(typeof obj.content === 'object') {
-                    content = obj.content.generated()[0].element.outerHTML;
-                    obj.content.generated()[0].element.remove();
-                } else {
-                    content = obj.content;
-                }
-                self.__proto__.generate(content, this, obj.positionInNodeList);
-            };
-            gridItem.clearContent = function() {
-                this.innerHTML = '';
-            };
-            gridItem.modify = function(dimensions) {
-                this.style.height = dimensions.height;
-                this.style.width =  dimensions.width;
-            };
-        }
-        /**
-        * Add specified item to the grid
-        * @param {Object} - params 
-        *   to: the grid to add the item to, since the Grid constructor generates a grid per parent, there could be several grid generated.
-        *       Therefore we should specify the one we want to add the item to,
-        *       otherwise the item will be added to every generated grid
-        *
-        *   positionInNodeList: the position of the item withing the other items in the grid
-        */
-        this.addItem = function (params) {
-            var itemHtml = this.buildItem(params);
-            var self = this;         
-            if (params.to) {
-                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
-            } else {
-               this.generated.forEach(function (grid) {
-                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
-               });
-            }
-        }
-
-        /**
-        * populate a grid with an array of contents
-        * @param {Object} - params
-        *   grid:   the grid to populate, since the Grid constructor generates a grid per parent, there could be several grid generated.
-        *           Therefore we should specify the one we want to populate,
-        *           otherwise every generated grid will be populated
-        *   contents: an array of content, each content is an object with a property 'content' that can be passed as html string or as any focus-generated element
-        *             while the 'positionInNodeList' poperty defines the position of the content within the item children
-        */
-        this.populate = function (params) {
-            if (params.grid) {
-                try {
-                    Array.prototype.forEach.call(params.grid.gridItems, function (gridItem, index) {
-                        if (index === params.contents.length) {
-                            throw ''
-                        } 
-                        gridItem.addContent(params.contents[index]);
-                    });
-                } catch(e){}
-                
-            } else {
-                this.generated.forEach(function (grid) {
-                    try {
-                        Array.prototype.forEach.call(grid.gridItems, function (gridItem, index) {
-                            if (index === params.contents.length) {
-                                throw ''
-                            } 
-                            gridItem.addContent(params.contents[index]);
-                        });
-                    } catch(e){} 
-                });
-            }
-        }
-        /**
-        * Remove specified item from the grid
-        * @param {Object} - params 
-        *   from: the grid to remove the item from, since the Grid constructor generates a grid per parent, there could be several grid generated.
-        *       Therefore we should specify the one we want to remove the item from,
-        *       otherwise the item will be removed from every generated grid
-        *
-        *   positionInNodeList: the position of the item to remove withing the other items in the grid
-        */
-        this.removeItem = function (params) {
-            var toRemove;
-            var self = this;
-            if (params.from) {
-                this.remove(params.from.element, params.positionInNodeList);
-            } else {
-                this.generated.forEach(function(grid) {
-                    self.remove(grid.element, params.positionInNodeList);
-                });
-            }
-        }
-        /**
-        * build the html of a grid item
-        * @param {Object} - params 
-        *   width: the width of the item (passed as css value), if not specified the grid item will wrap its content
-        *   height: the height of the item (passed as css value), if not specified whereas width is specified the height will be equal to the width
-        *           otherwise the grid item will wrap its content
-        *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
-        *
-        * @return {String} - the item to be generated html
-        */
-        this.buildItem = function (gridItem) {
-            var content;
-            if(typeof gridItem.content === 'object') {
-                content = gridItem.content.generated()[0].element.outerHTML;
-                gridItem.content.generated()[0].element.remove();
-            } else {
-                content = gridItem.content;
-            }
-            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
-        }
-        var generated = this.generate(parentEl, obj);
-        this.generated = function () {
-            var toReturn = [];
-            generated.forEach(function(generatedEl){
-                toReturn.push(focus.elDataArray.filter(function(elData){
-                    return elData.hash == generatedEl.hash
-                })[0])
-            });
-            //generatedEl is just for debug, don't base anything on it
-            self.generatedEl = toReturn;
-            return toReturn;
-        };
-    }
+  
 
 
     function ImageTextZone(parentSelector, obj, positionInNodeList){
@@ -514,7 +330,7 @@
     }
 
     /**
-    * Generates one or many Scroller(s). A scroller is a widget that scrolles to specified targets on click
+    * Generates one or several Scroller(s). A scroller is a widget that scrolles to specified targets on click
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the scroller(s)
     * @param {Object} obj - the scroller descriptor
@@ -794,7 +610,7 @@
     }
 
     /**
-    * Generates one or many RateSliders
+    * Generates one or several RateSliders
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the slider(s)
     * @param {Object} obj - the slider descriptor
@@ -932,6 +748,217 @@
                 })[0])
             });
             // /!\generatedEl is just for debug, don't base anything on it /!\
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
+    }
+
+    /**
+    * Generates one or several Grid(s)
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the grid(s)
+    * @param {Object} obj - the grid descriptor
+    * @param {Number} positionInNodeList - the position of the grid between its siblings
+    */
+    function Grid(parentSelector, obj, positionInNodeList){
+        var parentEl = this.checkParent(parentSelector);
+        var self = this;
+        /**
+        * Generates grid html and insert it in the proper container in the DOM
+        * @param {NodeList} container - contains element grids will be generated in. (one grid per element)
+        * @param {Object} descriptor - the grid descriptor:
+        *   class: an array of classes to be added to each RateSlider
+        *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
+        *   itemWidth: the width of grid items, if not specified item will wrap its content
+        *   itemHeight: the height of the grid items, if not specifies but itemWidth is specified itemHeight = itemWidth
+        *   nbItems: the number of items in the grid
+        *   contents: An array of content object that grid items will be generated from. contents.length replaces nbItems:
+        *       content: an html string or any focus generated widget
+        *       width: the width of grid item the content will be insert in, if not specified item will wrap its content
+        *       height: the height of the grid item the content will be insert in, if not specifies but width is specified height = width
+        * @return {Array} an array of grid data:
+        *   hash: the hash of the generated grid
+        *   element: the grid element as it is in the DOM
+        *   gridItems: a NodeList of the grid items   
+        *   container: the parent element of each generated grid
+        */
+        this.generate = function (container, descriptor) {
+            var html = '';
+            var classes  = '';
+            var res = [], ret;
+            if (typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
+            Array.prototype.forEach.call(container, function (item, index){
+                descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
+                classes = descriptor.class.join(' ');
+                var hash = focus.generateHash();
+                var L = descriptor.itemWidth;
+                var l = descriptor.itemHeight ? descriptor.itemHeight : L;
+                html = '<div id ="'+descriptor.id+'" class="'+classes+'" data-hash="'+hash+'" data-index="'+index+'">'
+                if (!('contents' in descriptor)) {
+                    for (var i = 0; i < descriptor.nbItems; i++) {
+                        html += self.buildItem({
+                            width: descriptor.itemWidth, 
+                            height: descriptor.itemHeight
+                        });
+                    }
+                } else {
+                    descriptor.contents.forEach(function (content) {
+                        html += self.buildItem(content);
+                    })
+                }
+                
+                html += '</div>';
+                ret = self.__proto__.generate(html, item, positionInNodeList);
+                Array.prototype.forEach.call(ret.children, function (child){
+                    self.addGridItemMethods(child);
+                });
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    gridItems: ret.children
+                };
+                res = focus.recordElData(elData, res);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.delegateEvent(hash, descriptor.events);
+                }
+            });
+            return res;
+        }
+
+        /**
+        * Attach "default" methods to grid items
+        * @param {DOM Element} - the grid item element
+        *
+        */
+        this.addGridItemMethods = function (gridItem) {
+            var self = this;
+            gridItem.addContent = function(obj) {
+                var content;
+                if(typeof obj.content === 'object') {
+                    content = obj.content.generated()[0].element.outerHTML;
+                    obj.content.generated()[0].element.remove();
+                } else {
+                    content = obj.content;
+                }
+                self.__proto__.generate(content, this, obj.positionInNodeList);
+            };
+            gridItem.clearContent = function() {
+                this.innerHTML = '';
+            };
+            gridItem.modify = function(dimensions) {
+                this.style.height = dimensions.height;
+                this.style.width =  dimensions.width;
+            };
+        }
+        /**
+        * Add specified item to the grid
+        * @param {Object} - params 
+        *   to: the grid to add the item to, since the Grid constructor generates a grid per parent, there could be several grid generated.
+        *       Therefore we should specify the one we want to add the item to,
+        *       otherwise the item will be added to every generated grid
+        *
+        *   positionInNodeList: the position of the item withing the other items in the grid
+        */
+        this.addItem = function (params) {
+            var itemHtml = this.buildItem(params);
+            var self = this;         
+            if (params.to) {
+                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
+            } else {
+               this.generated.forEach(function (grid) {
+                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
+               });
+            }
+        }
+
+        /**
+        * populate a grid with an array of contents
+        * @param {Object} - params
+        *   grid:   the grid to populate, since the Grid constructor generates a grid per parent, there could be several grid generated.
+        *           Therefore we should specify the one we want to populate,
+        *           otherwise every generated grid will be populated
+        *   contents: an array of content, each content is an object with a property 'content' that can be passed as html string or as any focus-generated element
+        *             while the 'positionInNodeList' poperty defines the position of the content within the item children
+        */
+        this.populate = function (params) {
+            if (params.grid) {
+                try {
+                    Array.prototype.forEach.call(params.grid.gridItems, function (gridItem, index) {
+                        if (index === params.contents.length) {
+                            throw ''
+                        } 
+                        gridItem.addContent(params.contents[index]);
+                    });
+                } catch(e){}
+                
+            } else {
+                this.generated.forEach(function (grid) {
+                    try {
+                        Array.prototype.forEach.call(grid.gridItems, function (gridItem, index) {
+                            if (index === params.contents.length) {
+                                throw ''
+                            } 
+                            gridItem.addContent(params.contents[index]);
+                        });
+                    } catch(e){} 
+                });
+            }
+        }
+        /**
+        * Remove specified item from the grid
+        * @param {Object} - params 
+        *   from: the grid to remove the item from, since the Grid constructor generates a grid per parent, there could be several grid generated.
+        *       Therefore we should specify the one we want to remove the item from,
+        *       otherwise the item will be removed from every generated grid
+        *
+        *   positionInNodeList: the position of the item to remove withing the other items in the grid
+        */
+        this.removeItem = function (params) {
+            var toRemove;
+            var self = this;
+            if (params.from) {
+                this.remove(params.from.element, params.positionInNodeList);
+            } else {
+                this.generated.forEach(function(grid) {
+                    self.remove(grid.element, params.positionInNodeList);
+                });
+            }
+        }
+        /**
+        * build the html of a grid item
+        * @param {Object} - params 
+        *   width: the width of the item (passed as css value), if not specified the grid item will wrap its content
+        *   height: the height of the item (passed as css value), if not specified whereas width is specified the height will be equal to the width
+        *           otherwise the grid item will wrap its content
+        *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
+        *
+        * @return {String} - the item to be generated html
+        */
+        this.buildItem = function (gridItem) {
+            var content;
+            if(typeof gridItem.content === 'object') {
+                content = gridItem.content.generated()[0].element.outerHTML;
+                gridItem.content.generated()[0].element.remove();
+            } else {
+                content = gridItem.content;
+            }
+            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
+        }
+        var generated = this.generate(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
             self.generatedEl = toReturn;
             return toReturn;
         };

@@ -27,15 +27,13 @@ window.onload = function(){
 			nbItems:1,
 			contents: [{
 		 		content: 'jst',
-		 		positionInNodeList: 3,
 		 		width: "300px"
 		 	}, {
 		 		content: 'yaparitaneeeeeeeh',
 		 		width: '200px',
 		 		height:' 400px'
 		 	}, {
-		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
-		 		positionInNodeList:0
+		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu'
 		 	}]
 		});
 		// grid.addItem({
