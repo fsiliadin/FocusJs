@@ -144,19 +144,24 @@
     * Generates one or several Button(s).
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the button(s)
-    * @param {Object} obj - the Button descriptor
+    * @param {Object} obj - the Button descriptor:
+    *   class: an array of classes to be added to each Button
+    *   id: the id of the Button, if specified the Button will be generated only in the first container
+    *   events: an array of the event object to bind on the button:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
+    *   text: the text on the button
     * @param {Number} positionInNodeList - the position of the button between its siblings
     */
     function Button(parentSelector, obj, positionInNodeList){
         /**
         * Generates button html and inserts it in the proper container in the DOM
         * @param {NodeList} container - contains element buttons will be generated in. (one button per element)
-        * @param {Object} descriptor - the button descriptor:
+        * @param {Object} descriptor - the button descriptor
         *
         * @return {Array} an array of button data:
         *   hash: the hash of the generated button
-        *   element: the button element as it is in the DOM
-        *   text: the text of the button   
+        *   element: the button element as it is in the DOM   
         *   container: the parent element of each generated button
         */
         this.generate = function (container, descriptor) {
@@ -337,6 +342,9 @@
     * @param {Object} obj - the scroller descriptor:
     *   class: an array of classes to be added to each scroller
     *   id: the id of the scroller, if specified the scroller will be generated only in the first container
+    *   events: an array of the event object to bind on the scroller:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
     *   targets: an array of selectors, targets will be any element matching the selectors in the container
     */
     function Scroller (parentSelector, obj) {
@@ -617,6 +625,9 @@
     * @param {Object} obj - the slider descriptor:
     *   class: an array of classes to be added to each RateSlider
     *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
+    *   events: an array of the event object to bind on the rateslider:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
     *   maxRate: the maximum rate on the rateslider, as a number
     *   initialValue: initial value of the rateslider, as a number
     *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
@@ -761,6 +772,9 @@
     * @param {Object} obj - the grid descriptor:
     *   class: an array of classes to be added to each Grid
     *   id: the id of the grid, if specified the grid will be generated only in the first container
+    *   events: an array of the event object to bind on the grid:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
     *   itemWidth: the width of grid items, if not specified item will wrap its content
     *   itemHeight: the height of the grid items, if not specifies but itemWidth is specified itemHeight = itemWidth
     *   nbItems: the number of items in the grid
