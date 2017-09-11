@@ -151,7 +151,8 @@
         /**
         * Generates button html and inserts it in the proper container in the DOM
         * @param {NodeList} container - contains element buttons will be generated in. (one button per element)
-        * @param {Object} descriptor - the button descriptor
+        * @param {Object} descriptor - the button descriptor:
+        *
         * @return {Array} an array of button data:
         *   hash: the hash of the generated button
         *   element: the button element as it is in the DOM
@@ -300,7 +301,7 @@
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                     html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
                 }
-                html += '</tr></table>';
+                html += '</tr></table>';width
                 self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
                     self.__proto__.delegateEvent(self.hash, descriptor.events);
@@ -333,7 +334,10 @@
     * Generates one or several Scroller(s). A scroller is a widget that scrolles to specified targets on click
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the scroller(s)
-    * @param {Object} obj - the scroller descriptor
+    * @param {Object} obj - the scroller descriptor:
+    *   class: an array of classes to be added to each scroller
+    *   id: the id of the scroller, if specified the scroller will be generated only in the first container
+    *   targets: an array of selectors, targets will be any element matching the selectors in the container
     */
     function Scroller (parentSelector, obj) {
         var positionInNodeList = 0;
@@ -342,10 +346,7 @@
         /**
         * Generates scroller html and inserts it in the proper container in the DOM
         * @param {NodeList} container - contains element(s) scroller will be generated in, one scroller per element
-        * @param {Object} descriptor - the scroller descriptor:
-        *   class: an array of classes to be added to each scroller
-        *   id: the id of the scroller, if specified the scroller will be generated only in the first container
-        *   targets: an array of selectors, targets will be any element matching the selectors in the container
+        * @param {Object} descriptor - the scroller descriptor
         * @return {Array} an array of scroller data:
         *   hash: the hash of the generated scroller
         *   element: the scroller element as it is in the DOM
@@ -613,7 +614,14 @@
     * Generates one or several RateSliders
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the slider(s)
-    * @param {Object} obj - the slider descriptor
+    * @param {Object} obj - the slider descriptor:
+    *   class: an array of classes to be added to each RateSlider
+    *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
+    *   maxRate: the maximum rate on the rateslider, as a number
+    *   initialValue: initial value of the rateslider, as a number
+    *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
+    *   pattern: the pattern of the rateslider (star, dollars...) can be passed as a string or as an unicode utf-8 value. default value is: &#9733
+    *   activeColor: the color of the active items. Default value is : rgb(255, 221, 153) 
     * @param {Number} positionInNodeList - the position of the slider between its siblings
     */
     function RateSlider (parentSelector, obj, positionInNodeList) {
@@ -633,14 +641,7 @@
         /**
         * Generates rateslider html and inserts it in the proper container in the DOM
         * @param {NodeList} container - contains element(s) rateslider will be generated in, one rateslider per element
-        * @param {Object} descriptor - the rateslider descriptor:
-        *   class: an array of classes to be added to each RateSlider
-        *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
-        *   maxRate: the maximum rate on the rateslider, as a number
-        *   initialValue: initial value of the rateslider, as a number
-        *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
-        *   pattern: the pattern of the rateslider (star, dollars...) can be passed as a string or as an unicode utf-8 value. default value is: &#9733
-        *   activeColor: the color of the active items. Default value is : rgb(255, 221, 153) 
+        * @param {Object} descriptor - the rateslider descriptor
         * @return {Array} an array of rateslider data:
         *   hash: the hash of the generated rateslider
         *   element: the rateslider element as it is in the DOM
@@ -757,7 +758,16 @@
     * Generates one or several Grid(s)
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the grid(s)
-    * @param {Object} obj - the grid descriptor
+    * @param {Object} obj - the grid descriptor:
+    *   class: an array of classes to be added to each Grid
+    *   id: the id of the grid, if specified the grid will be generated only in the first container
+    *   itemWidth: the width of grid items, if not specified item will wrap its content
+    *   itemHeight: the height of the grid items, if not specifies but itemWidth is specified itemHeight = itemWidth
+    *   nbItems: the number of items in the grid
+    *   contents: An array of content object that grid items will be generated from. contents.length replaces nbItems:
+    *       content: an html string or any focus generated widget
+    *       width: the width of grid item the content will be insert in, if not specified item will wrap its content
+    *       height: the height of the grid item the content will be insert in, if not specifies but width is specified height = width
     * @param {Number} positionInNodeList - the position of the grid between its siblings
     */
     function Grid(parentSelector, obj, positionInNodeList){
@@ -766,16 +776,7 @@
         /**
         * Generates grid html and insert it in the proper container in the DOM
         * @param {NodeList} container - contains element grids will be generated in. (one grid per element)
-        * @param {Object} descriptor - the grid descriptor:
-        *   class: an array of classes to be added to each RateSlider
-        *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
-        *   itemWidth: the width of grid items, if not specified item will wrap its content
-        *   itemHeight: the height of the grid items, if not specifies but itemWidth is specified itemHeight = itemWidth
-        *   nbItems: the number of items in the grid
-        *   contents: An array of content object that grid items will be generated from. contents.length replaces nbItems:
-        *       content: an html string or any focus generated widget
-        *       width: the width of grid item the content will be insert in, if not specified item will wrap its content
-        *       height: the height of the grid item the content will be insert in, if not specifies but width is specified height = width
+        * @param {Object} descriptor - the grid descriptor
         * @return {Array} an array of grid data:
         *   hash: the hash of the generated grid
         *   element: the grid element as it is in the DOM
