@@ -687,17 +687,16 @@
         if (!(obj.events instanceof Array)){
             obj.events = [];
         }
-        // Push a click event in the events array
+        // Push a default click event in the events array
         obj.events.push({
             type: 'click',
             handler: 
             // On click we scroll to the nearest target according the direction of the scroller 
             function(e) {
                 var distanceToNextTarget = 0;
-                // Here we determine the targets to go on click, according the targets array the user provides as selectors in obj.targets
-                // we define the area to browse according the scroller that is clicked
+                // we determine the area to browse according the scroller that is clicked
                 var scrollArea = e.target.parentElement;
-                // then we get the relative position of the targets
+                // then we get the position of the targets relative to the scrollArea scroll position
                 var targetRelativePosition = self.getTargets(e.target.dataset.index, true).filter(function(target){
                     // whether we are moving down or moving up we look to the target above or under the current scroll position
                     if(focus.hasClass(e.target, 'goingUp')){
@@ -706,18 +705,10 @@
                         return target > 0;
                     }
                 });
-
-                console.log('targets pos ', targetRelativePosition);
                 // if there is no targets to go, we return
-                if (targetRelativePosition.length === 0) {
-                    return;
-                }
-                // we are going up
-                if (targetRelativePosition[0] < 0) {
-                    distanceToNextTarget = targetRelativePosition[targetRelativePosition.length - 1];
-                } else if (targetRelativePosition[0] > 0) {
-                    distanceToNextTarget = targetRelativePosition[0];
-                }
+                if (targetRelativePosition.length === 0) {return;}
+
+                distanceToNextTarget = targetRelativePosition[0] < 0 ? targetRelativePosition.pop() : targetRelativePosition.shift();
                 // scroll the scrollArea
                 self.smoothScrollBy(scrollArea, {
                     top: distanceToNextTarget,
@@ -728,9 +719,11 @@
 
        
 
-        // deal with left one day
-        var previousScrollPos= {top:0} 
-        // Scrolling window
+        var previousScrollPos= {
+            top:0,
+            left:0
+        } 
+        // here we update the scroller element on scroll of window
         window.onscroll = function(){
             var scroller = document.querySelector('body .basic_scroller');
             var targets = self.getTargets(scroller.dataset.index);
@@ -748,23 +741,29 @@
             if (document.documentElement.scrollHeight === this.scrollY + document.documentElement.clientHeight || this.scrollY >= lowest){
                 focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
             }
+            // simulating position fixed
             scroller.style.top = focus.removeUnity(scroller.style.top) + (this.scrollY - previousScrollPos.top) + 'px';
             previousScrollPos.top = this.scrollY;
         }        
 
         var generated = this.generate(parentEl, obj);
         this.generated = function () {
+            /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
+                since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
+                elDataArray which elements are kept up to date on every widget modification in the DOM 
+            */
             var toReturn = [];
             generated.forEach(function(generatedEl){
+                // searches the generated widget referential array and returns the one corresponding to the specified hash
                 toReturn.push(focus.elDataArray.filter(function(elData){
                     return elData.hash == generatedEl.hash
                 })[0])
-            });
-            //generatedEl is just for debug, don't base anything on it
+            });            
+            // /!\generatedEl is just for debug, don't base anything on it /!\
             self.generatedEl = toReturn;
             return toReturn;
         };
-         // on scroll of 
+        // here we update the scroller element on scroll of any other element than window
         Array.prototype.forEach.call(self.generated(), function(scrollObj, index) {
             var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
             var scrollArea = scrollObj.container;
@@ -786,6 +785,7 @@
                     if (this.scrollHeight === this.scrollTop + this.clientHeight || this.scrollTop >= lowest){
                         focus.hasClass(scroller, 'goingUp') ? '' : focus.removeClass(scroller, 'goingDown').addClass(scroller, 'goingUp'); 
                     }
+                    // simulating position fixed
                     scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
                     previousScrollPos.top = this.scrollTop;
                 }
@@ -920,11 +920,11 @@
         *   Gets the widget data up to date
         */
         this.generated = function () {
-            var toReturn = [];
             /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
                 since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
                 elDataArray which elements are kept up to date on every widget modification in the DOM 
             */
+            var toReturn = [];
             generated.forEach(function(generatedEl){
                 // searches the generated widget referential array and returns the one corresponding to the specified hash
                 toReturn.push(focus.elDataArray.filter(function(elData){
