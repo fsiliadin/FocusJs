@@ -513,14 +513,37 @@
         var parentEl = this.checkParent(parentSelector);
     }
 
-
+    /**
+    * Generates one or many Scroller(s). A scroller is a widget that scrolles to specified targets on click
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the scroller(s)
+    * @param {Object} obj - the scroller descriptor
+    */
     function Scroller (parentSelector, obj) {
         var positionInNodeList = 0;
         var parentEl = this.checkParent(parentSelector);
         var self = this;
+        /**
+        * Generates scroller html and inserts it in the proper container in the DOM
+        * @param {NodeList} container - contains element(s) scroller will be generated in, one scroller per element
+        * @param {Object} descriptor - the scroller descriptor:
+        *   class: an array of classes to be added to each scroller
+        *   id: the id of the scroller, if specified the scroller will be generated only in the first container
+        *   targets: an array of selectors, targets will be any element matching the selectors in the container
+        * @return {Array} an array of scroller data:
+        *   hash: the hash of the generated scroller
+        *   element: the scroller element as it is in the DOM
+        *   targets: an array of selectors   
+        *   container: the parent element the generated scroller
+        *   addTarget: a method that adds target to the scroller
+        *   removeTarget: a method that removes target from the scroller
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
+            if (typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
@@ -559,32 +582,46 @@
             });
             return res;
         };
+        /**
+        * Scrolles the scroll area to the next target
+        * @param {DOMelement} area - the scroll area
+        * @param {Object} scrollDistances - the distance to scroll
+        *   top: the distance to scroll on vertical axis as a Number
+        *   left: the distance to scroll on horizontal axis as a Number
+        */
         this.smoothScrollBy = function smoothScrollBy (area, scrollDistances) {
-            var animation, previousScrollPos = {
+            var animation;
+            //  saves the position we've just scrolled to
+            var previousScrollPos = {
                 top: area.scrollTop,
                 left: area.scrollLeft
             };
+            //  position to reach
             var finalPositions = {
                 top: area.scrollTop + scrollDistances.top,
                 left: area.scrollLeft + scrollDistances.left
             }
-            var increment= {
+            //  stores the increment to scroll, gets small as we are near to the target
+            var increment = {
                 top: 0,
                 left: 0
             };
-            var cumul={
+            //  the distance we have browsed
+            var browsed = {
                 top:0,
                 left:0
             };
             animation = setInterval(function(){
-                // manage to scroll
-                increment.top = (scrollDistances.top - cumul.top)*0.3 ;                
-                increment.left = (scrollDistances.left - area.scrollLeft)*0.3 ;
+                // increment calculation
+                increment.top = (scrollDistances.top - browsed.top) * 0.3;                
+                increment.left = (scrollDistances.left - area.scrollLeft) * 0.3;
 
+                // we can't scroll by a value inf to 1 and sup to -1
                 area.scrollTop += Math.abs(increment.top) < 1 ? Math.abs(increment.top)/increment.top  : increment.top;
                 area.scrollLeft += Math.abs(increment.left) < 1 ? Math.abs(increment.left)/increment.left  : increment.left;
-                cumul.top += increment.top;
-                cumul.left += increment.left;
+                browsed.top += increment.top;
+                browsed.left += increment.left;
+
                 // if we reach the target or if we can't reach it because of the length of the page
                 // we stop scrolling
                 if (((scrollDistances.top >= 0 && area.scrollTop >= finalPositions.top) 
@@ -602,46 +639,51 @@
             },100)
         }
         /**
-        * Gets the DOM elements corresponding to the targets in scrollArea and calculate their top position
+        * Gets the DOM elements corresponding to the targets in scrollArea and calculates their top position
         * relative to the scrollArea scrollTop.
-        * @param {DOM Element} scrollArea.
-        * @return {Object[]} targetsEls - the targets in the scrollArea sorted by position.
-        * @return {Number} targetsEls.pos - the position of the target relative to scrollArea scrollTop.
-        * @return {DOM Element} targetsEls.el - the DOM Element corresponding to the target.
+        * @param {Number} scrollerId - the id of the scroller.
+        * @param {Boolean} relative - if true, the position are calculated relative to the scrollArea scrollposition,
+        *   the positions are absolute in the scrollArea
+        * @return {Array} - a sorted array of the positions of the targets
         */
         this.getTargets = function getTargets (scrollerId, relative) {
                 var targetsInScrollArea, targetEls= [];
                 var scrollerObj = self.generated()[scrollerId];
                 var scrollArea = scrollerObj.container;
-                scrollerObj.targets.forEach(function(targetSelector){   //for each target selector in the target array 
+                scrollerObj.targets.forEach(function(targetSelector){
                     // we get the matching target elements in the scroll area 
                     targetsInScrollArea = scrollArea.querySelectorAll(targetSelector);
-                    // then we put all targets together in the same array
+                    // then we gather them in the same array
                     targetEls = targetEls.concat(Array.prototype.slice.call(targetsInScrollArea));                  
                 });
                 var offset = relative ? scrollArea.scrollTop : 0;
                 return targetEls.map(function (target){
-                    return focus.getPositionInArea(target, scrollArea).top - scrollArea.scrollTop
+                    return focus.getPositionInArea(target, scrollArea).top - offset
                 }).sort(function(a, b){
                     return a - b;
                 });
         };
 
+        /**
+        * Add target to all generated scrollers
+        * @param {string} selector - the selector of the target  
+        */
         this.addTarget = function addTarget (selector) {
-            console.log(yup);
             this.generated().forEach(function (scrollerObj) {
                 scrollerObj.addTarget(selector);
             });
         };
 
+        /**
+        * remove target from all generated scrollers
+        * @param {string} selector - the selector of the target  
+        */
         this.removeTarget = function removeTarget (selector) {
-            console.log(yup);
             this.generated().forEach(function (scrollerObj) {
                 scrollerObj.removeTarget(selector);
             })
         };
       
-
         if (!(obj.events instanceof Array)){
             obj.events = [];
         }
@@ -773,9 +815,11 @@
         });
 
         /**
-        * Generates rateslider html and insert it in the proper container in the DOM
+        * Generates rateslider html and inserts it in the proper container in the DOM
         * @param {NodeList} container - contains element(s) rateslider will be generated in, one rateslider per element
         * @param {Object} descriptor - the rateslider descriptor:
+        *   class: an array of classes to be added to each RateSlider
+        *   id: the id of the rateslider, if specified the rateslider will be generated only in the first container
         *   maxRate: the maximum rate on the rateslider, as a number
         *   initialValue: initial value of the rateslider, as a number
         *   readOnly: if we don't want ui to set rateslider value, readOnly should be set true. Default value is false
@@ -790,6 +834,9 @@
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
+            if (typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
