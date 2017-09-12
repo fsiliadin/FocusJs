@@ -163,7 +163,11 @@
         *   hash: the hash of the generated button
         *   element: the button element as it is in the DOM   
         *   container: the parent element of each generated button
+        *   changeText: a method that changes the text of the button
         */
+        var parentEl = this.checkParent(parentSelector);
+        var self = this;
+
         this.generate = function (container, descriptor) {
             var html= '';
             var classes= '';
@@ -188,7 +192,10 @@
                 var elData = {
                     hash: hash,
                     element: ret,
-                    container: item
+                    container: item,
+                    changeText: function (text) {
+                        this.element.innerHTML = text;
+                    }
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
@@ -198,8 +205,14 @@
             return res;
         };
 
-        var parentEl = this.checkParent(parentSelector);
-        var generated = this.generate(parentEl, obj);
+        this.changeText = function (text) {
+            self.generated().forEach(function (button) {
+                button.changeText(text);
+            });
+        };
+        /**
+        *   Gets the Button updated data
+        */
         this.generated = function () {
             /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
                 since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
@@ -216,6 +229,8 @@
             self.generatedEl = toReturn;
             return toReturn;
         };
+
+        var generated = this.generate(parentEl, obj);
     }
 
     function Banner(parentSelector, obj, positionInNodeList){
@@ -311,7 +326,7 @@
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                     html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
                 }
-                html += '</tr></table>';width
+                html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined') {
                     self.__proto__.delegateEvent(self.hash, descriptor.events);
@@ -383,7 +398,7 @@
                 descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html = '<img src="images/scroller_arrow_down.png" alt="scroller_arrow" data-index='+index+' class="'+classes+'" data-hash="'+hash+'">';
+                html = '<img id="' + descriptor.id + '" src="images/scroller_arrow_down.png" alt="scroller_arrow" data-index='+index+' class="'+classes+'" data-hash="'+hash+'">';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
                 if(typeof descriptor.events !== 'undefined'){
                     self.__proto__.delegateEvent(hash, descriptor.events);
@@ -395,13 +410,11 @@
                     container: item,
                     targets: descriptor.targets.slice(),
                     addTarget: function (selector) {
-                        console.log(this);
                         if(this.targets.indexOf(selector) === -1) {
                             this.targets.push(selector);
                         }
                     },
                     removeTarget: function (selector) {
-                        console.log(this);
                         var index= this.targets.indexOf(selector);
                         if (index !== -1) {
                             this.targets.splice(index, 1);                            
@@ -577,6 +590,9 @@
         }        
 
         var generated = this.generate(parentEl, obj);
+        /**
+        *   Gets the Scroller updated data
+        */
         this.generated = function () {
             /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
                 since those elements refers to the elements generated on this.generate() call. So we base on the hash to retrieve the actual DOM element in
@@ -678,7 +694,7 @@
                 descriptor.class.indexOf('basic_rateSlider') === -1 ? descriptor.class.push('basic_rateSlider'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html = '<div class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
+                html = '<div id="' + descriptor.id + '" class="' + classes + '" data-hash=' + hash + ' data-index=' + index + '>';
                 for (var i = 1; i <= descriptor.maxRate; i++) {
                     html += '<div class="rateItem" data-hash='+focus.generateHash()+'  data-rate=' + i + '>' + (descriptor.pattern || "&#9733") + '</div>'
                 }
@@ -750,7 +766,7 @@
         var generated = this.generate(parentEl, obj);
 
         /**
-        *   Gets the widget data up to date
+        *   Gets the Rateslider updated data
         */
         this.generated = function () {
             /*  variable "generated" is captured from above, but the elements it contains can be obsolete (does not reflect the actual DOM element)
@@ -971,6 +987,9 @@
             return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
         }
         var generated = this.generate(parentEl, obj);
+        /**
+        *   Gets the Grid updated data
+        */
         this.generated = function () {
             var toReturn = [];
             generated.forEach(function(generatedEl){
