@@ -48,11 +48,22 @@
                 return parentEl.children[positionInNodeList];
             }
         },
-        // generates a unique hash that is assigned to the created element
+
+        /** 
+        * Generates a unique hash
+        * @return {Number} a random number
+        */
         generateHash: function generateHash(){
             return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
         },
-        // this function delegates the programmers events to the body, so that he doesn't have to rebind them after render 
+
+        /**
+        * Delegates events to the body
+        * @param {DOMElement} el - the element to bind the event to
+        * @param {Array} events - array of objects describing the events:
+        *   type: a string representing the type of event
+        *   handler: the event's callback
+        */
         delegateEvent: function delegateEvent(el, events) {
             events.forEach(function(event){
                 focus.bindEvent(document.querySelector('body'), {
@@ -68,6 +79,14 @@
             //     focus.bindEvent(document.querySelector("[data-hash='"+el+"']"), event);
             // });
         },
+
+        /**
+        * Unlike delegateEvent this function attaches event directly to an element
+        * @param {DOMElement} el - the element to bind the event to
+        * @param {Object} event - event to be attached:
+        *   type: a string representing the type of event
+        *   handler: the event's callback
+        */
         bindEvent: function bindEvent(el, event) {
             focus.eventsArray.push({
                 hash: el.dataset.hash,
@@ -75,6 +94,12 @@
             });
             el.addEventListener(event.type, event.handler, event.capture);
         },
+
+        /**
+        * Rebinds the undelegates events of an element on element
+        * it's useful is case of multiple reinsertion of the "same" element in the DOM
+        * @param {DOMElement} el - the element to rebind events to        *
+        */
         rebindEvents: function rebindEvents(el) {
             focus.updateElData(el);
             focus.eventsArray.filter(function (event) {
