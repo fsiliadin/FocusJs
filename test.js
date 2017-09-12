@@ -1,6 +1,7 @@
 window.onload = function(){
 	var jst = new Button("",{
 			class: ['pouh'],
+			id:'fd',
 			events: [{
 				type: 'click',
 				handler: function(){
@@ -27,13 +28,15 @@ window.onload = function(){
 			nbItems:1,
 			contents: [{
 		 		content: 'jst',
+		 		positionInNodeList: 3,
 		 		width: "300px"
 		 	}, {
 		 		content: 'yaparitaneeeeeeeh',
 		 		width: '200px',
 		 		height:' 400px'
 		 	}, {
-		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu'
+		 		content: 'itadakimaaaaaaaaaaaaaaaaaaaaassu',
+		 		positionInNodeList:0
 		 	}]
 		});
 		// grid.addItem({
@@ -119,6 +122,7 @@ window.onload = function(){
 			targets: ['.basic_button', '.accordionPlaceholder', '.bli']
 		});
 		grid2.generated()[0].gridItems[1].addContent({
-			content: grid
+			content: jst
 		});
+	jst.changeText('jesusScript is back');
 	}

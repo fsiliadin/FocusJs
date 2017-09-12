@@ -163,7 +163,7 @@
         *   hash: the hash of the generated button
         *   element: the button element as it is in the DOM   
         *   container: the parent element of each generated button
-        *   changeText: a method that changes the text of the button
+        *   changeText: a method that changes the text of a specific button
         */
         var parentEl = this.checkParent(parentSelector);
         var self = this;
@@ -204,12 +204,17 @@
             });
             return res;
         };
-
+        
+        /**
+        * Changes the text of all generated Button
+        * @param {string} text - the new text
+        */
         this.changeText = function (text) {
             self.generated().forEach(function (button) {
                 button.changeText(text);
             });
         };
+
         /**
         *   Gets the Button updated data
         */
@@ -508,7 +513,7 @@
         };
 
         /**
-        * Add target to all generated scrollers
+        * Adds target to all generated scrollers
         * @param {string} selector - the selector of the target  
         */
         this.addTarget = function addTarget (selector) {
@@ -518,7 +523,7 @@
         };
 
         /**
-        * remove target from all generated scrollers
+        * removes target from all generated scrollers
         * @param {string} selector - the selector of the target  
         */
         this.removeTarget = function removeTarget (selector) {
