@@ -48,14 +48,6 @@
                 return parentEl.children[positionInNodeList];
             }
         },
-
-        /**
-        * Removes an element from the DOM
-        * @param {DOMElement} parentEl -
-        */
-        remove: function remove (parentEl, positionInNodeList) {
-           return parentEl.removeChild(parentEl.children[positionInNodeList]);
-        },
         // generates a unique hash that is assigned to the created element
         generateHash: function generateHash(){
             return (Math.pow(2,32)*Math.random()+1)/(1000*Math.random()+1)*Math.exp(10*Math.random()+1);
@@ -979,10 +971,10 @@
             var toRemove;
             var self = this;
             if (params.from) {
-                this.remove(params.from.element, params.positionInNodeList);
+                params.from.element.children[params.positionInNodeList].remove();
             } else {
                 this.generated.forEach(function(grid) {
-                    self.remove(grid.element, params.positionInNodeList);
+                    grid.element.children[params.positionInNodeList].remove();
                 });
             }
         }
