@@ -296,6 +296,30 @@
 
     function Slider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
+        this.generate = function (container, descriptor) {
+            var html = '';
+            var classes = '';
+            var res = [], ret;
+            // if the programmer specifies an id, only the first node el is taken in account
+            // can't have several object with the same id
+            if(typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
+            var self = this;
+            // for each node el taken in account is generated an html
+            Array.prototype.forEach.call(container, function(item, index){
+                descriptor.class.indexOf('basic_slider') === -1 ? descriptor.class.push('basic_slider') : '';
+                classes = descriptor.class.join(' ');
+                // creation of a hash to identify each element
+                var hash = focus.generateHash();
+                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'"><span class="sliderTitleLabel">'+descriptor.label+'</span><div '
+            });
+        }
+        var generated = this.generate(parentEl, obj);
+
     }
 
     function Footer(parentSelector, obj, positionInNodeList){
@@ -388,6 +412,8 @@
             });
         };
 
+
+        var generated = this.generate(parentEl, obj);
         /**
         *   Gets the Button updated data
         */
@@ -407,8 +433,6 @@
             self.generatedEl = toReturn;
             return toReturn;
         };
-
-        var generated = this.generate(parentEl, obj);
     }
 
     /**
