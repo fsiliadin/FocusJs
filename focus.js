@@ -1,13 +1,27 @@
     // focus, the root object that all basic component inherit
     // it defines generic methods 
     var focus = {
+        // event referential array that lists events and their element
         eventsArray: [],
+        // focus widget's relevant data are kept and updated in this array
         elDataArray: [],
+
+        /**
+        * Records data of any generated widget in elDataArray
+        * @param {Object} elData - the data of the generated widget
+        * @param {Array} res - an array of data of each generated widget with the same constructor call
+        * @return {Array} - elData pushed into res 
+        */
         recordElData: function (elData, res) {
             res.push(elData);
             focus.elDataArray.push(elData);
             return res;
         },
+
+        /**
+        * Updates a widget revelant data (useful in case of multiple insertion of same element)
+        * @param {DOMelement} el - the widget element to update
+        */
         updateElData: function (el) {
             var dataToUpdate = focus.elDataArray.filter(function (elData) {
                 return elData.hash == el.dataset.hash;
@@ -114,7 +128,12 @@
                 })
             }
         },
-        // check if the element containing the element to be created exists
+
+        /**
+        * Gets the elements corresponding to a selector if it exist, else throw an error
+        * @param {String} parentSelector - the selector of the element(s)
+        * @return {NodeList} - the selected element(s)
+        */
         checkParent: function checkParent(parentSelector) {
             try {
                 if (parentSelector == false) {
