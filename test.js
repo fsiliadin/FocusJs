@@ -124,5 +124,18 @@ window.onload = function(){
 		grid2.generated()[0].gridItems[1].addContent({
 			content: jst
 		});
-	jst.changeText('jesusScript is back');
+		jst.changeText('jesusScript is back');
+		var newSlider = new Slider('', {
+			label: 'swag level',
+			min: 10,
+			max: 20,
+			subSliders: [
+			{
+				label: 'inherited Swag',
+				color: 'blue'
+			}, {
+				label: 'acquired Swag',
+				color: 'green'
+			}]
+		});
 	}
