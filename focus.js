@@ -317,14 +317,20 @@
                 var hash = focus.generateHash();
                 html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'"><span class="sliderTitleLabel">'+descriptor.label+'</span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
                 html += '<span class="minValue" data-hash='+ focus.generateHash() +' >'+ descriptor.min + '</span>';
+                html += '<div class ="sliderMechanics" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="sliderAxis" data-hash='+ focus.generateHash() +'></div>';
+                html += '<div class ="dynamicItemsContainer" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="mainSlideZone" data-hash='+ focus.generateHash() +'>';
-                for (var i = 0; i < descriptor.subSliders.length - 1; i++) {
+                for (var i = 0; i < descriptor.subSliders.length; i++) {
                     html += '<div class="subSlideZone" data-hash='+ focus.generateHash() +'  data-index='+i+'>'+ descriptor.subSliders[i].label +'</div>';
-                    html += '<div class="subCursor" data-hash='+ focus.generateHash() +' data-index='+i+'></div>';
+                    if (i !== descriptor.subSliders.length - 1) {
+                        html += '<div class="subCursor" data-hash='+ focus.generateHash() +' data-index='+i+'></div>';  
+                    }                    
                 }
                 html += '</div>'; // mainSlideZone end
                 html += '<div class ="mainCursor" data-hash='+ focus.generateHash() +'></div>';
+                html += '</div>'; // dynamicItemsContainer end
+                html += '</div>'; // sliderMechanics end 
                 html += '<span class="maxValue" data-hash='+ focus.generateHash() +' >'+ descriptor.max + '</span>';
                 html += '</div>'; // coreSlider end
                 html += '</div>'; // slider end
