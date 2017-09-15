@@ -178,6 +178,7 @@
 	border-radius : 0.3em;
 	background-color:rgb(246,246,246);
     background: linear-gradient(rgb(215,215,215), rgb(246,246,246)); /* Standard syntax */
+    position: absolute;
     height: 20px;
     width: 10px;
 }
@@ -200,12 +201,12 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	height: 20px;
-	width: 100px;
+	width: 0px;
 }
 .basic_slider .mainSlideZone{
 	border-color: rgb(179,180,185);
 	height: 20px;
-	width: 150px;
+	width: 0px;
 	background-color: white;
     display: flex;
 }

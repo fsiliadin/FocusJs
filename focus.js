@@ -338,6 +338,52 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(self.hash, descriptor.events);
                 }
+                ret.querySelector('.mainCursor').draggable = true;
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'drag',
+                    handler: function(e) {
+                        // if(e.dataTransfer.dropEffect === "move") {
+                            console.log('fjkdsjf', e)
+                            e.target.style.left = (focus.removeUnity(e.target.style.left) + e.offsetX) + 'px';
+                        // } else {
+                            // console.log('sdlkfjqsd', e);
+                        // }
+                        
+                        prev = e.target.style.left;
+                    }
+                });
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'drop',
+                    handler: function(e) {
+                        e.preventDefault();
+                    }
+                });
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'dragover',
+                    handler: function(e) {
+                        e.preventDefault();
+                    }
+                });
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'dragend',
+                    handler: function(e) {
+                        console.debug('end', e)
+                        e.preventDefault();
+                    }
+                });
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'dragenter',
+                    handler: function(e) {
+                        e.preventDefault();
+                    }
+                });
+                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                    type: 'dragstart',
+                    handler: function(e) {
+                       console.log(e);
+                       e.target.style.left = (focus.removeUnity(e.target.style.left) + e.offsetX) + 'px'
+                    }
+                });
             });
         }
         var generated = this.generate(parentEl, obj);
