@@ -369,7 +369,12 @@
                         focus.dragDropEl.length = 0;
                     }
                 });
-                
+                focus.bindEvent(ret.querySelector('.dynamicItemsContainer'), {
+                    type: 'click',
+                    handler: function(e) {
+                        e.target.querySelector('.mainCursor').style.left = e.offsetX + 'px';
+                    }
+                });
             });
         }
         var generated = this.generate(parentEl, obj);
