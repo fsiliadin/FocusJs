@@ -5,6 +5,8 @@
         eventsArray: [],
         // focus widget's relevant data are kept and updated in this array
         elDataArray: [],
+        // DOM element that are being dragged/dropped
+        dragDropEl: [],
 
         /**
         * Records data of any generated widget in elDataArray
@@ -338,52 +340,36 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(self.hash, descriptor.events);
                 }
-                ret.querySelector('.mainCursor').draggable = true;
                 focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'drag',
-                    handler: function(e) {
-                        // if(e.dataTransfer.dropEffect === "move") {
-                            console.log('fjkdsjf', e)
-                            e.target.style.left = (focus.removeUnity(e.target.style.left) + e.offsetX) + 'px';
-                        // } else {
-                            // console.log('sdlkfjqsd', e);
-                        // }
-                        
-                        prev = e.target.style.left;
+                    type: 'mousedown',
+                    handler: function (e) {
+                        focus.dragDropEl.push(e.target);
                     }
                 });
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'drop',
-                    handler: function(e) {
-                        e.preventDefault();
+
+                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                    type: 'mouseup',
+                    handler: function () {
+                        focus.dragDropEl.length = 0;
+                    }
+                 });
+                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                    type: 'mousemove',
+                    handler: function (e) {
+                        if (focus.dragDropEl.length) {
+                            focus.dragDropEl.forEach(function(el) {
+                                el.style.left = (focus.removeUnity(el.style.left) + e.movementX) +'px';
+                            });
+                        }
                     }
                 });
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'dragover',
-                    handler: function(e) {
-                        e.preventDefault();
+                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                    type: 'mouseleave',
+                    handler: function(){
+                        focus.dragDropEl.length = 0;
                     }
                 });
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'dragend',
-                    handler: function(e) {
-                        console.debug('end', e)
-                        e.preventDefault();
-                    }
-                });
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'dragenter',
-                    handler: function(e) {
-                        e.preventDefault();
-                    }
-                });
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
-                    type: 'dragstart',
-                    handler: function(e) {
-                       console.log(e);
-                       e.target.style.left = (focus.removeUnity(e.target.style.left) + e.offsetX) + 'px'
-                    }
-                });
+                
             });
         }
         var generated = this.generate(parentEl, obj);
