@@ -401,6 +401,12 @@
                     }
                 }]);
 
+                res.push({
+                    hash: hash,
+                    element: ret,
+                    value: descriptor.value,
+                    
+                })
             });
         }
         var generated = this.generate(parentEl, obj);
