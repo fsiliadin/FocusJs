@@ -184,6 +184,7 @@
 }
 
 .basic_slider .subCursor {
+	position: inherit;
 	border-style : solid;
 	border-width: 0.08em 0.08em 0 0.08em;
 	border-color:  rgb(179,180,185);
@@ -197,6 +198,7 @@
 }
 
 .basic_slider .subSlideZone {
+	background-color: blue; 
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -204,7 +206,7 @@
 	width: 0px;
 }
 .basic_slider .mainSlideZone{
-	border-color: rgb(179,180,185);
+	background: linear-gradient(to left, rgb(215,215,215), rgb(246,246,246));
 	height: 20px;
 	width: 0px;
 	background-color: white;

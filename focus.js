@@ -357,8 +357,13 @@
                     type: 'mousemove',
                     handler: function (e) {
                         if (focus.dragDropEl.length) {
-                            focus.dragDropEl.forEach(function(el) {
-                                el.style.left = (focus.removeUnity(el.style.left) + e.movementX) +'px';
+                            focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
+                            ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
+                            Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                               subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
+                               Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                    subZone.style.width = focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1) +'px';
+                                });
                             });
                         }
                     }
@@ -372,9 +377,23 @@
                 focus.bindEvent(ret.querySelector('.dynamicItemsContainer'), {
                     type: 'click',
                     handler: function(e) {
-                        e.target.querySelector('.mainCursor').style.left = e.offsetX + 'px';
+                        var cursor = e.target.querySelector('.mainCursor');
+                        if(cursor) {
+                            cursor.style.left = e.offsetX + 'px';
+                            ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
+                            Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                               subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(cursor.style.left)/(list.length+1)) - 10) + 'px';
+                               Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                    subZone.style.width = focus.removeUnity(cursor.style.left)/(list.length+1) +'px';
+                                });
+                            });
+                        }
                     }
                 });
+                // Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor) {})
+                // focus.bindEvent(, {
+
+                // })
             });
         }
         var generated = this.generate(parentEl, obj);
