@@ -82,14 +82,14 @@
         */
         delegateEvent: function delegateEvent(el, events) {
             events.forEach(function(event){
-                focus.bindEvent(document.querySelector('body'), {
+                focus.bindEvent(document.querySelector('body'), [{
                     type: event.type,
                     handler: function(e) {
                         if (e.target.dataset.hash===el+'') {
                             event.handler(e);
                         }
                     }
-                });
+                }]);
             });
             // events.forEach(function(event){
             //     focus.bindEvent(document.querySelector("[data-hash='"+el+"']"), event);
@@ -99,16 +99,18 @@
         /**
         * Unlike delegateEvent this function attaches event directly to an element
         * @param {DOMElement} el - the element to bind the event to
-        * @param {Object} event - event to be attached:
+        * @param {Array} event - array of events to be attached:
         *   type: a string representing the type of event
         *   handler: the event's callback
         */
-        bindEvent: function bindEvent(el, event) {
-            focus.eventsArray.push({
-                hash: el.dataset.hash,
-                event: event
+        bindEvent: function bindEvent(el, events) {
+            events.forEach(function(event) {
+                focus.eventsArray.push({
+                    hash: el.dataset.hash,
+                    event: event
+                });
+                el.addEventListener(event.type, event.handler, event.capture);
             });
-            el.addEventListener(event.type, event.handler, event.capture);
         },
 
         /**
@@ -340,20 +342,19 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(self.hash, descriptor.events);
                 }
-                focus.bindEvent(ret.querySelector('.mainCursor'), {
+                focus.bindEvent(ret.querySelector('.mainCursor'), [{
                     type: 'mousedown',
                     handler: function (e) {
                         focus.dragDropEl.push(e.target);
                     }
-                });
+                }]);
 
-                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                focus.bindEvent(ret.querySelector('.sliderMechanics'), [{
                     type: 'mouseup',
                     handler: function () {
                         focus.dragDropEl.length = 0;
                     }
-                 });
-                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                 }, {
                     type: 'mousemove',
                     handler: function (e) {
                         if (focus.dragDropEl.length) {
@@ -367,14 +368,13 @@
                             });
                         }
                     }
-                });
-                focus.bindEvent(ret.querySelector('.sliderMechanics'), {
+                }, {
                     type: 'mouseleave',
                     handler: function(){
                         focus.dragDropEl.length = 0;
                     }
-                });
-                focus.bindEvent(ret.querySelector('.dynamicItemsContainer'), {
+                }]);
+                focus.bindEvent(ret.querySelector('.dynamicItemsContainer'), [{
                     type: 'click',
                     handler: function(e) {
                         var cursor = e.target.querySelector('.mainCursor');
@@ -389,11 +389,8 @@
                             });
                         }
                     }
-                });
-                // Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor) {})
-                // focus.bindEvent(, {
+                }]);
 
-                // })
             });
         }
         var generated = this.generate(parentEl, obj);
@@ -771,7 +768,7 @@
         Array.prototype.forEach.call(self.generated(), function(scrollObj, index) {
             var previousScrollPos = {top:0}, scroller, highest, lowest, targets;
             var scrollArea = scrollObj.container;
-            focus.bindEvent(scrollArea, {
+            focus.bindEvent(scrollArea, [{
                 type: 'scroll',
                 handler: function () {
                     scroller = scrollObj.element;
@@ -793,7 +790,7 @@
                     scroller.style.top =   focus.removeUnity(this.style.height) - 50 + this.scrollTop + 'px';
                     previousScrollPos.top = this.scrollTop;
                 }
-            });
+            }]);
         });
     }
 
@@ -864,18 +861,17 @@
                 self.fill(descriptor.initialValue, ret.children);
                 if (!descriptor.readOnly) {
                     Array.prototype.forEach.call(ret.children, function (rateItem, id) {
-                        focus.bindEvent(rateItem, {
+                        focus.bindEvent(rateItem, [{
                             type: 'mouseenter',
                             handler: function (e) {
                                 self.fill(e.target.dataset.rate, self.generated()[index].element.children);
                             }
-                        });
-                        focus.bindEvent(rateItem, {
+                        }, {
                             type: 'click',
                             handler: function (e) {
                                 self.generated()[index].rate = e.target.dataset.rate; 
                             }
-                        });
+                        }]);
                     });
                 }
                 var elData = {
