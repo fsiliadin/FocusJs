@@ -319,7 +319,7 @@
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
                 var hash = focus.generateHash();
-                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'"><span class="sliderTitleLabel">'+descriptor.label+'</span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
+                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'"><span class="sliderTitleLabel">'+descriptor.label+': </span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
                 html += '<span class="minValue" data-hash='+ focus.generateHash() +' >'+ descriptor.min + '</span>';
                 html += '<div class ="sliderMechanics" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="sliderAxis" data-hash='+ focus.generateHash() +'></div>';
@@ -342,14 +342,15 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(self.hash, descriptor.events);
                 }
-                focus.bindEvent(ret.querySelector('.mainCursor'), [{
-                    type: 'mousedown',
-                    handler: function (e) {
-                        focus.dragDropEl.push(e.target);
-                    }
-                }]);
-
-                focus.bindEvent(ret.querySelector('.sliderMechanics'), [{
+                Array.prototype.forEach.call(ret.querySelectorAll('.mainCursor, .subCursor'), function(cursor){
+                    focus.bindEvent(cursor, [{
+                        type: 'mousedown',
+                        handler: function (e) {
+                            focus.dragDropEl.push(e.target);
+                        }
+                    }]);
+                });
+                focus.bindEvent(ret, [{
                     type: 'mouseup',
                     handler: function () {
                         focus.dragDropEl.length = 0;
@@ -357,8 +358,11 @@
                  }, {
                     type: 'mousemove',
                     handler: function (e) {
-                        if (focus.dragDropEl.length) {
-                            focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
+                        if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
+                            var cursorPos = focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX;
+                            if (cursorPos <= 290 && cursorPos >= focus.removeUnity(ret.querySelector('.sliderAxis').style.left) ){
+                                focus.dragDropEl[0].style.left = cursorPos + 'px';
+                            }                                     
                             ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
                             Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
@@ -366,6 +370,12 @@
                                     subZone.style.width = focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1) +'px';
                                 });
                             });
+                        } else if (focus.dragDropEl.length) {
+                            var leftZone = ret.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
+                            var rightZone = ret.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
+                            leftZone.style.width =  (focus.removeUnity(leftZone.style.width) + e.movementX) +'px';
+                            rightZone.style.width =  (focus.removeUnity(rightZone.style.width) - e.movementX) +'px';
+                            focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
                         }
                     }
                 }, {

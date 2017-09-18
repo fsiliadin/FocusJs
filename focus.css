@@ -144,6 +144,10 @@
 	font-weight: bold;
 }
 
+.basic_slider{
+	display: inline-table;
+	padding: 0.5em;
+}
 .basic_slider .sliderTitleLabel {
 	display: block;
 	font-family: focusMediumFont;
@@ -161,6 +165,7 @@
 .basic_slider .sliderCore {
 	font-family: focusLightFont;
 	display: inline-flex;
+	font-size: 0.7em;
 }
 
 .basic_slider .dynamicItemsContainer {
@@ -188,22 +193,22 @@
 	border-style : solid;
 	border-width: 0.08em 0.08em 0 0.08em;
 	border-color:  rgb(179,180,185);
-	border-radius : 10px;
+	// border-radius : 10px;
 	background-color:rgb(246,246,246);
     background: linear-gradient(rgb(215,215,215), rgb(246,246,246)); /* Standard syntax */
-    height: 10px;
-    width: 10px;
+    min-height: 20px;
+    min-width: 5px;
     margin-top: auto;
     margin-bottom: auto;
 }
 
 .basic_slider .subSlideZone {
-	background-color: blue; 
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	height: 20px;
 	width: 0px;
+	color: rgba(85,143,237,0.9)
 }
 .basic_slider .mainSlideZone{
 	background: linear-gradient(to left, rgb(215,215,215), rgb(246,246,246));
@@ -213,7 +218,7 @@
     display: flex;
 }
 .basic_slider .minValue, .basic_slider .maxValue {
-	font-size: 0.7em;
+	font-size: 1em;
 	font-weight: bold;
 }
 .basic_slider .minValue {
