@@ -325,7 +325,7 @@
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
                 var hash = focus.generateHash();
-                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'"><span class="sliderTitleLabel">'+descriptor.label+': </span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
+                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'" data-index='+ index +' ><span class="sliderTitleLabel">'+descriptor.label+': </span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
                 html += '<span class="minValue" data-hash='+ focus.generateHash() +' >'+ descriptor.min + '</span>';
                 html += '<div class ="sliderMechanics" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="sliderAxis" data-hash='+ focus.generateHash() +'></div>';
@@ -355,6 +355,8 @@
                     element: ret,
                     container: item,
                     value: descriptor.value,
+                    min: descriptor.min,
+                    max: descriptor.max,
                     subSliders: descriptor.subSliders.map(function(subSlider, index){
                         return {
                             element: subSliders[index],
@@ -386,10 +388,14 @@
                                 return function (e) {
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
                                     var cursorPos = focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX;
-                                    if (cursorPos <= 290 && cursorPos >= focus.removeUnity(ret.querySelector('.sliderAxis').style.left) ){
+                                    var sliderAxis = ret.querySelector('.sliderAxis');
+                                    if (cursorPos <= 290 && cursorPos >= focus.removeUnity(sliderAxis.style.left) ){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
                                     }                                     
                                     ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
+                                    var slider = self.generated()[ret.dataset.index];
+                                    slider.value = cursorPos * (slider.max - slider.min) / focus.removeUnity(sliderAxis.style.width) + slider.min;
+                                    console.log('value', slider.value);
                                     Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                        subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
