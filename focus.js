@@ -348,6 +348,25 @@
                 if(typeof descriptor.events !== 'undefined') {
                     self.delegateEvent(self.hash, descriptor.events);
                 }
+                
+                var subSliders = ret.querySelectorAll('.subSlideZone');
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    value: descriptor.value,
+                    subSliders: descriptor.subSliders.map(function(subSlider, index){
+                        return {
+                            element: subSliders[index],
+                            value: descriptor.subSliders[index].value
+                        }
+                    })
+                };
+                res = focus.recordElData(elData, res);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.delegateEvent(hash, descriptor.events);
+                }
+
                 Array.prototype.forEach.call(ret.querySelectorAll('.mainCursor, .subCursor'), function(cursor){
                     focus.bindEvent(cursor, [{
                         type: 'mousedown',
@@ -408,28 +427,26 @@
                 }]);
 
 
-                var subSliders = ret.querySelectorAll('.subSlideZone');
-                var elData = {
-                    hash: hash,
-                    element: ret,
-                    container: item,
-                    value: descriptor.value,
-                    subSliders: descriptor.subSliders.map(function(subSlider, index){
-                        return {
-                            element: subSliders[index],
-                            value: descriptor.subSliders[index].value
-                        }
-                    })
-                };
-                res = focus.recordElData(elData, res);
-                if(typeof descriptor.events !== 'undefined') {
-                    self.delegateEvent(hash, descriptor.events);
-                }
             });
             return res;
         }
         var generated = this.generate(parentEl, obj);
-        console.log('generated', generated);
+        /**
+        *   Gets the Slider updated data
+        */
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
+
+        console.log('generated', this.generated());
 
     }
 
