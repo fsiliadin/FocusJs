@@ -382,27 +382,29 @@
                     }
                  }, {
                     type: 'mousemove',
-                    handler: function (e) {
-                        if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
-                            var cursorPos = focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX;
-                            if (cursorPos <= 290 && cursorPos >= focus.removeUnity(ret.querySelector('.sliderAxis').style.left) ){
-                                focus.dragDropEl[0].style.left = cursorPos + 'px';
-                            }                                     
-                            ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
-                            Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
-                               subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
-                               Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
-                                    subZone.style.width = focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1) +'px';
-                                });
-                            });
-                        } else if (focus.dragDropEl.length) {
-                            var leftZone = ret.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
-                            var rightZone = ret.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
-                            leftZone.style.width =  (focus.removeUnity(leftZone.style.width) + e.movementX) +'px';
-                            rightZone.style.width =  (focus.removeUnity(rightZone.style.width) - e.movementX) +'px';
-                            focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
-                        }
-                    }
+                    handler: (function(ret) {
+                                return function (e) {
+                                if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
+                                    var cursorPos = focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX;
+                                    if (cursorPos <= 290 && cursorPos >= focus.removeUnity(ret.querySelector('.sliderAxis').style.left) ){
+                                        focus.dragDropEl[0].style.left = cursorPos + 'px';
+                                    }                                     
+                                    ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
+                                    Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                                       subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
+                                       Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                            subZone.style.width = focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1) +'px';
+                                        });
+                                    });
+                                } else if (focus.dragDropEl.length) {
+                                    var leftZone = ret.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
+                                    var rightZone = ret.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
+                                    leftZone.style.width =  (focus.removeUnity(leftZone.style.width) + e.movementX) +'px';
+                                    rightZone.style.width =  (focus.removeUnity(rightZone.style.width) - e.movementX) +'px';
+                                    focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
+                                }
+                            }
+                    })(ret)
                 }, {
                     type: 'mouseleave',
                     handler: function(){
@@ -411,19 +413,21 @@
                 }]);
                 focus.bindEvent(ret.querySelector('.dynamicItemsContainer'), [{
                     type: 'click',
-                    handler: function(e) {
-                        var cursor = e.target.querySelector('.mainCursor');
-                        if(cursor) {
-                            cursor.style.left = e.offsetX + 'px';
-                            ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
-                            Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
-                               subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(cursor.style.left)/(list.length+1)) - 10) + 'px';
-                               Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
-                                    subZone.style.width = focus.removeUnity(cursor.style.left)/(list.length+1) +'px';
+                    handler: (function (ret) {
+                            return function(e) {
+                            var cursor = e.target.querySelector('.mainCursor');
+                            if(cursor) {
+                                cursor.style.left = e.offsetX + 'px';
+                                ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
+                                Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                                   subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(cursor.style.left)/(list.length+1)) - 10) + 'px';
+                                   Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                        subZone.style.width = focus.removeUnity(cursor.style.left)/(list.length+1) +'px';
+                                    });
                                 });
-                            });
+                            }
                         }
-                    }
+                    })(ret)
                 }]);
 
 
