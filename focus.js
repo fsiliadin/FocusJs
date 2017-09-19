@@ -31,8 +31,14 @@
             if(dataToUpdate) {
                 dataToUpdate.element = el;
                 dataToUpdate.container = el.parentElement;
-                if('gridItems' in dataToUpdate) {
+                if ('gridItems' in dataToUpdate) {
                     dataToUpdate.gridItems = el.children;
+                }
+                if ('subSliders' in dataToUpdate) {
+                    var subSliders = dataToUpdate.element.querySelectorAll('.subSlideZone');
+                    dataToUpdate.subSliders = dataToUpdate.subSliders.forEach(function(subSlider, index){
+                        subSlider.element = subSliders[index];
+                    });
                 }
             }
             
@@ -329,7 +335,7 @@
                     html += '<div class="subSlideZone" data-hash='+ focus.generateHash() +'  data-index='+i+'>'+ descriptor.subSliders[i].label +'</div>';
                     if (i !== descriptor.subSliders.length - 1) {
                         html += '<div class="subCursor" data-hash='+ focus.generateHash() +' data-index='+i+'></div>';  
-                    }                    
+                    }             
                 }
                 html += '</div>'; // mainSlideZone end
                 html += '<div class ="mainCursor" data-hash='+ focus.generateHash() +'></div>';
@@ -401,15 +407,29 @@
                     }
                 }]);
 
-                res.push({
+
+                var subSliders = ret.querySelectorAll('.subSlideZone');
+                var elData = {
                     hash: hash,
                     element: ret,
+                    container: item,
                     value: descriptor.value,
-                    
-                })
+                    subSliders: descriptor.subSliders.map(function(subSlider, index){
+                        return {
+                            element: subSliders[index],
+                            value: descriptor.subSliders[index].value
+                        }
+                    })
+                };
+                res = focus.recordElData(elData, res);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.delegateEvent(hash, descriptor.events);
+                }
             });
+            return res;
         }
         var generated = this.generate(parentEl, obj);
+        console.log('generated', generated);
 
     }
 
