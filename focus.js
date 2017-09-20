@@ -36,7 +36,7 @@
                 }
                 if ('subSliders' in dataToUpdate) {
                     var subSliders = dataToUpdate.element.querySelectorAll('.subSlideZone');
-                    dataToUpdate.subSliders = dataToUpdate.subSliders.forEach(function(subSlider, index){
+                    dataToUpdate.subSliders.forEach(function(subSlider, index){
                         subSlider.element = subSliders[index];
                     });
                 }
