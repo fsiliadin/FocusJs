@@ -389,7 +389,7 @@
                                 var cursorPos = 0;
                                 return function (e) {
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
-                                    cursorPos += e.movementX;
+                                    cursorPos = focus.dragDropEl[0].offsetLeft + e.movementX;
                                     var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 12);
                                     if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
