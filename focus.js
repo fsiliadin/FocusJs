@@ -369,6 +369,7 @@
                     self.delegateEvent(hash, descriptor.events);
                 }
 
+                                    
                 Array.prototype.forEach.call(ret.querySelectorAll('.mainCursor, .subCursor'), function(cursor){
                     focus.bindEvent(cursor, [{
                         type: 'mousedown',
@@ -385,29 +386,30 @@
                  }, {
                     type: 'mousemove',
                     handler: (function(ret) {
+                                var cursorPos = 0;
                                 return function (e) {
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
-                                    var cursorPos = focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX;
-                                    var sliderAxis = ret.querySelector('.sliderAxis');
-                                    if (cursorPos <= 290 && cursorPos >= focus.removeUnity(sliderAxis.style.left) ){
+                                    cursorPos += e.movementX;
+                                    var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 10);
+                                    if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
                                     }                                     
                                     ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
                                     var slider = self.generated()[ret.dataset.index];
-                                    slider.value = cursorPos * (slider.max - slider.min) / focus.removeUnity(sliderAxis.style.width) + slider.min;
+                                    slider.value = Math.round(cursorPos * (slider.max - slider.min) / sliderAxisWidth + slider.min);
                                     console.log('value', slider.value);
                                     Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
-                                       subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1)) - 10) + 'px';
+                                       subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
-                                            subZone.style.width = focus.removeUnity(focus.dragDropEl[0].style.left)/(list.length+1) +'px';
+                                            subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
                                     var leftZone = ret.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
                                     var rightZone = ret.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
-                                    leftZone.style.width =  (focus.removeUnity(leftZone.style.width) + e.movementX) +'px';
-                                    rightZone.style.width =  (focus.removeUnity(rightZone.style.width) - e.movementX) +'px';
-                                    focus.dragDropEl[0].style.left = (focus.removeUnity(focus.dragDropEl[0].style.left) + e.movementX) +'px';
+                                    leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
+                                    rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
+                                    focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
                                 }
                             }
                     })(ret)
@@ -426,9 +428,9 @@
                                 cursor.style.left = e.offsetX + 'px';
                                 ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
                                 Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
-                                   subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.removeUnity(cursor.style.left)/(list.length+1)) - 10) + 'px';
+                                   subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
                                    Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
-                                        subZone.style.width = focus.removeUnity(cursor.style.left)/(list.length+1) +'px';
+                                        subZone.style.width = cursor.offsetLeft/(list.length+1) +'px';
                                     });
                                 });
                             }
