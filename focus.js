@@ -388,31 +388,32 @@
                     handler: (function(ret) {
                                 var cursorPos = 0;
                                 return function (e) {
-                                if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
+                                var slider = self.generated()[ret.dataset.index];
+                                if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {                                    
                                     cursorPos = focus.dragDropEl[0].offsetLeft + e.movementX;
-                                    var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 12);
+                                    var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
                                     if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
                                     }                                     
-                                    ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
-                                    var slider = self.generated()[ret.dataset.index];
+                                    slider.element.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
+                                    var slider = self.generated()[slider.element.dataset.index];
                                     slider.value = cursorPos * (slider.max - slider.min) / sliderAxisWidth + slider.min;
                                     slider.value = slider.value/Math.abs(slider.value) * Math.floor(Math.abs(slider.value));
                                     slider.value = slider.value > slider.max ? slider.max : slider.value;
                                     slider.value = slider.value < slider.min ? slider.min : slider.value;
-                                    var valueSpan = ret.querySelector('.sliderValue');
+                                    var valueSpan = slider.element.querySelector('.sliderValue');
                                     if (valueSpan.innerHTML !== slider.value+'') {
                                         valueSpan.innerHTML = slider.value;
                                     }
-                                    Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                                    Array.prototype.forEach.call(slider.element.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                        subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
-                                       Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                       Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
-                                    var leftZone = ret.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
-                                    var rightZone = ret.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
+                                    var leftZone = slider.element.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
+                                    var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
                                     focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
@@ -429,29 +430,29 @@
                     type: 'click',
                     handler: (function (ret) {
                             return function(e) {
+                            var slider = self.generated()[ret.dataset.index];
                             // important, we query the cursor in the target because we don't want to perform actions below on click on mainSlideZone
                             // since mainSlideZone is before dynamicItemsContainer, we get cursor only if we click at the right of mainCursor 
                             // in others words the click can only set the slider value bigger
                             var cursor = e.target.querySelector('.mainCursor');
                             if(cursor) {
                                 var cursorPos = e.offsetX;
-                                var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 12);
+                                var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
                                 if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                   cursor.style.left = cursorPos + 'px';
                                 } 
-                                var slider = self.generated()[ret.dataset.index];
                                 slider.value = cursor.offsetLeft * (slider.max - slider.min) / sliderAxisWidth + slider.min;
                                 slider.value = slider.value/Math.abs(slider.value) * Math.floor(Math.abs(slider.value));
                                 slider.value = slider.value > slider.max ? slider.max : slider.value;
                                 slider.value = slider.value < slider.min ? slider.min : slider.value;
-                                var valueSpan = ret.querySelector('.sliderValue');
+                                var valueSpan = slider.element.querySelector('.sliderValue');
                                 if (valueSpan.innerHTML !== slider.value+'') {
                                     valueSpan.innerHTML = slider.value;
                                 }
-                                ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
-                                Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
+                                slider.element.querySelector('.mainSlideZone').style.width = cursor.style.left;
+                                Array.prototype.forEach.call(slider.element.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                    subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
-                                   Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
+                                   Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone){
                                         subZone.style.width = cursor.offsetLeft/(list.length+1) +'px';
                                     });
                                 });
