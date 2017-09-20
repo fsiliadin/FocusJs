@@ -407,7 +407,7 @@
                                     }
                                     Array.prototype.forEach.call(slider.element.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                        subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
-                                       Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone){
+                                       Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
                                         });
                                     });
@@ -452,8 +452,9 @@
                                 slider.element.querySelector('.mainSlideZone').style.width = cursor.style.left;
                                 Array.prototype.forEach.call(slider.element.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                    subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
-                                   Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone){
+                                   Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                         subZone.style.width = cursor.offsetLeft/(list.length+1) +'px';
+                                        slider.subSliders[index].value = Math.trunc(slider.value/3);
                                     });
                                 });
                             }
