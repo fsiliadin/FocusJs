@@ -390,14 +390,16 @@
                                 return function (e) {
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {
                                     cursorPos += e.movementX;
-                                    var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 10);
+                                    var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 12);
                                     if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
                                     }                                     
                                     ret.querySelector('.mainSlideZone').style.width = focus.dragDropEl[0].style.left;
                                     var slider = self.generated()[ret.dataset.index];
-                                    slider.value = Math.round(cursorPos * (slider.max - slider.min) / sliderAxisWidth + slider.min);
-                                    console.log('value', slider.value);
+                                    slider.value = cursorPos * (slider.max - slider.min) / sliderAxisWidth + slider.min;
+                                    slider.value = slider.value/Math.abs(slider.value) * Math.floor(Math.abs(slider.value));
+                                    slider.value = slider.value > slider.max ? slider.max : slider.value;
+                                    slider.value = slider.value < slider.min ? slider.min : slider.value;
                                     Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                        subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
