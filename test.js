@@ -127,8 +127,8 @@ window.onload = function(){
 		jst.changeText('jesusScript is back');
 		var newSlider = new Slider('.gridItem', {
 			label: 'swag level',
-			min: 10,
-			max: 20,
+			min: -1000,
+			max: 1000,
 			value:100,
 			subSliders: [
 			{

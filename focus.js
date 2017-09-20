@@ -325,7 +325,7 @@
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
                 var hash = focus.generateHash();
-                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'" data-index='+ index +' ><span class="sliderTitleLabel">'+descriptor.label+': </span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
+                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'" data-index='+ index +' ><span class="sliderTitleLabel" data-hash="'+focus.generateHash()+'">'+descriptor.label+': <span class="sliderValue" data-hash = "'+focus.generateHash()+'">'+descriptor.value+'</span></span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
                 html += '<span class="minValue" data-hash='+ focus.generateHash() +' >'+ descriptor.min + '</span>';
                 html += '<div class ="sliderMechanics" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="sliderAxis" data-hash='+ focus.generateHash() +'></div>';
@@ -400,6 +400,10 @@
                                     slider.value = slider.value/Math.abs(slider.value) * Math.floor(Math.abs(slider.value));
                                     slider.value = slider.value > slider.max ? slider.max : slider.value;
                                     slider.value = slider.value < slider.min ? slider.min : slider.value;
+                                    var valueSpan = ret.querySelector('.sliderValue');
+                                    if (valueSpan.innerHTML !== slider.value+'') {
+                                        valueSpan.innerHTML = slider.value;
+                                    }
                                     Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                        subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){

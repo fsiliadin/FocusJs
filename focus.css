@@ -220,6 +220,7 @@
 .basic_slider .minValue, .basic_slider .maxValue {
 	font-size: 1em;
 	font-weight: bold;
+	position: inherit;
 }
 .basic_slider .minValue {
 	margin-left: 20px;
