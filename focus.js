@@ -405,7 +405,7 @@
                                         valueSpan.innerHTML = slider.value;
                                     }
                                     Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
-                                       subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
+                                       subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(ret.querySelectorAll('.subSlideZone'), function(subZone){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
                                         });
@@ -429,9 +429,25 @@
                     type: 'click',
                     handler: (function (ret) {
                             return function(e) {
+                            // important, we query the cursor in the target because we don't want to perform actions below on click on mainSlideZone
+                            // since mainSlideZone is before dynamicItemsContainer, we get cursor only if we click at the right of mainCursor 
+                            // in others words the click can only set the slider value bigger
                             var cursor = e.target.querySelector('.mainCursor');
                             if(cursor) {
-                                cursor.style.left = e.offsetX + 'px';
+                                var cursorPos = e.offsetX;
+                                var sliderAxisWidth = (ret.querySelector('.sliderAxis').offsetWidth - 12);
+                                if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
+                                  cursor.style.left = cursorPos + 'px';
+                                } 
+                                var slider = self.generated()[ret.dataset.index];
+                                slider.value = cursor.offsetLeft * (slider.max - slider.min) / sliderAxisWidth + slider.min;
+                                slider.value = slider.value/Math.abs(slider.value) * Math.floor(Math.abs(slider.value));
+                                slider.value = slider.value > slider.max ? slider.max : slider.value;
+                                slider.value = slider.value < slider.min ? slider.min : slider.value;
+                                var valueSpan = ret.querySelector('.sliderValue');
+                                if (valueSpan.innerHTML !== slider.value+'') {
+                                    valueSpan.innerHTML = slider.value;
+                                }
                                 ret.querySelector('.mainSlideZone').style.width = cursor.style.left;
                                 Array.prototype.forEach.call(ret.querySelectorAll('.subCursor'), function (subCursor, index, list) {
                                    subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
