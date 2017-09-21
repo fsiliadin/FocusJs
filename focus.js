@@ -386,11 +386,11 @@
                  }, {
                     type: 'mousemove',
                     handler: (function(ret) {
-                                var cursorPos = 0;
+                                
                                 return function (e) {
-                                var slider = self.generated()[ret.dataset.index];
-                                if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) {                                    
-                                    cursorPos = focus.dragDropEl[0].offsetLeft + e.movementX;
+                                var slider = self.generated()[ret.dataset.index];                                    
+                                if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) { 
+                                    var cursorPos = focus.dragDropEl[0].offsetLeft + e.movementX;
                                     var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
                                     if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
@@ -409,15 +409,22 @@
                                        subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
+                                            slider.subSliders[index].value = slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
+                                    cursorPos = slider.element.querySelector('.mainCursor').offsetLeft
+                                    var subCursors = slider.element.querySelectorAll('.subCursor');  
                                     var leftZone = slider.element.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
                                     var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
                                     focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
+                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value = Math.trunc((leftZone.offsetWidth + (subCursors[0].offsetWidth * subCursors.length)/(subCursors.length+1)) * (slider.value - slider.min) / cursorPos);
+                                    slider.subSliders[parseInt(focus.dragDropEl[0].dataset.index) + 1].value = Math.trunc((rightZone.offsetWidth + (subCursors[0].offsetWidth * subCursors.length)/(subCursors.length+1)) * (slider.value - slider.min) / cursorPos);
+                                    
                                 }
+                                console.log(slider);
                             }
                     })(ret)
                 }, {
@@ -454,9 +461,10 @@
                                    subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
                                    Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                         subZone.style.width = cursor.offsetLeft/(list.length+1) +'px';
-                                        slider.subSliders[index].value = Math.trunc(slider.value/3);
+                                        slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
                                     });
                                 });
+                                console.log('CLFDF', slider)
                             }
                         }
                     })(ret)
