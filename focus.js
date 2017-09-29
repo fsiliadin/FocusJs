@@ -386,7 +386,7 @@
                  }, {
                     type: 'mousemove',
                     handler: (function(ret) {
-                                
+                                var adjustementValue =0;
                                 return function (e) {
                                 var slider = self.generated()[ret.dataset.index];                                    
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) { 
@@ -413,15 +413,34 @@
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
-                                    cursorPos = slider.element.querySelector('.mainCursor').offsetLeft
+                                    cursorPos = slider.element.querySelector('.mainCursor').offsetLeft;
+                                    focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
                                     var subCursors = slider.element.querySelectorAll('.subCursor');  
                                     var leftZone = slider.element.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
-                                    var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+(parseInt(focus.dragDropEl[0].dataset.index) +1)+'"]');
+                                    var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+((focus.dragDropEl[0].dataset.index | 0) +1)+'"]');
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
-                                    focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
-                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value = Math.trunc((leftZone.offsetWidth + (subCursors[0].offsetWidth * subCursors.length)/(subCursors.length+1)) * (slider.value - slider.min) / cursorPos);
-                                    slider.subSliders[parseInt(focus.dragDropEl[0].dataset.index) + 1].value = Math.trunc((rightZone.offsetWidth + (subCursors[0].offsetWidth * subCursors.length)/(subCursors.length+1)) * (slider.value - slider.min) / cursorPos);
+                                    var leftWidth = 0, rightWidth = 0;
+                                    if (leftZone.offsetWidth) {
+                                        console.log(focus.dragDropEl[0].dataset.index)
+                                        if (focus.dragDropEl[0].dataset.index == 0) {
+                                        console.log('focus.dragDropEl[0].dataset.index')
+                                            leftWidth = leftZone.offsetWidth + subCursors[0].offsetWidth / 2;
+                                        } else {
+                                            leftWidth = leftZone.offsetWidth + subCursors[0].offsetWidth;
+                                        }
+                                    } 
+                                    if (rightZone.offsetWidth) {
+                                        if (focus.dragDropEl[0].dataset.index == subCursors.length -1) {
+                                            rightWidth = rightZone.offsetWidth + subCursors[0].offsetWidth / 2;
+                                        } else {
+                                            rightWidth = rightZone.offsetWidth + subCursors[0].offsetWidth;
+                                        }
+                                    }
+                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value = Math.round( leftWidth * (slider.value - slider.min) / cursorPos);
+                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value = Math.round( rightWidth * (slider.value - slider.min) / cursorPos);
+
+                                   
                                     
                                 }
                                 console.log(slider);
