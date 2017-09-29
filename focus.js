@@ -386,7 +386,7 @@
                  }, {
                     type: 'mousemove',
                     handler: (function(ret) {
-                                var adjustementValue =0;
+                                var previous = -1;
                                 return function (e) {
                                 var slider = self.generated()[ret.dataset.index];                                    
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) { 
@@ -421,24 +421,41 @@
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
                                     var leftWidth = 0, rightWidth = 0;
+                                    if (!leftZone.offsetWidth || !rightZone.offsetWidth) {
+                                        var inc = (focus.dragDropEl[0].dataset.index == 0 || focus.dragDropEl[0].dataset.index == subCursors.length -1) ? 1 : 2;
+                                        var unVoidZones = Array.prototype.filter.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
+                                            if(subZone.offsetWidth === 0) {
+                                                subZone.dataset.adjustementValue = 0;
+                                            }
+                                            return subZone.offsetWidth !== 0;
+                                        });
+                                        Array.prototype.forEach.call(unVoidZones, function(unVoidZone) {
+                                            if (typeof unVoidZone.dataset.adjustementValue !== 'undefined') {
+                                                unVoidZone.dataset.adjustementValue = parseFloat(unVoidZone.dataset.adjustementValue) + inc * subCursors[0].offsetWidth / 2 / unVoidZones.length;
+                                            } else {
+                                                unVoidZone.dataset.adjustementValue =  inc * subCursors[0].offsetWidth / 2 / unVoidZones.length;
+                                            }
+                                        });
+                                    }
                                     if (leftZone.offsetWidth) {
-                                        console.log(focus.dragDropEl[0].dataset.index)
                                         if (focus.dragDropEl[0].dataset.index == 0) {
-                                        console.log('focus.dragDropEl[0].dataset.index')
-                                            leftWidth = leftZone.offsetWidth + subCursors[0].offsetWidth / 2;
+                                            leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + subCursors[0].offsetWidth / 2;
                                         } else {
-                                            leftWidth = leftZone.offsetWidth + subCursors[0].offsetWidth;
-                                        }
-                                    } 
-                                    if (rightZone.offsetWidth) {
-                                        if (focus.dragDropEl[0].dataset.index == subCursors.length -1) {
-                                            rightWidth = rightZone.offsetWidth + subCursors[0].offsetWidth / 2;
-                                        } else {
-                                            rightWidth = rightZone.offsetWidth + subCursors[0].offsetWidth;
+                                            leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + subCursors[0].offsetWidth;
                                         }
                                     }
-                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value = Math.round( leftWidth * (slider.value - slider.min) / cursorPos);
-                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value = Math.round( rightWidth * (slider.value - slider.min) / cursorPos);
+                                    if (rightZone.offsetWidth) {
+                                        if (focus.dragDropEl[0].dataset.index == subCursors.length -1) {
+                                            rightWidth = parseFloat(rightZone.dataset.adjustementValue) + rightZone.offsetWidth + subCursors[0].offsetWidth / 2;
+                                        } else {
+                                            rightWidth = parseFloat(rightZone.dataset.adjustementValue | 0) + rightZone.offsetWidth + subCursors[0].offsetWidth;
+                                        }
+                                    }
+
+                                        console.log('left', leftWidth)
+                                        console.log('right', rightWidth)
+                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value =  leftWidth * (slider.value - slider.min) / cursorPos;
+                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value =  rightWidth * (slider.value - slider.min) / cursorPos;
 
                                    
                                     
