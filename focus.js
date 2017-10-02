@@ -413,51 +413,30 @@
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
-                                    cursorPos = slider.element.querySelector('.mainCursor').offsetLeft;
+                                    cursorPos = slider.element.querySelector('.mainSlideZone').offsetWidth;
                                     focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
                                     var subCursors = slider.element.querySelectorAll('.subCursor');  
                                     var leftZone = slider.element.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
                                     var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+((focus.dragDropEl[0].dataset.index | 0) +1)+'"]');
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
-                                    var leftWidth = 0, rightWidth = 0;
-                                    var inc = (focus.dragDropEl[0].dataset.index == 0 || focus.dragDropEl[0].dataset.index == subCursors.length -1) ? 1 : 2;
-                                    if (!leftZone.offsetWidth || !rightZone.offsetWidth) {
-                                        var unVoidZones = Array.prototype.filter.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
-                                            if(subZone.offsetWidth === 0) {
-                                                subZone.dataset.adjustementValue = 0;
-                                            }
-                                            return subZone.offsetWidth !== 0;
-                                        });
-                                        Array.prototype.forEach.call(unVoidZones, function(unVoidZone) {
-                                            if (typeof unVoidZone.dataset.adjustementValue !== 'undefined') {
-                                                unVoidZone.dataset.adjustementValue = parseFloat(unVoidZone.dataset.adjustementValue) + inc * subCursors[0].offsetWidth / 2 / unVoidZones.length;
-                                            } else {
-                                                unVoidZone.dataset.adjustementValue =  inc * subCursors[0].offsetWidth / 2 / unVoidZones.length;
-                                            }
-                                        });
-                                    }
-                                    if (leftZone.offsetWidth) {
-                                        if(isNaN(leftZone.dataset.adjustementValue)) {
-                                            leftZone.dataset.adjustementValue = 0
-                                        }
-                                        leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + inc * subCursors[0].offsetWidth / 2;
-                                        
-                                    }
-                                    if (rightZone.offsetWidth) {
-                                        if(isNaN(rightZone.dataset.adjustementValue)) {
-                                            rightZone.dataset.adjustementValue = 0
-                                        }
-                                        rightWidth = parseFloat(rightZone.dataset.adjustementValue) + rightZone.offsetWidth + inc * subCursors[0].offsetWidth / 2;
-                                    }
-
-                                        console.log('left', leftWidth)
-                                        console.log('right', rightWidth)
-                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value =  leftWidth * (slider.value - slider.min) / cursorPos;
-                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value =  rightWidth * (slider.value - slider.min) / cursorPos;
-
-                                   
                                     
+                                    var adjustementValue = 0;
+                                    var unVoidZones = Array.prototype.filter.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
+                                        if (subZone.offsetWidth === 0) {
+                                            var inc = (subZone.dataset.index == 0 || subZone.dataset.index == subCursors.length) ? 1 : 2;
+                                            adjustementValue += inc * subCursors[0].offsetWidth / 2;
+                                            subZone.dataset.virtualWidth = 0;
+                                        }
+                                        return subZone.offsetWidth !== 0;
+                                    });
+                                    console.log(unVoidZones)
+                                    Array.prototype.forEach.call(unVoidZones, function(unVoidZone) {
+                                        var inc = (unVoidZone.dataset.index == 0 || unVoidZone.dataset.index == subCursors.length) ? 1 : 2;
+                                        unVoidZone.dataset.virtualWidth = unVoidZone.offsetWidth + inc * subCursors[0].offsetWidth / 2 + adjustementValue / unVoidZones.length;
+                                    });
+                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value =  leftZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
+                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value =  rightZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
                                 }
                                 console.log(slider);
                             }
