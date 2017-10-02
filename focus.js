@@ -438,6 +438,9 @@
                                         });
                                     }
                                     if (leftZone.offsetWidth) {
+                                        if(isNaN(leftZone.dataset.adjustementValue)) {
+                                            leftZone.dataset.adjustementValue = 0
+                                        }
                                         if (focus.dragDropEl[0].dataset.index == 0) {
                                             leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + subCursors[0].offsetWidth / 2;
                                         } else {
@@ -445,6 +448,9 @@
                                         }
                                     }
                                     if (rightZone.offsetWidth) {
+                                        if(isNaN(rightZone.dataset.adjustementValue)) {
+                                            rightZone.dataset.adjustementValue = 0
+                                        }
                                         if (focus.dragDropEl[0].dataset.index == subCursors.length -1) {
                                             rightWidth = parseFloat(rightZone.dataset.adjustementValue) + rightZone.offsetWidth + subCursors[0].offsetWidth / 2;
                                         } else {
