@@ -421,8 +421,8 @@
                                     leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
                                     rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
                                     var leftWidth = 0, rightWidth = 0;
+                                    var inc = (focus.dragDropEl[0].dataset.index == 0 || focus.dragDropEl[0].dataset.index == subCursors.length -1) ? 1 : 2;
                                     if (!leftZone.offsetWidth || !rightZone.offsetWidth) {
-                                        var inc = (focus.dragDropEl[0].dataset.index == 0 || focus.dragDropEl[0].dataset.index == subCursors.length -1) ? 1 : 2;
                                         var unVoidZones = Array.prototype.filter.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
                                             if(subZone.offsetWidth === 0) {
                                                 subZone.dataset.adjustementValue = 0;
@@ -441,21 +441,14 @@
                                         if(isNaN(leftZone.dataset.adjustementValue)) {
                                             leftZone.dataset.adjustementValue = 0
                                         }
-                                        if (focus.dragDropEl[0].dataset.index == 0) {
-                                            leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + subCursors[0].offsetWidth / 2;
-                                        } else {
-                                            leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + subCursors[0].offsetWidth;
-                                        }
+                                        leftWidth = parseFloat(leftZone.dataset.adjustementValue) + leftZone.offsetWidth + inc * subCursors[0].offsetWidth / 2;
+                                        
                                     }
                                     if (rightZone.offsetWidth) {
                                         if(isNaN(rightZone.dataset.adjustementValue)) {
                                             rightZone.dataset.adjustementValue = 0
                                         }
-                                        if (focus.dragDropEl[0].dataset.index == subCursors.length -1) {
-                                            rightWidth = parseFloat(rightZone.dataset.adjustementValue) + rightZone.offsetWidth + subCursors[0].offsetWidth / 2;
-                                        } else {
-                                            rightWidth = parseFloat(rightZone.dataset.adjustementValue | 0) + rightZone.offsetWidth + subCursors[0].offsetWidth;
-                                        }
+                                        rightWidth = parseFloat(rightZone.dataset.adjustementValue) + rightZone.offsetWidth + inc * subCursors[0].offsetWidth / 2;
                                     }
 
                                         console.log('left', leftWidth)
