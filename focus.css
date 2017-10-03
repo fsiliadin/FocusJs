@@ -216,6 +216,7 @@
 	width: 0px;
 	background-color: white;
     display: flex;
+    overflow: hidden;
 }
 .basic_slider .minValue, .basic_slider .maxValue {
 	font-size: 1em;
