@@ -304,6 +304,26 @@
         this.generate(parentEl, obj);
     }
 
+    /**
+    * Generates one or several Slider(s).
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the Slider(s)
+    * @param {Object} obj - the Slider descriptor:
+    *   class: an array of classes to be added to each Slider
+    *   id: the id of the Slider, if specified the Slider will be generated only in the first container
+    *   events: an array of the event object to bind on the Slider:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
+    *   label: the Slider title
+    *   value: initial value of the Slider
+    *   min: Slider's min value
+    *   max: Slider's max value
+    *   subSliders: an array of Slider subzones
+    *       label: label of the subzone
+    *       color: color of the subzone
+    *       value: initial value of the subzone
+    * @param {Number} positionInNodeList - the position of the Slider between its siblings
+    */
     function Slider (parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         this.generate = function (container, descriptor) {
