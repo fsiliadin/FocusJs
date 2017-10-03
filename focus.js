@@ -429,7 +429,7 @@
                                        subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
-                                            slider.subSliders[index].value = slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
+                                            slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
