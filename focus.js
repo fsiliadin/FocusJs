@@ -460,8 +460,9 @@
                                     });
                                     Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
                                         subZone.dataset.virtualWidth = subZone.dataset.virtualWidth < 0 ? 0 : subZone.dataset.virtualWidth;
-                                        slider.subSliders[subZone.dataset.index].value = subZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
+                                        slider.subSliders[subZone.dataset.index].value = Math.round(subZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos);
                                     });
+                                    console.log(slider);
                                 }
                             }
                     })(ret)
