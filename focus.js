@@ -426,17 +426,24 @@
                                         if (subZone.offsetWidth === 0) {
                                             var inc = (subZone.dataset.index == 0 || subZone.dataset.index == subCursors.length) ? 1 : 2;
                                             adjustementValue += inc * subCursors[0].offsetWidth / 2;
-                                            subZone.dataset.virtualWidth = 0;
+                                            if(subZone.dataset.virtualWidth > 0) {
+                                            console.log(adjustementValue)
+                                                adjustementValue += subZone.dataset.virtualWidth;
+                                            }
+                                            subZone.dataset.virtualWidth = -1;
                                         }
-                                        return subZone.offsetWidth !== 0;
+                                        return subZone.offsetWidth > 0;
                                     });
+
                                     console.log(unVoidZones)
                                     Array.prototype.forEach.call(unVoidZones, function(unVoidZone) {
                                         var inc = (unVoidZone.dataset.index == 0 || unVoidZone.dataset.index == subCursors.length) ? 1 : 2;
                                         unVoidZone.dataset.virtualWidth = unVoidZone.offsetWidth + inc * subCursors[0].offsetWidth / 2 + adjustementValue / unVoidZones.length;
                                     });
-                                    slider.subSliders[focus.dragDropEl[0].dataset.index].value =  leftZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
-                                    slider.subSliders[(focus.dragDropEl[0].dataset.index | 0) + 1].value =  rightZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
+                                    Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
+                                        subZone.dataset.virtualWidth = subZone.dataset.virtualWidth < 0 ? 0 : subZone.dataset.virtualWidth;
+                                        slider.subSliders[subZone.dataset.index].value = subZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
+                                    });
                                 }
                                 console.log(slider);
                             }
