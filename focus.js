@@ -427,7 +427,6 @@
                                             var inc = (subZone.dataset.index == 0 || subZone.dataset.index == subCursors.length) ? 1 : 2;
                                             adjustementValue += inc * subCursors[0].offsetWidth / 2;
                                             if(subZone.dataset.virtualWidth > 0) {
-                                            console.log(adjustementValue)
                                                 adjustementValue += subZone.dataset.virtualWidth;
                                             }
                                             subZone.dataset.virtualWidth = -1;
@@ -435,7 +434,6 @@
                                         return subZone.offsetWidth > 0;
                                     });
 
-                                    console.log(unVoidZones)
                                     Array.prototype.forEach.call(unVoidZones, function(unVoidZone) {
                                         var inc = (unVoidZone.dataset.index == 0 || unVoidZone.dataset.index == subCursors.length) ? 1 : 2;
                                         unVoidZone.dataset.virtualWidth = unVoidZone.offsetWidth + inc * subCursors[0].offsetWidth / 2 + adjustementValue / unVoidZones.length;
@@ -445,7 +443,6 @@
                                         slider.subSliders[subZone.dataset.index].value = subZone.dataset.virtualWidth * (slider.value - slider.min) / cursorPos;
                                     });
                                 }
-                                console.log(slider);
                             }
                     })(ret)
                 }, {
