@@ -145,6 +145,7 @@ window.onload = function(){
 		// grid2.generated()[0].gridItems[1].addContent({
 		// 	content: jst
 		// });
+	newSlider.setValue(56);
 		jst.changeText('jesusScript is back');
 		
 	}
