@@ -1216,7 +1216,7 @@
             if (params.to) {
                 this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
             } else {
-               this.generated.forEach(function (grid) {
+               this.generated().forEach(function (grid) {
                     self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
                });
             }
@@ -1243,7 +1243,7 @@
                 } catch(e){}
                 
             } else {
-                this.generated.forEach(function (grid) {
+                this.generated().forEach(function (grid) {
                     try {
                         Array.prototype.forEach.call(grid.gridItems, function (gridItem, index) {
                             if (index === params.contents.length) {
@@ -1270,7 +1270,7 @@
             if (params.from) {
                 params.from.element.children[params.positionInNodeList].remove();
             } else {
-                this.generated.forEach(function(grid) {
+                this.generated().forEach(function(grid) {
                     grid.element.children[params.positionInNodeList].remove();
                 });
             }
