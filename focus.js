@@ -476,12 +476,14 @@
                     type: 'click',
                     handler: (function (ret) {
                             return function(e) {
+                            console.log('eeeee', e);
                             var slider = self.generated()[ret.dataset.index];
                             // important, we query the cursor in the target because we don't want to perform actions below on click on mainSlideZone
                             // since mainSlideZone is before dynamicItemsContainer, we get cursor only if we click at the right of mainCursor 
                             // in others words the click can only set the slider value bigger
                             var cursor = e.target.querySelector('.mainCursor');
                             if(cursor) {
+                                console.log('OOFFFSET LEFT', cursor.offsetLeft)
                                 var cursorPos = e.offsetX;
                                 var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
                                 if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
@@ -514,6 +516,23 @@
             return res;
         }
         var generated = this.generate(parentEl, obj);
+
+        this.setValue = function (value, slider) {
+            if (slider) {
+                slider.value = value;
+                var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
+                mainCursorPos = (value - slider.min) * sliderAxisWidth / (slider.max - slider.min);  
+                slider.element.querySelector('.mainCursor').style.left = mainCursorPos + 'px';
+                console.log('mainCursorPos', mainCursorPos);
+                var customEvent = new Event("click", {"bubbles":true, "cancelable":false, "offsetX": mainCursorPos});
+                slider.element.querySelector('.dynamicItemsContainer').dispatchEvent(customEvent);
+            } else {
+                var self = this;
+                this.generated().forEach(function (slider) {
+                    self.setValue(value, slider);
+                })
+            }
+        }
         /**
         *   Gets the Slider updated data
         */
