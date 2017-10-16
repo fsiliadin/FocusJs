@@ -1189,7 +1189,7 @@
                     content = obj.content.generated()[0].element.outerHTML;
                     obj.content.generated()[0].element.remove();
                 } else {
-                    content = obj.content;
+                    content = '<span data-hash= ' + focus.generateHash() + '>' + obj.content + '</span>';
                 }
                 self.__proto__.generate(content, this, obj.positionInNodeList);
             };
