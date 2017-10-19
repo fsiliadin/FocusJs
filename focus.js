@@ -345,7 +345,7 @@
                 classes = descriptor.class.join(' ');
                 // creation of a hash to identify each element
                 var hash = focus.generateHash();
-                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'" data-index='+ index +' ><span class="sliderTitleLabel" data-hash="'+focus.generateHash()+'">'+descriptor.label+': <span class="sliderValue" data-hash = "'+focus.generateHash()+'">'+descriptor.value+'</span></span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
+                html = '<div id="'+descriptor.id+'" class=' + classes + ' data-hash="'+hash+'" data-index='+ index +' ><span class="sliderTitleLabel" data-hash="'+focus.generateHash()+'">'+(descriptor.label ? descriptor.label+':' : '')+' <span class="sliderValue" data-hash = "'+focus.generateHash()+'">'+descriptor.value+'</span></span><div class="sliderCore" data-hash='+focus.generateHash()+'>';
                 html += '<span class="minValue" data-hash='+ focus.generateHash() +' >'+ descriptor.min + '</span>';
                 html += '<div class ="sliderMechanics" data-hash='+ focus.generateHash() +'>';
                 html += '<div class ="sliderAxis" data-hash='+ focus.generateHash() +'></div>';
