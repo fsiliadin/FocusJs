@@ -1167,6 +1167,12 @@
                         child.addEventListener('click', function(event){
                             if(!focus.hasClass(event.target, 'selected')) {
                                 focus.addClass(event.target, 'selected');
+                                if (descriptor.checkable ==='single') {
+                                    self.generated()[index].selectedItems.forEach(function(selectedItem) {
+                                        focus.removeClass(selectedItem, 'selected');
+                                    });
+                                    self.generated()[index].selectedItems.length = 0;
+                                }
                                 self.generated()[index].selectedItems.push(child);
                             } else {
                                 focus.removeClass(event.target, 'selected');
