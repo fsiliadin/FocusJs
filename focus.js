@@ -62,8 +62,8 @@
                 }
                 // if the generated element "existed" before this function call (reinsertion) we rebind
                 // its events on it after reinsertion
-                this.rebindEvents(parentEl.lastChild);
-                return parentEl.lastChild;
+                this.rebindEvents(parentEl.children[siblings.length - 1]);
+                return parentEl.children[siblings.length - 1];
             } else {
                 siblings[positionInNodeList].insertAdjacentHTML("beforebegin", htmlStr);
                 this.rebindEvents(parentEl.children[positionInNodeList]);
