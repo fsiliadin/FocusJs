@@ -1167,7 +1167,6 @@
                         child.addEventListener('click', function(event){
                             if(!focus.hasClass(event.target, 'selected')) {
                                 focus.addClass(event.target, 'selected');
-                                console.debug('self' ,self)
                                 self.generated()[index].selectedItems.push(child);
                             } else {
                                 focus.removeClass(event.target, 'selected');

@@ -133,10 +133,7 @@ window.onload = function(){
 			id:"badabousm",
 			itemWidth: '350px',
 			nbItems:3,
-			contents: [{
-				content: newSlider,
-				width: '600px'
-			}]
+			checkable: 'multiple'
 		});
 		var scrolla = new Scroller (".gridItem, body", {
 			class: ['thci'],
