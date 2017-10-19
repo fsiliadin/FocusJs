@@ -1108,6 +1108,7 @@
     *   itemWidth: the width of grid items, if not specified item will wrap its content
     *   itemHeight: the height of the grid items, if not specifies but itemWidth is specified itemHeight = itemWidth
     *   nbItems: the number of items in the grid
+    *   checkable: 'multiple'/'single'/<default> either the grid can behave like a radiobutton or not. Multiple means several item can be clicked
     *   contents: An array of content object that grid items will be generated from. contents.length replaces nbItems:
     *       content: an html string or any focus generated widget
     *       width: the width of grid item the content will be insert in, if not specified item will wrap its content
@@ -1126,6 +1127,7 @@
         *   element: the grid element as it is in the DOM
         *   gridItems: a NodeList of the grid items   
         *   container: the parent element of each generated grid
+        *   selectedItems: the selected items of the grid
         */
         this.generate = function (container, descriptor) {
             var html = '';
@@ -1161,12 +1163,26 @@
                 ret = self.__proto__.generate(html, item, positionInNodeList);
                 Array.prototype.forEach.call(ret.children, function (child){
                     self.addGridItemMethods(child);
+                    if(descriptor.checkable) {
+                        child.addEventListener('click', function(event){
+                            if(!focus.hasClass(event.target, 'selected')) {
+                                focus.addClass(event.target, 'selected');
+                                console.debug('self' ,self)
+                                self.generated()[index].selectedItems.push(child);
+                            } else {
+                                focus.removeClass(event.target, 'selected');
+                                self.generated()[index].selectedItems.splice(self.generated()[index].selectedItems.indexOf(event.target), 1);
+                            }
+                        })
+                    }
+                    
                 });
                 var elData = {
                     hash: hash,
                     element: ret,
                     container: item,
-                    gridItems: ret.children
+                    gridItems: ret.children,
+                    selectedItems: []
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
