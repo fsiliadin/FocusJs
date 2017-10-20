@@ -129,10 +129,11 @@ window.onload = function(){
 			}]
 		});
 		var grid2 = new Grid ("", {
-			class: ['super', 'style', 'grid'],
+			class: ['super', 'style', 'grid', 'listAlikeGrid'],
 			id:"badabousm",
-			itemWidth: '350px',
-			nbItems:3,
+			itemWidth: '700px',
+			itemHeight: '100px',
+			nbItems:13,
 			checkable: 'single'
 		});
 		var scrolla = new Scroller (".gridItem, body", {

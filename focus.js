@@ -1100,7 +1100,7 @@
     * @constructor
     * @param {String} parentSelector - the selector that will determine the container(s) of the grid(s)
     * @param {Object} obj - the grid descriptor:
-    *   class: an array of classes to be added to each Grid
+    *   class: an array of classes to be added to each Grid (add 'listAlikeGrid' class to make grid behave like a list)
     *   id: the id of the grid, if specified the grid will be generated only in the first container
     *   events: an array of the event object to bind on the grid:
     *       type: a string representing the type of event
