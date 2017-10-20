@@ -1140,7 +1140,11 @@
                 descriptor.class = []
             }
             Array.prototype.forEach.call(container, function (item, index){
-                descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
+                if(descriptor.class.indexOf('listAlikeGrid') === -1) {
+                    descriptor.class.indexOf('basic_grid') === -1 ? descriptor.class.push('basic_grid'):'';
+                } else {
+                    descriptor.class.push('listAlikeGrid');
+                }
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
                 var L = descriptor.itemWidth;
