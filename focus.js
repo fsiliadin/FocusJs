@@ -1165,8 +1165,8 @@
                     self.addGridItemMethods(child);
                     if(descriptor.checkable) {
                         child.addEventListener('click', function(event){
-                            if(!focus.hasClass(event.target, 'selected')) {
-                                focus.addClass(event.target, 'selected');
+                            if(!focus.hasClass(child, 'selected')) {
+                                focus.addClass(child, 'selected');
                                 if (descriptor.checkable ==='single') {
                                     self.generated()[index].selectedItems.forEach(function(selectedItem) {
                                         focus.removeClass(selectedItem, 'selected');
@@ -1175,8 +1175,8 @@
                                 }
                                 self.generated()[index].selectedItems.push(child);
                             } else {
-                                focus.removeClass(event.target, 'selected');
-                                self.generated()[index].selectedItems.splice(self.generated()[index].selectedItems.indexOf(event.target), 1);
+                                focus.removeClass(child, 'selected');
+                                self.generated()[index].selectedItems.splice(self.generated()[index].selectedItems.indexOf(child), 1);
                             }
                         })
                     }
