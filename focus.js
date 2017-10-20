@@ -429,7 +429,7 @@
                                        subCursor.style.left = ((parseInt(subCursor.dataset.index) + 1) * (focus.dragDropEl[0].offsetLeft/(list.length+1)) - 10) + 'px';
                                        Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                             subZone.style.width = focus.dragDropEl[0].offsetLeft/(list.length+1) +'px';
-                                            slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
+                                            slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/slider.subSliders.length);
                                         });
                                     });
                                 } else if (focus.dragDropEl.length) {
@@ -502,7 +502,7 @@
                                    subCursor.style.left = (((subCursor.dataset.index|0) + 1) * (cursor.offsetLeft/(list.length+1)) - 10) + 'px';
                                    Array.prototype.forEach.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone, index){
                                         subZone.style.width = cursor.offsetLeft/(list.length+1) +'px';
-                                        slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/3);
+                                        slider.subSliders[index].value = Math.trunc((slider.value - slider.min)/slider.subSliders.length);
                                     });
                                 });
                                 console.log('CLFDF', slider)
