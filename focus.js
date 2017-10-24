@@ -1367,7 +1367,7 @@
 
             for (var i = 0; i < word.length; i++) {
                 if (i < ref.length) {
-                    rate += (ref.charAt(i) === word.charAt(i)) * Math.pow(2, ref.length - 1 - i);
+                    rate += (ref.charAt(i).toUpperCase() === word.charAt(i).toUpperCase()) * Math.pow(2, ref.length - 1 - i);
                 } else {
                     rate -= Math.pow(2, i - ref.length)
                 }
