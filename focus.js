@@ -1338,6 +1338,14 @@
         };
     }
 
+    /**
+    * WordMatch objects need to be attached to a text input, and should be passed an array of words
+    * It matches the strings inputed with the strings in the array
+    * @constructor
+    * @param {DOMElement} textInput - the text input to listen to
+    * @param {Array} wordsArray - the string array to search
+    *
+    */
     function WordMatch(textInput, wordsArray) {
         this.wordsArray = wordsArray;
         this.textInput = textInput;
