@@ -1349,11 +1349,17 @@
     function WordMatch(textInput, wordsArray) {
         this.wordsArray = wordsArray;
         this.textInput = textInput;
+        // on keypress, we calculate the match rate of the inputed string with every string in the wordsArray
         this.textInput.addEventListener('keypress', function (event) {
             var inputValue = event.target.value + event.key;
             this.sortedWords = this.getMatchingWords(inputValue);
         }.bind(this));
 
+        /**
+        * Gets the words that match the inputed one
+        * @param {String} wordToMatch - the inputed word
+        * @return {Array} - A sorted array of the words matching the most the inputed one
+        */
         this.getMatchingWords = function getMatchingWords(wordToMatch) {
             return this.wordsArray.map(function(word) {
                 return {
@@ -1369,6 +1375,12 @@
             })
         }
 
+        /**
+        * Calculates the matching rate between two words
+        * @param {String} ref - the reference word
+        * @param {String} word - the inputed word
+        * @return {Number} - a match percentage between the two words
+        */
         this.matchRate = function matchRate(ref, word) {
             var rate = 0;
             var refRate = Array.prototype.reduce.call(ref, function(a, b){
