@@ -145,5 +145,8 @@ window.onload = function(){
 		// });
 	newSlider.setValue(56);
 		jst.changeText('jesusScript is back');
+		var a = document.querySelector('#testtext')
+		console.log('a', a)
+		var wordMatch = new WordMatch(a, ['abcdefghij', 'République', 'Bastille', 'Quartier Latin', 'ruedu'])
 		
 	}
