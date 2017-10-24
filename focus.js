@@ -1338,6 +1338,47 @@
         };
     }
 
+    function WordMatch(textInput, wordsArray) {
+        this.wordsArray = wordsArray;
+        this.textInput = textInput;
+        this.textInput.addEventListener('keypress', function (event) {
+            var inputValue = event.target.value + event.key;
+            console.log(this.getMatchingWords(inputValue));
+        }.bind(this));
+
+        this.getMatchingWords = function getMatchingWords(wordToMatch) {
+            return this.wordsArray.map(function(word) {
+                return {
+                    word: word,
+                    rate: this.matchRate(word, wordToMatch)
+                }
+            }.bind(this)).sort(function (a, b){
+                return b.rate - a.rate;
+            }).map(function (wordObj){
+                return wordObj.word;
+            })
+        }
+
+        this.matchRate = function matchRate(ref, word) {
+            var rate = 0;
+            var refRate = Array.prototype.reduce.call(ref, function(a, b){
+                return Math.pow(2, this.length - this.indexOf(a) - 1) + Math.pow(2, this.length - this.indexOf(b) - 1) - 2;
+            }.bind(ref))
+
+            for (var i = 0; i < word.length; i++) {
+                if (i < ref.length) {
+                    rate += (ref.charAt(i) === word.charAt(i)) * Math.pow(2, ref.length - 1 - i);
+                } else {
+                    rate -= Math.pow(2, i - ref.length)
+                }
+            }
+            return rate/refRate;
+        }
+
+
+    }
+
+    WordMatch.prototype = focus;
     Button.prototype = focus;
     Banner.prototype = focus;
     ImageTextZone.prototype = focus;
