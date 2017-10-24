@@ -1362,6 +1362,8 @@
                 }
             }.bind(this)).sort(function (a, b){
                 return b.rate - a.rate;
+            }).filter(function(wordObj){
+                return wordObj.rate > 0;
             }).map(function (wordObj){
                 return wordObj.word;
             })
