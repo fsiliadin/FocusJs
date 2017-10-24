@@ -1351,7 +1351,7 @@
         this.textInput = textInput;
         this.textInput.addEventListener('keypress', function (event) {
             var inputValue = event.target.value + event.key;
-            console.log(this.getMatchingWords(inputValue));
+            this.sortedWords = this.getMatchingWords(inputValue);
         }.bind(this));
 
         this.getMatchingWords = function getMatchingWords(wordToMatch) {
