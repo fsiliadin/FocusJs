@@ -1349,10 +1349,13 @@
     function WordMatch(textInput, wordsArray) {
         this.wordsArray = wordsArray;
         this.textInput = textInput;
+        this.sortedWords = [];
         // on keypress, we calculate the match rate of the inputed string with every string in the wordsArray
+        this.customEvent = new CustomEvent('matchingComplete');
         this.textInput.addEventListener('keypress', function (event) {
             var inputValue = event.target.value + event.key;
             this.sortedWords = this.getMatchingWords(inputValue);
+            this.textInput.dispatchEvent(this.customEvent);
         }.bind(this));
 
         /**
