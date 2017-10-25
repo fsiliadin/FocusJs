@@ -1380,6 +1380,15 @@
         * @return {Array} - A sorted array of the words matching the most the inputed one
         */
         this.getMatchingWords = function getMatchingWords(wordToMatch) {
+            var limen = 0
+            switch(wordToMatch.length) {
+                case 1: limen = 0; break;
+                case 2: limen = 0.30; break;
+                case 3: limen = 0.60; break;
+                case 4: limen = 0.85; break;
+                case 5: limen = 0.92; break;
+                default: limen = 0.97; break;
+            }
             return this.wordsArray.map(function(word) {
                 return {
                     word: word,
@@ -1388,7 +1397,7 @@
             }.bind(this)).sort(function (a, b){
                 return b.rate - a.rate;
             }).filter(function(wordObj){
-                return wordObj.rate > 0;
+                return wordObj.rate > limen;
             }).map(function (wordObj){
                 return wordObj.word;
             })
