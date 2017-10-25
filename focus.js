@@ -1362,9 +1362,13 @@
         this.textInput.addEventListener('keydown', function (event) {
             if(event.key === 'Backspace') {
                 setTimeout(function() {
-                    var inputValue = event.target.value;
-                    this.sortedWords = this.getMatchingWords(inputValue);
-                    this.textInput.dispatchEvent(this.customEvent);
+                    if(!event.target.value.length) {
+                        this.sortedWords = this.wordsArray;
+                    } else {
+                        var inputValue = event.target.value;
+                        this.sortedWords = this.getMatchingWords(inputValue);                      
+                    }
+                    this.textInput.dispatchEvent(this.customEvent);  
                 }.bind(this), 500)
             } 
             
