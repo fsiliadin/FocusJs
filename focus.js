@@ -1383,11 +1383,12 @@
             var limen = 0
             switch(wordToMatch.length) {
                 case 1: limen = 0; break;
-                case 2: limen = 0.30; break;
-                case 3: limen = 0.60; break;
+                case 2: limen = 0.50; break;
+                case 3: limen = 0.75; break;
                 case 4: limen = 0.85; break;
-                case 5: limen = 0.92; break;
-                default: limen = 0.97; break;
+                case 5: limen = 0.90; break;
+                case 6: limen = 0.95; break;
+                default: limen = 0.99; break;
             }
             return this.wordsArray.map(function(word) {
                 return {
