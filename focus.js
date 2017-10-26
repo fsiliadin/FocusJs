@@ -1425,8 +1425,42 @@
             }
             return rate/refRate;
         }
+    }
+
+    function LabelList(parentSelector, obj, positionInNodeList) {
+        var parentEl = this.checkParent(parentSelector);
+        var self = this;
+        this.generate = function (container, descriptor) {
+            var html = '';
+            var classes  = '';
+            var res = [], ret;
+            if (typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
+            Array.prototype.forEach.call(container, function (item, index){
+                descriptor.class.indexOf('basic_labelList') === -1 ? descriptor.class.push('basic_labelList'):'';
+                classes = descriptor.class.join(' ');
+                html += '<div class ="'+classes+'" data-hash= '+focus.generateHash()+'>';
+                descriptor.labels
+            })
+        }
 
 
+        var generated = this.generated(parentEl, obj);
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
     WordMatch.prototype = focus;
