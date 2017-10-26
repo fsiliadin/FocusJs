@@ -1411,11 +1411,11 @@
         */
         this.matchRate = function matchRate(ref, word) {
             var rate = 0;
-            var refRate = Array.prototype.reduce.call(ref, function(a, b){
-                return Math.pow(2, this.length - this.indexOf(a) - 1) + Math.pow(2, this.length - this.indexOf(b) - 1) - 2;
-            }.bind(ref))
-
-            for (var i = 0; i < word.length; i++) {
+            var refRate = 0;
+            for (var i = ref.length -1; i >= 0 ; i--) {
+                refRate += Math.pow(2, i);
+            }
+            for (i = 0; i < word.length; i++) {
                 if (i < ref.length) {
                     rate += (ref.charAt(i).toUpperCase() === word.charAt(i).toUpperCase()) * Math.pow(2, ref.length - 1 - i);
                 } else {
