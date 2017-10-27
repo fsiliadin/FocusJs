@@ -1443,13 +1443,33 @@
             Array.prototype.forEach.call(container, function (item, index){
                 descriptor.class.indexOf('basic_labelList') === -1 ? descriptor.class.push('basic_labelList'):'';
                 classes = descriptor.class.join(' ');
-                html += '<div class ="'+classes+'" data-hash= '+focus.generateHash()+'>';
-                descriptor.labels
-            })
+                var hash = focus.generateHash();
+                html += '<div class ="'+classes+'" data-hash= '+hash+'>';
+                if(descriptor.title) {
+                    html += '<span class= "title">'+descriptor.title+': </span>'
+                }
+
+                descriptor.labels.forEach(function (label) {
+                    html += '<span class= "label" data-hash='+ focus.generateHash()+ ' style="background-color:'+descriptor.color+'">' + label + '</span>';
+                });
+                html += '</div>';
+                ret = self.__proto__.generate(html, item, positionInNodeList);
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    labels: descriptor.labels
+                };
+                res = focus.recordElData(elData, res);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.delegateEvent(hash, descriptor.events);
+                }
+            });
+            return res;
         }
 
 
-        var generated = this.generated(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
         this.generated = function () {
             var toReturn = [];
             generated.forEach(function(generatedEl){
@@ -1463,6 +1483,7 @@
         };
     }
 
+    LabelList.prototype = focus;
     WordMatch.prototype = focus;
     Button.prototype = focus;
     Banner.prototype = focus;
