@@ -40,6 +40,11 @@
                         subSlider.element = subSliders[index];
                     });
                 }
+                if ('selectedItems' in dataToUpdate) {
+                    dataToUpdate.selectedItems = Array.prototype.filter.call(dataToUpdate.gridItems, function(gridItem) {
+                        return focus.hasClass(gridItem, 'selected')
+                    })
+                }
             }
             
         },
