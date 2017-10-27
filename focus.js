@@ -1499,6 +1499,13 @@
             });
             return res;
         }
+        /**
+        * adds specified label to the LabelList
+        * @param {String} label - the label to add
+        * @param {DOMElement} labelList - the LabelList to add the label to, since the LabelList constructor generates a LabelList per parent, there could be several LabelList generated.
+        *       Therefore we should specify the one we want to add the label to,
+        *       otherwise the label will be added to every generated LabelList
+        */
         this.add = function (label, labelList) {
             var generatedLabelLists = this.generated();
             html = '<span class= "label" data-hash='+ focus.generateHash()+ ' style="background-color:'+generatedLabelLists[0].color+'">' + label + '</span>';
@@ -1514,6 +1521,13 @@
             
         }
 
+        /**
+        * Removes specified label from the LabelList
+        * @param {String} label - the label to remove
+        * @param {DOMElement} labelList - the LabelList to remove the label from, since the LabelList constructor generates a LabelList per parent, there could be several LabelList generated.
+        *       Therefore we should specify the one we want to remove the label from,
+        *       otherwise the label will be removed from every generated LabelList
+        */
         this.remove = function (label, labelList) {
             var generatedLabelLists = this.generated();
             if(labelList) {
@@ -1528,6 +1542,9 @@
             }
         }
         var generated = this.generate(parentEl, obj);
+        /**
+        *   Gets the LabelList updated data
+        */
         this.generated = function () {
             var toReturn = [];
             generated.forEach(function(generatedEl){
