@@ -242,3 +242,20 @@
 .basic_slider .minValue {
 	margin-left: 20px;
 }
+.basic_labelList {
+	display: flex;
+	flex-flow: row wrap;
+}
+.basic_labelList .label {
+	border-radius: 0.7em;
+	color: white;
+	padding: 0.5em;
+	margin: 0.5em;
+	font-family: focusLightFont;
+}
+
+.basic_labelList .title {
+	padding: 0.5em;
+	margin: 0.5em;
+	font-family: focusMediumFont;
+}
