@@ -1208,7 +1208,7 @@
         }
 
         /**
-        * Attach "default" methods to grid items
+        * Attaches "default" methods to grid items
         * @param {DOM Element} - the grid item element
         *
         */
@@ -1233,7 +1233,7 @@
             };
         }
         /**
-        * Add specified item to the grid
+        * Adds specified item to the grid
         * @param {Object} - params 
         *   to: the grid to add the item to, since the Grid constructor generates a grid per parent, there could be several grid generated.
         *       Therefore we should specify the one we want to add the item to,
@@ -1254,7 +1254,7 @@
         }
 
         /**
-        * populate a grid with an array of contents
+        * populates a grid with an array of contents
         * @param {Object} - params
         *   grid:   the grid to populate, since the Grid constructor generates a grid per parent, there could be several grid generated.
         *           Therefore we should specify the one we want to populate,
@@ -1287,7 +1287,7 @@
             }
         }
         /**
-        * Remove specified item from the grid
+        * Removes specified item from the grid
         * @param {Object} - params 
         *   from: the grid to remove the item from, since the Grid constructor generates a grid per parent, there could be several grid generated.
         *       Therefore we should specify the one we want to remove the item from,
@@ -1307,7 +1307,7 @@
             }
         }
         /**
-        * build the html of a grid item
+        * builds the html of a grid item
         * @param {Object} - params 
         *   width: the width of the item (passed as css value), if not specified the grid item will wrap its content
         *   height: the height of the item (passed as css value), if not specified whereas width is specified the height will be equal to the width
