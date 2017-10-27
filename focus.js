@@ -1478,17 +1478,21 @@
                 generatedLabelLists.forEach(function(generatedLabelList){
                     generatedLabelList.labels.push(label);
                     this.__proto__.generate(html, generatedLabelList.element)
-                })
+                }.bind(this))
             }
             
         }
 
         this.remove = function (label, labelList) {
+            var generatedLabelLists = this.generated();
             if(labelList) {
                 labelList.labels.splice(labelList.labels.indexOf(label), 1);
+                labelList.element.querySelectorAll('.label')[index].remove()
             } else {
-                this.generated().forEach(function(generatedLabelList){
-                    generatedLabelList.labels.splice(generatedLabelList.labels.indexOf(label), 1);
+                generatedLabelLists.forEach(function(generatedLabelList){
+                    var index = generatedLabelList.labels.indexOf(label)
+                    generatedLabelList.labels.splice(index, 1);
+                    generatedLabelList.element.querySelectorAll('.label')[index].remove();
                 })
             }
         }
