@@ -1432,9 +1432,35 @@
         }
     }
 
+    /**
+    * Generates one or several LabelList(s)
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the LabelList(s)
+    * @param {Object} obj - the LabelList descriptor:
+    *   class: an array of classes to be added to each LableList 
+    *   id: the id of the LableList, if specified the LableList will be generated only in the first container
+    *   events: an array of the event object to bind on the LableList:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
+    *   title: the title of the LabelList, optional
+    *   color: the color (ass a valid css color value) to set on the labels of the LabelList
+    * @param {Number} positionInNodeList - the position of the LableList between its siblings
+    */
     function LabelList(parentSelector, obj, positionInNodeList) {
         var parentEl = this.checkParent(parentSelector);
         var self = this;
+
+        /**
+        * Generates LabelList html and inserts it in the proper container in the DOM
+        * @param {NodeList} container - contains element LabelLists will be generated in. (one LabelList per element)
+        * @param {Object} descriptor - the LabelList descriptor
+        * @return {Array} an array of LabelList data:
+        *   hash: the hash of the generated LabelList
+        *   element: the LabelList element as it is in the DOM
+        *   color: the color of the labels
+        *   container: the parent element of each generated LabelList
+        *   labels: the labels of the LabelList as an array
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes  = '';
