@@ -1458,7 +1458,8 @@
                     hash: hash,
                     element: ret,
                     container: item,
-                    labels: descriptor.labels
+                    labels: descriptor.labels,
+                    color: descriptor.color
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
@@ -1467,8 +1468,30 @@
             });
             return res;
         }
+        this.add = function (label, labelList) {
+            var generatedLabelLists = this.generated();
+            html = '<span class= "label" data-hash='+ focus.generateHash()+ ' style="background-color:'+generatedLabelLists[0].color+'">' + label + '</span>';
+            if (labelList) {                
+                labelList.labels.push(label);
+                this.__proto__.generate(html, labelList.element)
+            } else {
+                generatedLabelLists.forEach(function(generatedLabelList){
+                    generatedLabelList.labels.push(label);
+                    this.__proto__.generate(html, generatedLabelList.element)
+                })
+            }
+            
+        }
 
-
+        this.remove = function (label, labelList) {
+            if(labelList) {
+                labelList.labels.splice(labelList.labels.indexOf(label), 1);
+            } else {
+                this.generated().forEach(function(generatedLabelList){
+                    generatedLabelList.labels.splice(generatedLabelList.labels.indexOf(label), 1);
+                })
+            }
+        }
         var generated = this.generate(parentEl, obj);
         this.generated = function () {
             var toReturn = [];
