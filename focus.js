@@ -343,6 +343,7 @@
                     self.delegateEvent(hash, descriptor.events);
                 }
             });
+            return res;
         }
         var generated = this.generate(parentEl, obj);
         /**
