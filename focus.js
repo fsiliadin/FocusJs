@@ -294,6 +294,18 @@
     */
     function ImageTextZone(parentSelector, obj, positionInNodeList){
         var parentEl = this.checkParent(parentSelector);
+        /**
+        * Generates ImageTextZone html and inserts it in the proper container in the DOM
+        * @param {NodeList} container - contains element ImageTextZone will be generated in. (one button per element)
+        * @param {Object} descriptor - the ImageTextZone descriptor
+        *
+        * @return {Array} an array of ImageTextZone data:
+        *   hash: the hash of the generated ImageTextZone
+        *   element: the ImageTextZone element as it is in the DOM   
+        *   container: the parent element of each generated ImageTextZone
+        *   image: the image of the ImageTextZone
+        *   text: the text of the imageTextZone
+        */
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
