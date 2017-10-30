@@ -280,6 +280,7 @@
         this.generate = function (container, descriptor) {
             var html = '';
             var classes = '';
+            var res = [], ret;
             if (typeof descriptor.id !== 'undefined') {
                 container = [container[0]];
             }
@@ -290,8 +291,8 @@
             Array.prototype.forEach.call(container, function(item, index){
                 descriptor.class.indexOf('basic_imageTextZone') === -1 ? descriptor.class.push('basic_imageTextZone'):'';
                 classes = descriptor.class.join(' ');
-                self.hash = focus.generateHash();
-                html = '<table class= "'+classes+'" data-hash="'+self.hash+'" id ="'+descriptor.id+'"><tr>';
+                var hash = focus.generateHash();
+                html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr>';
                 if(descriptor.imageAfter) {
                     html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
@@ -301,12 +302,34 @@
                 }
                 html += '</tr></table>';
                 self.__proto__.generate(html, item, positionInNodeList);
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    image: descriptor.url,
+                    text: descriptor.text
+                };
+                res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
-                    self.__proto__.delegateEvent(self.hash, descriptor.events);
+                    self.delegateEvent(hash, descriptor.events);
                 }
             });
         }
-        this.generate(parentEl, obj);
+        var generated = this.generate(parentEl, obj);
+        /**
+        *   Gets the ImageTextZone updated data
+        */
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
     /**
