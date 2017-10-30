@@ -1469,6 +1469,10 @@
         * @return {Number} - a match percentage between the two words
         */
         this.matchRate = function matchRate(ref, word) {
+            //  we do consider that if word is a substring of ref then there is a match
+            if (ref.toUpperCase().indexOf(word.toUpperCase()) !== -1) {
+                return 1;
+            }
             var rate = 0;
             var refRate = 0;
             for (var i = ref.length -1; i >= 0 ; i--) {
