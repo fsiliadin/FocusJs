@@ -274,7 +274,24 @@
 
   
 
-
+    /**
+    * Generates one or several ImageTextZone(s).
+    * @constructor
+    * @param {String} parentSelector - the selector that will determine the container(s) of the ImageTextZone(s)
+    * @param {Object} obj - the ImageTextZone descriptor:
+    *   class: an array of classes to be added to each ImageTextZone
+    *   id: the id of the ImageTextZone, if specified the ImageTextZone will be generated only in the first container
+    *   events: an array of the event object to bind on the ImageTextZone:
+    *       type: a string representing the type of event
+    *       handler: the callback of the event
+    *       imageAfter: boolean, true if you want the image to be displayed after the text
+    *       imageWidth: the width of the image as valid css between quotes,
+    *       imageHeight: 'the height of the image as valid css between quotes',
+    *       url: the url of the image,
+    *       alt: image alt,
+    *       text: the text
+    * @param {Number} positionInNodeList - the position of the ImageTextZone between its siblings
+    */
     function ImageTextZone(parentSelector, obj, positionInNodeList){
         var parentEl = this.checkParent(parentSelector);
         this.generate = function (container, descriptor) {
