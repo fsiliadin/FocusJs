@@ -1320,7 +1320,9 @@
                         } 
                         gridItem.addContent(params.contents[index]);
                     });
-                } catch(e){}
+                } catch(e){
+                    e !== '' ? console.error('ERROR: ', e) : ''
+                }
                 
             } else {
                 this.generated().forEach(function (grid) {
@@ -1331,7 +1333,9 @@
                             } 
                             gridItem.addContent(params.contents[index]);
                         });
-                    } catch(e){} 
+                    } catch(e){
+                        e !== '' ? console.error('ERROR: ', e) : ''
+                    } 
                 });
             }
         }
