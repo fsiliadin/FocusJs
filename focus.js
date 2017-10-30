@@ -330,7 +330,7 @@
                     html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
                 }
                 html += '</tr></table>';
-                self.__proto__.generate(html, item, positionInNodeList);
+                ret = self.__proto__.generate(html, item, positionInNodeList);
                 var elData = {
                     hash: hash,
                     element: ret,
