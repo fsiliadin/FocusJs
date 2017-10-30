@@ -393,10 +393,6 @@
                 html += '</div>'; // coreSlider end
                 html += '</div>'; // slider end
                 ret = self.__proto__.generate(html, item, positionInNodeList);
-                if(typeof descriptor.events !== 'undefined') {
-                    self.delegateEvent(self.hash, descriptor.events);
-                }
-                
                 var subSliders = ret.querySelectorAll('.subSlideZone');
                 var elData = {
                     hash: hash,
