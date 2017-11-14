@@ -1538,7 +1538,7 @@
                 }
 
                 descriptor.labels.forEach(function (label) {
-                    html += '<span class= "label" data-hash='+ focus.generateHash()+ ' style="background-color:'+descriptor.color+'">' + label + '</span>';
+                    html += '<span class= "label" data-hash='+ focus.generateHash()+ ' style="background-color:'+descriptor.backgroundColor+'; color:'+descriptor.color+'!important">' + label + '</span>';
                 });
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
@@ -1547,7 +1547,10 @@
                     element: ret,
                     container: item,
                     labels: descriptor.labels,
-                    color: descriptor.color
+                    colors: {
+                        backgroundColor: descriptor.color,
+                        color: descriptor.color
+                    }
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
