@@ -1397,6 +1397,9 @@
             return toReturn;
         };
 
+        /*
+        *   updates gridItems indexes
+        */
         this.updateGridItemIndexes = function () {
             this.forEach(function (generatedGrid) {
                 generatedGrid.gridItems.forEach(function(gridItem, index) {
