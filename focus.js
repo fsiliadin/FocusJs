@@ -1209,11 +1209,11 @@
                         html += self.buildItem({
                             width: descriptor.itemWidth, 
                             height: descriptor.itemHeight
-                        });
+                        }, i);
                     }
                 } else {
                     descriptor.contents.forEach(function (content) {
-                        html += self.buildItem(content);
+                        html += self.buildItem(content, descriptor.nbItems - 1);
                     })
                 }
                 
@@ -1291,7 +1291,7 @@
         *   positionInNodeList: the position of the item withing the other items in the grid
         */
         this.addItem = function (params) {
-            var itemHtml = this.buildItem(params);
+            var itemHtml = this.buildItem(params, params.positionInNodeList);
             var self = this;         
             if (params.to) {
                 this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
@@ -1300,6 +1300,7 @@
                     self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
                });
             }
+            this.updateGridItemIndexes()
         }
 
         /**
@@ -1358,6 +1359,7 @@
                     grid.element.children[params.positionInNodeList].remove();
                 });
             }
+            this.updateGridItemIndexes()
         }
         /**
         * builds the html of a grid item
@@ -1369,7 +1371,7 @@
         *
         * @return {String} - the item to be generated html
         */
-        this.buildItem = function (gridItem) {
+        this.buildItem = function (gridItem, index) {
             var content;
             if(typeof gridItem.content === 'object') {
                 content = gridItem.content.generated()[0].element.outerHTML;
@@ -1377,7 +1379,7 @@
             } else {
                 content = gridItem.content;
             }
-            return '<div class= "gridItem" data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
+            return '<div class= "gridItem" data-index=' + index + ' data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
         }
         var generated = this.generate(parentEl, obj);
         /**
@@ -1394,6 +1396,14 @@
             self.generatedEl = toReturn;
             return toReturn;
         };
+
+        this.updateGridItemIndexes = function () {
+            this.forEach(function (generatedGrid) {
+                generatedGrid.gridItems.forEach(function(gridItem, index) {
+                    gridItem.dataset.index = index
+                })
+            })
+        }
     }
 
     /**
