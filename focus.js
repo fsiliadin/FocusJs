@@ -323,11 +323,11 @@
                 var hash = focus.generateHash();
                 html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr>';
                 if(descriptor.imageAfter) {
-                    html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
+                    html += '<td class ="text" data-hash='+focus.generateHash()+' ><p>'+descriptor.text+'</p></td>';
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
                 } else {
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
-                    html += '<td class ="text" data-hash='+focus.generateHash()+' >'+descriptor.text+'</td>';
+                    html += '<td class ="text" data-hash='+focus.generateHash()+' ><p>'+descriptor.text+'</p></td>';
                 }
                 html += '</tr></table>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
