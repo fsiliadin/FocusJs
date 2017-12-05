@@ -120,7 +120,13 @@
                     hash: el.dataset.hash,
                     event: event
                 });
-                el.addEventListener(event.type, event.handler, event.capture);
+                if (!(event.type instanceof Array)) {
+                    el.addEventListener(event.type, event.handler, event.capture);
+                } else {
+                    event.type.forEach(function(eventType){
+                        el.addEventListener(eventType, event.handler, event.capture)
+                    })
+                }
             });
         },
 
@@ -446,19 +452,19 @@
                                     
                 Array.prototype.forEach.call(ret.querySelectorAll('.mainCursor, .subCursor'), function(cursor){
                     focus.bindEvent(cursor, [{
-                        type: 'mousedown',
+                        type: ['touchstart', 'mousedown'],
                         handler: function (e) {
                             focus.dragDropEl.push(e.target);
                         }
                     }]);
                 });
                 focus.bindEvent(ret, [{
-                    type: 'mouseup',
+                    type: ['touchend', 'mouseup'],
                     handler: function () {
                         focus.dragDropEl.length = 0;
                     }
                  }, {
-                    type: 'mousemove',
+                    type: ['touchmove', 'mousemove'],
                     handler: (function(ret) {
                                 var previous = -1;
                                 return function (e) {
