@@ -202,12 +202,14 @@
             function getPosition(el){
                 pos.top += el.offsetTop;
                 pos.left += el.offsetLeft;
+                console.log('a', el)
                 if(el.parentElement !== area){
                      getPosition(el.parentElement);
                 }
                 return pos;
             }
-            return getPosition(el);
+            var a= getPosition(el);
+            return a;
         }
 
     } //focus
@@ -466,11 +468,18 @@
                  }, {
                     type: ['touchmove', 'mousemove'],
                     handler: (function(ret) {
-                                var previous = -1;
                                 return function (e) {
+                                    console.log(e)
+                                if (!('movementX' in e)) {
+                                    var d =focus.getPositionInArea(e.target, document.querySelector('BODY')).left
+                                    var movementX = e.changedTouches[0].clientX - d;
+                                    console.log('mx', e.changedTouches[0].clientX, d, movementX)
+                                } else {
+                                    var movementX = e.movementX;
+                                }
                                 var slider = self.generated()[ret.dataset.index];                                    
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) { 
-                                    var cursorPos = focus.dragDropEl[0].offsetLeft + e.movementX;
+                                    var cursorPos = focus.dragDropEl[0].offsetLeft + movementX;
                                     var sliderAxisWidth = (slider.element.querySelector('.sliderAxis').offsetWidth - 12);
                                     if (cursorPos <= sliderAxisWidth && cursorPos >= 0){
                                         focus.dragDropEl[0].style.left = cursorPos + 'px';
@@ -494,12 +503,12 @@
                                     });
                                 } else if (focus.dragDropEl.length) {
                                     cursorPos = slider.element.querySelector('.mainSlideZone').offsetWidth;
-                                    focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + e.movementX) +'px';
+                                    focus.dragDropEl[0].style.left = (focus.dragDropEl[0].offsetLeft + movementX) +'px';
                                     var subCursors = slider.element.querySelectorAll('.subCursor');  
                                     var leftZone = slider.element.querySelector('.subSlideZone[data-index="'+focus.dragDropEl[0].dataset.index+'"]');
                                     var rightZone = slider.element.querySelector('.subSlideZone[data-index="'+((focus.dragDropEl[0].dataset.index | 0) +1)+'"]');
-                                    leftZone.style.width =  (leftZone.offsetWidth + e.movementX) +'px';
-                                    rightZone.style.width =  (rightZone.offsetWidth - e.movementX) +'px';
+                                    leftZone.style.width =  (leftZone.offsetWidth + movementX) +'px';
+                                    rightZone.style.width =  (rightZone.offsetWidth - movementX) +'px';
                                     
                                     var adjustementValue = 0;
                                     var unVoidZones = Array.prototype.filter.call(slider.element.querySelectorAll('.subSlideZone'), function(subZone) {
