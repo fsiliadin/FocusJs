@@ -1223,8 +1223,8 @@
                         }, i);
                     }
                 } else {
-                    descriptor.contents.forEach(function (content) {
-                        html += self.buildItem(content, descriptor.nbItems - 1);
+                    descriptor.contents.forEach(function (content, index) {
+                        html += self.buildItem(content, index);
                     })
                 }
                 
