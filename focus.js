@@ -202,14 +202,12 @@
             function getPosition(el){
                 pos.top += el.offsetTop;
                 pos.left += el.offsetLeft;
-                console.log('a', el)
-                if(el.parentElement !== area){
-                     getPosition(el.parentElement);
+                if(el.offsetParent !== area){
+                     getPosition(el.offsetParent);
                 }
                 return pos;
             }
-            var a= getPosition(el);
-            return a;
+            return getPosition(el);
         }
 
     } //focus
@@ -468,14 +466,12 @@
                  }, {
                     type: ['touchmove', 'mousemove'],
                     handler: (function(ret) {
-                                return function (e) {
-                                    console.log(e)
+                            return function (e) {
+                                var movementX;    
                                 if (!('movementX' in e)) {
-                                    var d =focus.getPositionInArea(e.target, document.querySelector('BODY')).left
-                                    var movementX = e.changedTouches[0].clientX - d;
-                                    console.log('mx', e.changedTouches[0].clientX, d, movementX)
+                                    movementX = e.changedTouches[0].clientX - focus.getPositionInArea(e.target, document.querySelector('BODY')).left;
                                 } else {
-                                    var movementX = e.movementX;
+                                    movementX = e.movementX;
                                 }
                                 var slider = self.generated()[ret.dataset.index];                                    
                                 if (focus.dragDropEl.length && focus.hasClass(focus.dragDropEl[0], 'mainCursor')) { 
