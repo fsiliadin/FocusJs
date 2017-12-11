@@ -1434,13 +1434,6 @@
         this.sortedWords = [];
         // on keypress, we calculate the match rate of the inputed string with every string in the wordsArray
         this.customEvent = new CustomEvent('matchingComplete');
-        this.textInput.addEventListener('keypress', function (event) {
-            setTimeout(function(){                
-                var inputValue = event.target.value ;
-                this.sortedWords = this.getMatchingWords(inputValue);
-                this.textInput.dispatchEvent(this.customEvent);
-            }.bind(this), 500);
-        }.bind(this));
         this.textInput.addEventListener('keydown', function (event) {
             if(event.key === 'Backspace') {
                 setTimeout(function() {
@@ -1453,7 +1446,11 @@
                     this.textInput.dispatchEvent(this.customEvent);  
                 }.bind(this), 500)
             } 
-            
+            setTimeout(function(){                
+                var inputValue = event.target.value ;
+                this.sortedWords = this.getMatchingWords(inputValue);
+                this.textInput.dispatchEvent(this.customEvent);
+            }.bind(this), 500);
         }.bind(this));
 
         /**
