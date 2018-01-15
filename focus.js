@@ -34,6 +34,9 @@
                 if ('gridItems' in dataToUpdate) {
                     dataToUpdate.gridItems = el.children;
                 }
+                if('navButtons' in dataToUpdate) {
+                    dataToUpdate.navButtons = el.children;
+                }
                 if ('subSliders' in dataToUpdate) {
                     var subSliders = dataToUpdate.element.querySelectorAll('.subSlideZone');
                     dataToUpdate.subSliders.forEach(function(subSlider, index){
@@ -1639,6 +1642,50 @@
         };
     }
 
+    function ResultListDisplayer(parentSelector, obj, positionInNodeList) {
+        var parentEl = this.checkParent(parentSelector);
+        var self = this;
+        this.generate = function (container, descriptor) {
+            var html = '';
+            var classes  = '';
+            var res = [], ret;
+            if (typeof descriptor.id !== 'undefined') {
+                container = [container[0]];
+            }
+            if (!(descriptor.class instanceof Array)) {
+                descriptor.class = []
+            }
+            Array.prototype.forEach.call(container, function (item, index){
+                descriptor.class.indexOf('basic_ResultListDisplayer') === -1 ? descriptor.class.push('basic_ResultListDisplayer'):'';
+                classes = descriptor.class.join(' ');
+                var hash = focus.generateHash();
+                html += '<div class ="'+classes+'" data-hash= '+hash+'>';
+                html += '<span data-hash = '+focus.generateHash()+'>begin</span>'
+                html += '<span data-hash = '+focus.generateHash()+'><</span>'
+                var numberOfPages = Math.ceil(descriptor.list.length / descriptor.elPerPage);
+                for (var i = 1; i <= numberOfPages ; i++) {
+                    html += '<span data-hash = '+focus.generateHash()+'>'+i+'</span>'
+                }
+                html += '<span data-hash = '+focus.generateHash()+'>></span>'
+                html += '<span data-hash = '+focus.generateHash()+'>end</span>'
+                html += '</div>';
+                ret = self.__proto__.generate(html, item, positionInNodeList);
+                var elData = {
+                    hash: hash,
+                    element: ret,
+                    container: item,
+                    navButtons: ret.children
+                };
+                res = focus.recordElData(elData, res);
+                if(typeof descriptor.events !== 'undefined') {
+                    self.delegateEvent(hash, descriptor.events);
+                }
+            });
+            return res;
+        }
+    }
+
+    ResultListDisplayer.prototype = focus;
     LabelList.prototype = focus;
     WordMatch.prototype = focus;
     Button.prototype = focus;
