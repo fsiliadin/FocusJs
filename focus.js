@@ -1440,24 +1440,27 @@
         this.sortedWords = [];
         // on keypress, we calculate the match rate of the inputed string with every string in the wordsArray
         this.customEvent = new CustomEvent('matchingComplete');
-        this.textInput.addEventListener('keydown', function (event) {
-            if(event.key === 'Backspace') {
-                setTimeout(function() {
-                    if(!event.target.value.length) {
-                        this.sortedWords = this.wordsArray;
-                    } else {
-                        var inputValue = event.target.value;
-                        this.sortedWords = this.getMatchingWords(inputValue);                      
-                    }
-                    this.textInput.dispatchEvent(this.customEvent);  
-                }.bind(this), 500)
-            } 
-            setTimeout(function(){                
-                var inputValue = event.target.value ;
-                this.sortedWords = this.getMatchingWords(inputValue);
-                this.textInput.dispatchEvent(this.customEvent);
-            }.bind(this), 500);
-        }.bind(this));
+        focus.bindEvent(this.textInput, [{
+            type: 'keydown',
+            handler:  function (event) {
+                if(event.key === 'Backspace') {
+                    setTimeout(function() {
+                        if(!event.target.value.length) {
+                            this.sortedWords = this.wordsArray;
+                        } else {
+                            var inputValue = event.target.value;
+                            this.sortedWords = this.getMatchingWords(inputValue);                      
+                        }
+                        this.textInput.dispatchEvent(this.customEvent);  
+                    }.bind(this), 500)
+                } 
+                setTimeout(function(){                
+                    var inputValue = event.target.value ;
+                    this.sortedWords = this.getMatchingWords(inputValue);
+                    this.textInput.dispatchEvent(this.customEvent);
+                }.bind(this), 500);
+            }.bind(this)
+        }]);
 
         /**
         * Gets the words that match the inputed one
