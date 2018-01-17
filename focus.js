@@ -1686,6 +1686,21 @@
             });
             return res;
         }
+        var generated = this.generate(parentEl, obj);
+        /**
+        *   Gets the ResultListDisplayer updated data
+        */
+        this.generated = function () {
+            var toReturn = [];
+            generated.forEach(function(generatedEl){
+                toReturn.push(focus.elDataArray.filter(function(elData){
+                    return elData.hash == generatedEl.hash
+                })[0])
+            });
+            //generatedEl is just for debug, don't base anything on it
+            self.generatedEl = toReturn;
+            return toReturn;
+        };
     }
 
     ResultListDisplayer.prototype = focus;
