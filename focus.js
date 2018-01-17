@@ -1236,22 +1236,25 @@
                 Array.prototype.forEach.call(ret.children, function (child){
                     self.addGridItemMethods(child);
                     if(descriptor.checkable) {
-                        child.addEventListener('click', function(event){
-                            var currentGrid = self.generated()[index];
-                            if(!focus.hasClass(child, 'selected')) {
-                                focus.addClass(child, 'selected');
-                                if (descriptor.checkable ==='single') {
-                                    currentGrid.selectedItems.forEach(function(selectedItem) {
-                                        focus.removeClass(selectedItem, 'selected');
-                                    });
-                                    currentGrid.selectedItems.length = 0;
+                        focus.bindEvent(child, [{
+                            type: 'click',
+                            handler: function(event){
+                                var currentGrid = self.generated()[index];
+                                if(!focus.hasClass(child, 'selected')) {
+                                    focus.addClass(child, 'selected');
+                                    if (descriptor.checkable ==='single') {
+                                        currentGrid.selectedItems.forEach(function(selectedItem) {
+                                            focus.removeClass(selectedItem, 'selected');
+                                        });
+                                        currentGrid.selectedItems.length = 0;
+                                    }
+                                    currentGrid.selectedItems.push(child);
+                                } else {
+                                    focus.removeClass(child, 'selected');
+                                    currentGrid.selectedItems.splice(currentGrid.selectedItems.indexOf(child), 1);
                                 }
-                                currentGrid.selectedItems.push(child);
-                            } else {
-                                focus.removeClass(child, 'selected');
-                                currentGrid.selectedItems.splice(currentGrid.selectedItems.indexOf(child), 1);
                             }
-                        })
+                        }])
                     }
                     
                 });
