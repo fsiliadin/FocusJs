@@ -1700,11 +1700,8 @@
                                 return;
                             }
                             currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
-                            for (var i= 0; i< descriptor.list.length; i++){
 
-                            }
-
-                            
+                            currentResultListDisplayer.currentPage = pageToDisplay | 0;
                             for (var i = (pageToDisplay - 1) * descriptor.nbElPerPage; i < pageToDisplay * descriptor.nbElPerPage; i++) {
                                 if (i >= descriptor.list.length) {
                                     break;
@@ -1724,7 +1721,9 @@
                     navButtons: ret.children,
                     activeButton: ret.children[1],
                     previousActiveButton: ret.children[1],
-                    alreadyGeneratedItems: []
+                    alreadyGeneratedItems: [],
+                    nbElPerPage: descriptor.nbElPerPage,
+                    currentPage: 1
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
