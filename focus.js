@@ -1304,7 +1304,7 @@
         *   to: the grid to add the item to, since the Grid constructor generates a grid per parent, there could be several grid generated.
         *       Therefore we should specify the one we want to add the item to,
         *       otherwise the item will be added to every generated grid
-        *
+        *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
         *   positionInNodeList: the position of the item withing the other items in the grid
         */
         this.addItem = function (params) {
