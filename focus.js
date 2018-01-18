@@ -1676,46 +1676,55 @@
                 html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>end</span>'
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
-                focus.bindEvent(ret.children, [{
-                    type: 'click',
-                    handler: function(e) {
-                        var currentResultListDisplayer = this.generated()[e.target.dataset.index];
-                        var pageToDisplay = e.target.innerHTML;
-                        if (isNaN(pageToDisplay)){
-                            pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerHTML - 1 : currentResultListDisplayer.activeButton.innerHTML - (-1);
-                            if (pageToDisplay < 1 || pageToDisplay > numberOfPages) {
+                Array.prototype.forEach.call(ret.children, function (child) {
+                    focus.bindEvent(child, [{
+                        type: 'click',
+                        handler: function(e) {
+                            var currentResultListDisplayer = this.generated()[e.target.dataset.index];
+                            var pageToDisplay = e.target.innerHTML;
+                            if (isNaN(pageToDisplay)){
+                                pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerHTML - 1 : currentResultListDisplayer.activeButton.innerHTML - (-1);
+                                if (pageToDisplay < 1 || pageToDisplay > numberOfPages) {
+                                    return;
+                                }
+                            }
+                            currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
+                                return pageIndex.innerHTML === pageToDisplay;
+                            })
+                            Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
+                                focus.removeClass(pageIndex, 'activeButton')
+                            })
+                            focus.addClass(currentResultListDisplayer.activeButton, 'activeButton')
+
+                            if (currentResultListDisplayer.previousActiveButton === currentResultListDisplayer.activeButton) {
                                 return;
                             }
-                        }
-                        currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
-                            return pageIndex.innerHTML === pageToDisplay;
-                        })
-                        Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
-                            focus.removeClass(pageIndex, 'activeButton')
-                        })
-                        focus.addClass(currentResultListDisplayer.activeButton, 'activeButton')
-                        
-                        if (currentResultListDisplayer.previousActiveButton === currentResultListDisplayer.activeButton) {
-                            return;
-                        }
-                        currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
+                            currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
+                            for (var i= 0; i< descriptor.list.length; i++){
 
-                        for (var i = (pageToDisplay - 1) * descriptor.nbElPerPage; i < pageToDisplay * descriptor.nbElPerPage; i++) {
-                            if (i >= descriptor.list.length) {
-                                break;
                             }
-                            descriptor.render();
-                        }
 
-                    }
-                }])
+                            
+                            for (var i = (pageToDisplay - 1) * descriptor.nbElPerPage; i < pageToDisplay * descriptor.nbElPerPage; i++) {
+                                if (i >= descriptor.list.length) {
+                                    break;
+                                }
+                                descriptor.render(descriptor.list[i], i)
+                                currentResultListDisplayer.alreadyGeneratedItems.push(i)
+                            }                          
+
+                        }.bind(self)
+                    }])
+                })
+                
                 var elData = {
                     hash: hash,
                     element: ret,
                     container: item,
                     navButtons: ret.children,
-                    activeButton: this.navButtons[1],
-                    previousActiveButton: this.navButtons[1],
+                    activeButton: ret.children[1],
+                    previousActiveButton: ret.children[1],
+                    alreadyGeneratedItems: []
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
