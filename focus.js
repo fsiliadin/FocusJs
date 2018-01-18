@@ -1665,22 +1665,57 @@
                 descriptor.class.indexOf('basic_ResultListDisplayer') === -1 ? descriptor.class.push('basic_ResultListDisplayer'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html += '<div class ="'+classes+'" data-hash= '+hash+'>';
-                html += '<span data-hash = '+focus.generateHash()+'>begin</span>'
-                html += '<span data-hash = '+focus.generateHash()+'><</span>'
-                var numberOfPages = Math.ceil(descriptor.list.length / descriptor.elPerPage);
+                html += '<div class ="' + classes + '" data-hash= ' + hash + ' data-index=' + index + '>'
+                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>begin</span>'
+                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '><</span>'
+                var numberOfPages = Math.ceil(descriptor.list.length / descriptor.nbElPerPage);
                 for (var i = 1; i <= numberOfPages ; i++) {
-                    html += '<span data-hash = '+focus.generateHash()+'>'+i+'</span>'
+                    html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>'+i+'</span>'
                 }
-                html += '<span data-hash = '+focus.generateHash()+'>></span>'
-                html += '<span data-hash = '+focus.generateHash()+'>end</span>'
+                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>></span>'
+                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>end</span>'
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
+                focus.bindEvent(ret.children, [{
+                    type: 'click',
+                    handler: function(e) {
+                        var currentResultListDisplayer = this.generated()[e.target.dataset.index];
+                        var pageToDisplay = e.target.innerHTML;
+                        if (isNaN(pageToDisplay)){
+                            pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerHTML - 1 : currentResultListDisplayer.activeButton.innerHTML - (-1);
+                            if (pageToDisplay < 1 || pageToDisplay > numberOfPages) {
+                                return;
+                            }
+                        }
+                        currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
+                            return pageIndex.innerHTML === pageToDisplay;
+                        })
+                        Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
+                            focus.removeClass(pageIndex, 'activeButton')
+                        })
+                        focus.addClass(currentResultListDisplayer.activeButton, 'activeButton')
+                        
+                        if (currentResultListDisplayer.previousActiveButton === currentResultListDisplayer.activeButton) {
+                            return;
+                        }
+                        currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
+
+                        for (var i = (pageToDisplay - 1) * descriptor.nbElPerPage; i < pageToDisplay * descriptor.nbElPerPage; i++) {
+                            if (i >= descriptor.list.length) {
+                                break;
+                            }
+                            descriptor.render();
+                        }
+
+                    }
+                }])
                 var elData = {
                     hash: hash,
                     element: ret,
                     container: item,
-                    navButtons: ret.children
+                    navButtons: ret.children,
+                    activeButton: this.navButtons[1],
+                    previousActiveButton: this.navButtons[1],
                 };
                 res = focus.recordElData(elData, res);
                 if(typeof descriptor.events !== 'undefined') {
