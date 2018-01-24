@@ -1562,7 +1562,7 @@
                 descriptor.class.indexOf('basic_labelList') === -1 ? descriptor.class.push('basic_labelList'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html += '<div class ="'+classes+'" data-hash= '+hash+'>';
+                html += '<div class ="'+classes+'" data-hash= '+hash+' id = '+(descriptor.id||"")+'>';
                 if(descriptor.title) {
                     html += '<span class= "title">'+descriptor.title+': </span>'
                 }
@@ -1665,7 +1665,7 @@
                 descriptor.class.indexOf('basic_ResultListDisplayer') === -1 ? descriptor.class.push('basic_ResultListDisplayer'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html += '<div class ="' + classes + '" data-hash= ' + hash + ' data-index=' + index + '>'
+                html += '<div class ="' + classes + '" data-hash= ' + hash + ' data-index=' + index + ' id = '+(descriptor.id||"")+'>'
                 html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>begin</span>'
                 html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '><</span>'
                 var numberOfPages = Math.ceil(descriptor.list.length / descriptor.nbElPerPage);
