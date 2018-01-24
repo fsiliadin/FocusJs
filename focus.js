@@ -1317,7 +1317,7 @@
                     self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
                });
             }
-            this.updateGridItemIndexes()
+            // this.updateGridItemIndexes()
         }
 
         /**
@@ -1376,7 +1376,7 @@
                     grid.element.children[params.positionInNodeList].remove();
                 });
             }
-            this.updateGridItemIndexes()
+            // this.updateGridItemIndexes()
         }
         /**
         * builds the html of a grid item
@@ -1396,7 +1396,7 @@
             } else {
                 content = gridItem.content;
             }
-            return '<div class= "gridItem" data-index=' + index + ' data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
+            return '<div class= "gridItem" data-index= ' + index + ' data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
         }
         var generated = this.generate(parentEl, obj);
         /**
