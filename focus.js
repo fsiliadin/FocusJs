@@ -1686,11 +1686,9 @@
                                     return;
                                 }
                             }
-                            console.log('page to display', pageToDisplay)
                             currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
                                 return pageIndex.innerText == pageToDisplay;
                             })[0]
-                            console.log('currentactive', currentResultListDisplayer.activeButton)
                             Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
                                 focus.removeClass(pageIndex, 'activeButton')
                             })
@@ -1702,11 +1700,11 @@
                             currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
 
                             currentResultListDisplayer.currentPage = pageToDisplay | 0;
-                            for (var i = (pageToDisplay - 1) * descriptor.nbElPerPage; i < pageToDisplay * descriptor.nbElPerPage; i++) {
-                                if (i >= descriptor.list.length) {
+                            for (var i = (pageToDisplay - 1) * currentResultListDisplayer.nbElPerPage; i < pageToDisplay * currentResultListDisplayer.nbElPerPage; i++) {
+                                if (i >= currentResultListDisplayer.fullList.length) {
                                     break;
                                 }
-                                descriptor.render(descriptor.list[i], i)
+                                currentResultListDisplayer.render(currentResultListDisplayer.fullList[i], i)
                                 currentResultListDisplayer.alreadyGeneratedItems.push(i)
                             }                          
 
@@ -1723,6 +1721,8 @@
                     previousActiveButton: ret.children[1],
                     alreadyGeneratedItems: [],
                     nbElPerPage: descriptor.nbElPerPage,
+                    fullList: descriptor.list,
+                    render: descriptor.render,
                     currentPage: 1
                 };
                 res = focus.recordElData(elData, res);
@@ -1733,6 +1733,11 @@
             return res;
         }
         var generated = this.generate(parentEl, obj);
+        // setTimeout(function(){
+        //     var customEvent = new Event("click", {"bubbles":true, "cancelable":false});
+        //     console.log('generated[0].activeButton', generated[0].activeButton)
+        //     generated[0].activeButton.dispatchEvent(customEvent);
+        // }, 2000)
         /**
         *   Gets the ResultListDisplayer updated data
         */
