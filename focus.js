@@ -1666,14 +1666,12 @@
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
                 html += '<div class ="' + classes + '" data-hash= ' + hash + ' data-index=' + index + ' id = '+(descriptor.id||"")+'>'
-                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>begin</span>'
                 html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '><</span>'
                 var numberOfPages = Math.ceil(descriptor.list.length / descriptor.nbElPerPage);
                 for (var i = 1; i <= numberOfPages ; i++) {
                     html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>'+i+'</span>'
                 }
                 html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>></span>'
-                html += '<span data-hash = '+focus.generateHash()+' data-index=' + index + '>end</span>'
                 html += '</div>';
                 ret = self.__proto__.generate(html, item, positionInNodeList);
                 Array.prototype.forEach.call(ret.children, function (child) {
@@ -1681,16 +1679,18 @@
                         type: 'click',
                         handler: function(e) {
                             var currentResultListDisplayer = this.generated()[e.target.dataset.index];
-                            var pageToDisplay = e.target.innerHTML;
+                            var pageToDisplay = e.target.innerText;
                             if (isNaN(pageToDisplay)){
-                                pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerHTML - 1 : currentResultListDisplayer.activeButton.innerHTML - (-1);
+                                pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerText - 1 : currentResultListDisplayer.activeButton.innerText - (-1);
                                 if (pageToDisplay < 1 || pageToDisplay > numberOfPages) {
                                     return;
                                 }
                             }
+                            console.log('page to display', pageToDisplay)
                             currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
-                                return pageIndex.innerHTML === pageToDisplay;
-                            })
+                                return pageIndex.innerText == pageToDisplay;
+                            })[0]
+                            console.log('currentactive', currentResultListDisplayer.activeButton)
                             Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
                                 focus.removeClass(pageIndex, 'activeButton')
                             })
