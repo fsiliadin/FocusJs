@@ -1679,7 +1679,7 @@
                         type: 'click',
                         handler: function(e) {
                             var currentResultListDisplayer = this.generated()[e.target.dataset.index];
-                            var pageToDisplay = e.target.innerText;
+                            var pageToDisplay = e.target.innerText || e.target.innerHTML;
                             if (isNaN(pageToDisplay)){
                                 pageToDisplay = pageToDisplay === '<' ? currentResultListDisplayer.activeButton.innerText - 1 : currentResultListDisplayer.activeButton.innerText - (-1);
                                 if (pageToDisplay < 1 || pageToDisplay > numberOfPages) {
@@ -1687,18 +1687,17 @@
                                 }
                             }
                             currentResultListDisplayer.activeButton = Array.prototype.filter.call(currentResultListDisplayer.navButtons, function(pageIndex){
-                                return pageIndex.innerText == pageToDisplay;
+                                return (pageIndex.innerText == pageToDisplay || pageIndex.innerHTML == pageToDisplay);
                             })[0]
                             Array.prototype.forEach.call(currentResultListDisplayer.navButtons, function(pageIndex){
                                 focus.removeClass(pageIndex, 'activeButton')
                             })
                             focus.addClass(currentResultListDisplayer.activeButton, 'activeButton')
 
-                            if (currentResultListDisplayer.previousActiveButton === currentResultListDisplayer.activeButton) {
+                            if ((currentResultListDisplayer.previousActiveButton === currentResultListDisplayer.activeButton) && currentResultListDisplayer.previousActiveButton.innerHTML != 1) {
                                 return;
                             }
                             currentResultListDisplayer.previousActiveButton = currentResultListDisplayer.activeButton
-
                             currentResultListDisplayer.currentPage = pageToDisplay | 0;
                             for (var i = (pageToDisplay - 1) * currentResultListDisplayer.nbElPerPage; i < pageToDisplay * currentResultListDisplayer.nbElPerPage; i++) {
                                 if (i >= currentResultListDisplayer.fullList.length) {
@@ -1733,11 +1732,6 @@
             return res;
         }
         var generated = this.generate(parentEl, obj);
-        // setTimeout(function(){
-        //     var customEvent = new Event("click", {"bubbles":true, "cancelable":false});
-        //     console.log('generated[0].activeButton', generated[0].activeButton)
-        //     generated[0].activeButton.dispatchEvent(customEvent);
-        // }, 2000)
         /**
         *   Gets the ResultListDisplayer updated data
         */
@@ -1752,6 +1746,11 @@
             self.generatedEl = toReturn;
             return toReturn;
         };
+        setTimeout(function(){
+            var customEvent = new Event("click", {"bubbles":true, "cancelable":false});
+            generated[0].activeButton.dispatchEvent(customEvent);
+        }, 0)
+        
     }
 
     ResultListDisplayer.prototype = focus;
