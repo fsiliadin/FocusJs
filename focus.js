@@ -1276,7 +1276,7 @@
         /**
         * Attaches "default" methods to grid items
         * @param {DOM Element} - the grid item element
-        *
+        * @return {DOM Element} - the grid item element extended with the methods
         */
         this.addGridItemMethods = function (gridItem) {
             var self = this;
@@ -1297,6 +1297,7 @@
                 this.style.height = dimensions.height;
                 this.style.width =  dimensions.width;
             };
+            return gridItem;
         }
         /**
         * Adds specified item to the grid
@@ -1306,17 +1307,20 @@
         *       otherwise the item will be added to every generated grid
         *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
         *   positionInNodeList: the position of the item withing the other items in the grid
+        * @return {Array} - an array of the newly generated items
         */
         this.addItem = function (params) {
             var itemHtml = this.buildItem(params, params.positionInNodeList);
-            var self = this;         
+            var self = this;
+            var addedItem = [];   
             if (params.to) {
-                this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
+                addedItem = this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList));
             } else {
                this.generated().forEach(function (grid) {
-                    self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList));
+                    addedItem.push(self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList)));
                });
             }
+            return addedItem;
             // this.updateGridItemIndexes()
         }
 
