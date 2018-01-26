@@ -1263,6 +1263,7 @@
                     element: ret,
                     container: item,
                     gridItems: ret.children,
+                    checkable: descriptor.checkable,
                     selectedItems: []
                 };
                 res = focus.recordElData(elData, res);
@@ -1297,6 +1298,13 @@
                 this.style.height = dimensions.height;
                 this.style.width =  dimensions.width;
             };
+            gridItem.select = function select() {
+                focus.removeClass(this, 'selected')
+                focus.addClass(this, 'selected')
+            }
+            gridItem.unselect = function unselect() {                
+                focus.removeClass(this, 'selected')
+            }
             return gridItem;
         }
         /**
@@ -1325,7 +1333,26 @@
                });
             }
             addedItems.forEach(function(addedItem){
-                focus.bindEvent(addedItem, params.events);
+                params.events.push({
+                    type: 'click',
+                    handler: function(event){
+                        var currentGrid = self.generated()[this.parentElement.dataset.index];
+                        if(!focus.hasClass(addedItem, 'selected')) {
+                            focus.addClass(addedItem, 'selected');
+                            if (currentGrid.checkable ==='single') {
+                                currentGrid.selectedItems.forEach(function(selectedItem) {
+                                    focus.removeClass(selectedItem, 'selected');
+                                });
+                                currentGrid.selectedItems.length = 0;
+                            }
+                            currentGrid.selectedItems.push(addedItem);
+                        } else {
+                            focus.removeClass(addedItem, 'selected');
+                            currentGrid.selectedItems.splice(currentGrid.selectedItems.indexOf(addedItem), 1);
+                        }
+                    }
+                })
+                focus.bindEvent(addedItem, params.events);                
             })
             return addedItems;
             // this.updateGridItemIndexes()
