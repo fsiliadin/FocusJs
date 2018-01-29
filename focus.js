@@ -1310,6 +1310,7 @@
             gridItem.select = function select() {
                 focus.removeClass(this, 'selected')
                 focus.addClass(this, 'selected')
+                focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)
 
             }
             gridItem.unselect = function unselect() {                
