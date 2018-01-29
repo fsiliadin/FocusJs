@@ -1348,7 +1348,7 @@
                 params.events.push({
                     type: 'click',
                     handler: function(event){
-                        var currentGrid = self.generated()[this.parentElement.dataset.index];
+                        var currentGrid = focus.findElementByHash(this.dataset.gridofbelonging)
                         if(!focus.hasClass(addedItem, 'selected')) {
                             focus.addClass(addedItem, 'selected');
                             if (currentGrid.checkable ==='single') {
@@ -1367,7 +1367,6 @@
                 focus.bindEvent(addedItem, params.events);                
             })
             return addedItems;
-            // this.updateGridItemIndexes()
         }
 
         /**
