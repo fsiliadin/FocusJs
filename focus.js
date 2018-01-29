@@ -21,13 +21,22 @@
         },
 
         /**
+        * Retrieves a focus generated element by its hash
+        * @param {String} hash - the hash of the seeked element
+        * @return {Object} - elData of the element corresponding to the hash
+        */
+        findElementByHash: function (hash) {
+            return focus.elDataArray.filter(function (elData) {
+                return elData.hash == hash;
+            })[0];
+        },
+
+        /**
         * Updates a widget revelant data (useful in case of multiple insertion of same element)
         * @param {DOMelement} el - the widget element to update
         */
         updateElData: function (el) {
-            var dataToUpdate = focus.elDataArray.filter(function (elData) {
-                return elData.hash == el.dataset.hash;
-            })[0];
+            var dataToUpdate = focus.findElementByHash(el.dataset.hash)
             if(dataToUpdate) {
                 dataToUpdate.element = el;
                 dataToUpdate.container = el.parentElement;
@@ -1332,7 +1341,6 @@
                this.generated().forEach(function (grid) {
                     itemHtml = self.buildItem(params, params.positionInNodeList, grid.element.dataset.hash);
                     addedItems.push(self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList)));
-
                });
             }
             addedItems.forEach(function(addedItem){
