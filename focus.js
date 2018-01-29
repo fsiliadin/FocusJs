@@ -1223,11 +1223,11 @@
                         html += self.buildItem({
                             width: descriptor.itemWidth, 
                             height: descriptor.itemHeight
-                        }, i);
+                        }, i, hash);
                     }
                 } else {
                     descriptor.contents.forEach(function (content, index) {
-                        html += self.buildItem(content, index);
+                        html += self.buildItem(content, index, hash);
                     })
                 }
                 
@@ -1301,6 +1301,7 @@
             gridItem.select = function select() {
                 focus.removeClass(this, 'selected')
                 focus.addClass(this, 'selected')
+
             }
             gridItem.unselect = function unselect() {                
                 focus.removeClass(this, 'selected')
@@ -1321,13 +1322,15 @@
         * @return {Array} - an array of the newly generated items
         */
         this.addItem = function (params) {
-            var itemHtml = this.buildItem(params, params.positionInNodeList);
+            var itemHtml; 
             var self = this;
             var addedItems = [];   
             if (params.to) {
+                itemHtml = this.buildItem(params, params.positionInNodeList, params.to.element.dataset.hash);
                 addedItems.push(this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList)));
             } else {
                this.generated().forEach(function (grid) {
+                    itemHtml = self.buildItem(params, params.positionInNodeList, grid.element.dataset.hash);
                     addedItems.push(self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList)));
 
                });
@@ -1418,23 +1421,24 @@
         }
         /**
         * builds the html of a grid item
-        * @param {Object} - params 
+        * @param {Object} gridItemObj  
         *   width: the width of the item (passed as css value), if not specified the grid item will wrap its content
         *   height: the height of the item (passed as css value), if not specified whereas width is specified the height will be equal to the width
         *           otherwise the grid item will wrap its content
         *   content: the content of the gridItem, can be passed as html string or as any focus-generated element
-        *
+        * @param {Number} index - the position of the gridItem within its siblings
+        * @param {String} gridOfBelonging - the hash of the grid the gridItem belongs to
         * @return {String} - the item to be generated html
         */
-        this.buildItem = function (gridItem, index) {
+        this.buildItem = function (gridItemObj, index, gridOfBelonging) {
             var content;
-            if(typeof gridItem.content === 'object') {
-                content = gridItem.content.generated()[0].element.outerHTML;
-                gridItem.content.generated()[0].element.remove();
+            if(typeof gridItemObj.content === 'object') {
+                content = gridItemObj.content.generated()[0].element.outerHTML;
+                gridItemObj.content.generated()[0].element.remove();
             } else {
-                content = gridItem.content;
+                content = gridItemObj.content;
             }
-            return '<div class= "gridItem" data-index= ' + index + ' data-hash='+focus.generateHash()+' style= "width:' + gridItem.width +'; height:'+(gridItem.height || gridItem.width)+'";">'+(content||"")+'</div>';
+            return '<div class= "gridItem" data-index= ' + index + ' data-hash=' + focus.generateHash() + ' data-gridOfBelonging=' + gridOfBelonging + ' style= "width:' + gridItemObj.width + '; height:' + (gridItemObj.height || gridItemObj.width)+'";">'+(content||"")+'</div>';
         }
         var generated = this.generate(parentEl, obj);
         /**
