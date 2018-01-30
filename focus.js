@@ -1311,6 +1311,7 @@
                 focus.removeClass(this, 'selected')
                 focus.addClass(this, 'selected')
                 focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)
+                console.log(focus.findElementByHash(this.dataset.gridofbelonging).selectedItems)
 
             }
             gridItem.unselect = function unselect() {                
@@ -1452,7 +1453,7 @@
             } else {
                 content = gridItemObj.content;
             }
-            return '<div class= "gridItem" data-index= ' + index + ' data-hash=' + focus.generateHash() + ' data-gridOfBelonging=' + gridOfBelonging + ' style= "width:' + gridItemObj.width + '; height:' + (gridItemObj.height || gridItemObj.width)+'";">'+(content||"")+'</div>';
+            return '<div class= "gridItem" id =' + gridItemObj.id + ' data-index= ' + index + ' data-hash=' + focus.generateHash() + ' data-gridOfBelonging=' + gridOfBelonging + ' style= "width:' + gridItemObj.width + '; height:' + (gridItemObj.height || gridItemObj.width)+'";">'+(content||"")+'</div>';
         }
         var generated = this.generate(parentEl, obj);
         /**
