@@ -1334,7 +1334,10 @@
         this.addItem = function (params) {
             var itemHtml; 
             var self = this;
-            var addedItems = [];   
+            var addedItems = [];
+            if(!(params.events instanceof Array)) {
+                params.events = []
+            }  
             if (params.to) {
                 itemHtml = this.buildItem(params, params.positionInNodeList, params.to.element.dataset.hash);
                 addedItems.push(this.addGridItemMethods(this.__proto__.generate(itemHtml, params.to.element, params.positionInNodeList)));
@@ -1344,28 +1347,31 @@
                     addedItems.push(self.addGridItemMethods(self.__proto__.generate(itemHtml, grid.element, params.positionInNodeList)));
                });
             }
-            addedItems.forEach(function(addedItem){
-                params.events.push({
-                    type: 'click',
-                    handler: function(event){
-                        var currentGrid = focus.findElementByHash(this.dataset.gridofbelonging)
-                        if(!focus.hasClass(addedItem, 'selected')) {
-                            focus.addClass(addedItem, 'selected');
-                            if (currentGrid.checkable ==='single') {
-                                currentGrid.selectedItems.forEach(function(selectedItem) {
-                                    focus.removeClass(selectedItem, 'selected');
-                                });
-                                currentGrid.selectedItems.length = 0;
+            if(this.generated()[0].checkable){
+                addedItems.forEach(function(addedItem){
+                    params.events.push({
+                        type: 'click',
+                        handler: function(event){
+                            var currentGrid = focus.findElementByHash(this.dataset.gridofbelonging)
+                            if(!focus.hasClass(addedItem, 'selected')) {
+                                focus.addClass(addedItem, 'selected');
+                                if (currentGrid.checkable ==='single') {
+                                    currentGrid.selectedItems.forEach(function(selectedItem) {
+                                        focus.removeClass(selectedItem, 'selected');
+                                    });
+                                    currentGrid.selectedItems.length = 0;
+                                }
+                                currentGrid.selectedItems.push(addedItem);
+                            } else {
+                                focus.removeClass(addedItem, 'selected');
+                                currentGrid.selectedItems.splice(currentGrid.selectedItems.indexOf(addedItem), 1);
                             }
-                            currentGrid.selectedItems.push(addedItem);
-                        } else {
-                            focus.removeClass(addedItem, 'selected');
-                            currentGrid.selectedItems.splice(currentGrid.selectedItems.indexOf(addedItem), 1);
                         }
-                    }
+                    })
+                    focus.bindEvent(addedItem, params.events);                
                 })
-                focus.bindEvent(addedItem, params.events);                
-            })
+            }
+            
             return addedItems;
         }
 
