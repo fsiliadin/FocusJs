@@ -414,6 +414,9 @@
             if (!(descriptor.class instanceof Array)) {
                 descriptor.class = []
             }
+            if( !(descriptor.subSliders instanceof Array)){
+                descriptor.subSliders = []
+            }
             var self = this;
             // for each node el taken in account is generated an html
             Array.prototype.forEach.call(container, function(item, index){
