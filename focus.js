@@ -1314,11 +1314,12 @@
                 focus.removeClass(this, 'selected')
                 focus.addClass(this, 'selected')
                 focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)
-                console.log(focus.findElementByHash(this.dataset.gridofbelonging).selectedItems)
 
             }
-            gridItem.unselect = function unselect() {                
+            gridItem.unselect = function unselect() {               
                 focus.removeClass(this, 'selected')
+                var selectedItemArray = focus.findElementByHash(this.dataset.gridofbelonging).selectedItems
+                selectedItemArray.splice(selectedItemArray.indexOf(this),1)
             }
             return gridItem;
         }
