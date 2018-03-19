@@ -26,8 +26,7 @@
 
 }
 .basic_button:hover {
-	border-width: 0.08em;
-	border-radius : 1.2em;
+	font-weight: bold;
 }
 .basic_button:active {
 	border-width: 0.2em;
