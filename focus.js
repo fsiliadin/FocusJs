@@ -1311,9 +1311,9 @@
                 this.style.width =  dimensions.width;
             };
             gridItem.select = function select() {
-                focus.removeClass(this, 'selected')
+                this.unselect()
                 focus.addClass(this, 'selected')
-                focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)
+                focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)  
 
             }
             gridItem.unselect = function unselect() {               
