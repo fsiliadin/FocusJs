@@ -1311,20 +1311,15 @@
                 this.style.width =  dimensions.width;
             };
             gridItem.select = function select() {
-                console.log('this', this)
                 this.unselect()
-                setTimeout(function(){ // to ensure that unselection is done before
-                    focus.addClass(this, 'selected')
-                    focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)
-                    console.log(focus.findElementByHash(this.dataset.gridofbelonging)) 
-                }.bind(this), 0)
-                 
-
+                focus.addClass(this, 'selected')
+                focus.findElementByHash(this.dataset.gridofbelonging).selectedItems.push(this)          
             }
             gridItem.unselect = function unselect() {               
                 focus.removeClass(this, 'selected')
                 var selectedItemArray = focus.findElementByHash(this.dataset.gridofbelonging).selectedItems
-                selectedItemArray.splice(selectedItemArray.indexOf(this),1)
+                var ind = selectedItemArray.indexOf(this)
+                ind !== -1 ? selectedItemArray.splice(ind,1) : ''
             }
             return gridItem;
         }
