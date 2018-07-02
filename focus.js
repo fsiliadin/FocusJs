@@ -339,7 +339,7 @@
                 descriptor.class.indexOf('basic_imageTextZone') === -1 ? descriptor.class.push('basic_imageTextZone'):'';
                 classes = descriptor.class.join(' ');
                 var hash = focus.generateHash();
-                html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr>';
+                html = '<table class= "'+classes+'" data-hash="'+hash+'" id ="'+descriptor.id+'"><tr class="body">';
                 if(descriptor.imageAfter) {
                     html += '<td class ="text" data-hash='+focus.generateHash()+' ><p>'+descriptor.text+'</p></td>';
                     html += '<td class ="image" data-hash='+focus.generateHash()+' ><img class ="bli" data-hash='+focus.generateHash()+' src="'+descriptor.url+'" alt= "'+descriptor.alt+'" style ="width:'+descriptor.imageWidth+'; height:'+descriptor.imageHeight+';"></td>';
