@@ -273,6 +273,11 @@
 	margin-top: 2em;
 	margin-bottom: 1em;
 }
+.basic_ResultListDisplayer .displayerBody {
+	max-width: 200px;
+	overflow-x: scroll;
+	display: inline-flex;
+}
 .basic_ResultListDisplayer span {
 	border-style: solid;
 	border-width: 1px;
