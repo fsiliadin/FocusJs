@@ -1,0 +1,10 @@
+.basic_rateSlider {
+	font-size: 1.3em;
+	display: inline-flex;
+	flex-direction: row;
+	padding: 1em;
+}
+.rateItem {
+	color: rgb(190, 190, 190);
+	font-weight: bold;
+}

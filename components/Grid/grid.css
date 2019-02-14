@@ -1,0 +1,39 @@
+.basic_grid{
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.basic_grid .gridItem, .listAlikeGrid .gridItem {
+	position: relative;
+	overflow-x: hidden;
+	margin: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-o-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.listAlikeGrid .gridItem {
+	display: block;
+	margin: 10px;
+}
+.basic_grid .selected, .listAlikeGrid .selected {
+	background: -webkit-radial-gradient(circle, rgb(255,255,255), rgb(200,200,200)); /* Safari 5.1 to 6.0 */
+    background: -o-radial-gradient(circle, rgb(255,255,255), rgb(200,200,200)); /* For Opera 11.6 to 12.0 */
+    background: -moz-radial-gradient(circle, rgb(255,255,255), rgb(200,200,200)); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(circle, rgb(255,255,255), rgb(200,200,200)); /* Standard syntax (must be last) */
+	border-color: rgb(190, 190, 190)
+
+}
+.basic_grid .gridItem:hover, .listAlikeGrid .gridItem:hover {	
+	-moz-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	-webkit-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	-o-box-shadow: 10px 10px 5px 0px #cfcfcf;
+	box-shadow: 10px 10px 5px 0px #cfcfcf;
+}
+.basic_grid .selected:hover, .listAlikeGrid .selected:hover {	
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	-o-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

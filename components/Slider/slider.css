@@ -1,0 +1,87 @@
+
+.basic_slider{
+	display: inline-table;
+	padding: 0.5em;
+	width: 80%;
+}
+.basic_slider .sliderTitleLabel {
+	display: block;
+	font-family: focusMediumFont;
+}
+
+.basic_slider .sliderCore {
+	font-family: focusLightFont;
+	display: inline-flex;
+	font-size: 0.7em;
+	width: 100%
+}
+.basic_slider .sliderMechanics {
+	width: 100%;
+}
+.basic_slider .sliderAxis {
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(179,180,185);
+	position: relative;
+	height: 0px;
+	margin-top: 10px;
+}
+
+.basic_slider .dynamicItemsContainer {
+	display: flex;
+	height: 20px;
+	position: relative;
+	top: -12px;
+	align-items: center;
+}
+.basic_slider .mainCursor {
+	border-style : solid;
+	border-width: 0.08em 0.08em 0 0.08em;
+	border-color:  rgb(179,180,185);
+	border-radius : 0.3em;
+	background-color:rgb(246,246,246);
+    background: linear-gradient(rgb(215,215,215), rgb(246,246,246)); /* Standard syntax */
+    position: absolute;
+    height: 20px;
+    width: 10px;
+}
+
+.basic_slider .subCursor {
+	position: inherit;
+	border-style : solid;
+	border-width: 0.08em 0.08em 0 0.08em;
+	border-color:  rgb(179,180,185);
+	// border-radius : 10px;
+	background-color:rgb(246,246,246);
+    background: linear-gradient(rgb(215,215,215), rgb(246,246,246)); /* Standard syntax */
+    min-height: 20px;
+    min-width: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.basic_slider .subSlideZone {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 20px;
+	width: 0px;
+	color: rgba(85,143,237,0.9)
+}
+.basic_slider .mainSlideZone{
+	background: linear-gradient(to left, rgb(215,215,215), rgb(246,246,246));
+	height: 20px;
+	width: 0px;
+	background-color: white;
+    display: flex;
+    overflow: hidden;
+}
+.basic_slider .minValue, .basic_slider .maxValue {
+	font-size: 1em;
+	font-weight: bold;
+	position: inherit;
+}
+.basic_slider .minValue {
+	margin-left: 20px;
+}
+

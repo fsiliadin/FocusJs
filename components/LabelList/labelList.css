@@ -1,0 +1,28 @@
+@font-face {
+	font-family: focusMediumFont;
+	src: url(Roboto-Regular.ttf);
+}
+
+@font-face {
+	font-family: focusLightFont;
+	src: url(Roboto-Light.ttf);
+}
+
+.basic_labelList {
+	display: flex;
+	align-items: center;
+	flex-flow: row wrap;
+}
+.basic_labelList .label {
+	border-radius: 0.7em;
+	color: white;
+	padding: 0.5em;
+	margin: 0.5em;
+	font-family: focusLightFont;
+}
+
+.basic_labelList .title {
+	padding: 0.5em;
+	margin: 0.5em;
+	font-family: focusMediumFont;
+}
