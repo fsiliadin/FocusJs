@@ -1,3 +1,5 @@
+var focus = require('../focus')
+
 /**
     * Generates one or several Slider(s).
     * @constructor
@@ -252,3 +254,4 @@ function Slider (parentSelector, obj, positionInNodeList) {
 
 
 Slider.prototype = focus
+module.exports = Slider

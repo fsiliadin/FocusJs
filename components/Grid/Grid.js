@@ -1,3 +1,5 @@
+var focus = require('../focus')
+
 /**
     * Generates one or several Grid(s)
     * @constructor
@@ -311,3 +313,4 @@ function Grid(parentSelector, obj, positionInNodeList){
 }
 
 Grid.prototype = focus
+module.exports = Grid

@@ -1,4 +1,4 @@
-
+var focus = require('../focus')
 /**
     * Generates one or several ImageTextZone(s).
     * @constructor
@@ -89,3 +89,4 @@ function ImageTextZone(parentSelector, obj, positionInNodeList){
 
 
 ImageTextZone.prototype = focus
+module.exports = ImageTextZone

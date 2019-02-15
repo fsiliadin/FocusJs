@@ -1,4 +1,4 @@
-
+var focus = require('../focus')
 
 function Menu(parentSelector, obj, positionInNodeList){
     //can be selectMenu too
@@ -8,3 +8,4 @@ function Menu(parentSelector, obj, positionInNodeList){
 
 
 Menu.prototype = focus
+module.exports = Menu

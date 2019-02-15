@@ -1,3 +1,4 @@
+var focus = require('../focus')
 
 function Accordion (parentSelector, obj, positionInNodeList){
     var parentEl = this.checkParent(parentSelector)
@@ -36,3 +37,4 @@ function Accordion (parentSelector, obj, positionInNodeList){
 
 
 Accordion.prototype = focus
+module.exports = Accordion

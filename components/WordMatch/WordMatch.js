@@ -1,3 +1,4 @@
+var focus = require('../focus')
 /**
     * WordMatch objects need to be attached to a text input, and should be passed an array of words
     * It matches the strings inputed with the strings in the array
@@ -93,3 +94,4 @@ function WordMatch(textInput, wordsArray) {
 
 
 WordMatch.prototype = focus
+module.exports = WordMatch

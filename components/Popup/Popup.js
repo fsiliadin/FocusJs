@@ -1,4 +1,4 @@
-
+var focus = require('../focus')
 
 function Popup(parentSelector, obj) {
     var parentEl = this.checkParent(parentSelector)
@@ -6,3 +6,4 @@ function Popup(parentSelector, obj) {
 
 
 Popup.prototype = focus
+module.exports = Popup

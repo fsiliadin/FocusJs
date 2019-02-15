@@ -1,3 +1,4 @@
+var focus = require('../focus')
 /**
     * Generates one or several Button(s).
     * @constructor
@@ -98,3 +99,4 @@ function Button(parentSelector, obj, positionInNodeList){
 
 
 Button.prototype = focus
+module.exports = Button

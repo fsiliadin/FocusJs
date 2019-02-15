@@ -1,3 +1,4 @@
+var focus = require('../focus')
 /**
     * Generates one or several LabelList(s)
     * @constructor
@@ -128,3 +129,5 @@ function LabelList(parentSelector, obj, positionInNodeList) {
 }
 
 LabelList.prototype = focus
+
+module.exports = LabelList

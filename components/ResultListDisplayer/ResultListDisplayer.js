@@ -1,3 +1,4 @@
+var focus = require('../focus')
 
 function ResultListDisplayer(parentSelector, obj, positionInNodeList) {
     var parentEl = this.checkParent(parentSelector)
@@ -115,3 +116,4 @@ function ResultListDisplayer(parentSelector, obj, positionInNodeList) {
 }
 
 ResultListDisplayer.prototype = focus
+module.exports = ResultListDisplayer

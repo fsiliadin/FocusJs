@@ -1,3 +1,5 @@
+var focus = require('../focus')
+
 
 /**
     * Generates one or several Scroller(s). A scroller is a widget that scrolles to specified targets on click
@@ -284,3 +286,4 @@ function Scroller (parentSelector, obj) {
 }
 
 Scroller.prototype = focus
+module.exports = Scroller

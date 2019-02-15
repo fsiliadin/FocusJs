@@ -223,3 +223,5 @@ var focus = {
     }
 
 } //focus
+
+module.exports = focus

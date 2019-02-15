@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/fsiliadin/FocusJs/issues"
   },
-  "homepage": "https://github.com/fsiliadin/FocusJs#readme"
+  "homepage": "https://github.com/fsiliadin/FocusJs#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  }
 }

@@ -1,3 +1,4 @@
+var focus = require('../focus')
 /**
     * Generates one or several RateSliders
     * @constructor
@@ -146,3 +147,4 @@ function RateSlider (parentSelector, obj, positionInNodeList) {
 
 
 RateSlider.prototype = focus
+module.exports = Rateslider

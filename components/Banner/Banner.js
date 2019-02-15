@@ -1,3 +1,4 @@
+var focus = require('../focus')
 
 function Banner(parentSelector, obj, positionInNodeList){
     var parentEl = this.checkParent(parentSelector)
@@ -30,3 +31,4 @@ function Banner(parentSelector, obj, positionInNodeList){
 
 
 Banner.prototype = focus
+module.exports = Banner
