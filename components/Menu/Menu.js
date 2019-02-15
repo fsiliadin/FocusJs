@@ -1,4 +1,4 @@
-var focus = require('../focus')
+var focus = require('../focus.js')
 
 function Menu(parentSelector, obj, positionInNodeList){
     //can be selectMenu too

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Javascript lightweight component library",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp compressCss && browserify test.js -o vendorTest.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,10 @@
   },
   "homepage": "https://github.com/fsiliadin/FocusJs#readme",
   "devDependencies": {
-    "gulp": "^4.0.0"
+    "browserify": "^16.2.3",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.1",
+    "gulp-uglifycss": "^1.1.0"
   }
 }

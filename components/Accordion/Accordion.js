@@ -1,4 +1,4 @@
-var focus = require('../focus')
+var focus = require('../focus.js')
 
 function Accordion (parentSelector, obj, positionInNodeList){
     var parentEl = this.checkParent(parentSelector)

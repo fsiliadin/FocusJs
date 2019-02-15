@@ -12,8 +12,8 @@
 	opacity: 1;
 }
 .goingUp {
-	content: url(images/scroller_arrow_up.png)
+	content: url(./components/Scroller/icons/scroller_arrow_up.png)
 }
 .goingDown {
-	content: url(images/scroller_arrow_down.png)
+	content: url(./components/Scroller/icons/scroller_arrow_down.png)
 }

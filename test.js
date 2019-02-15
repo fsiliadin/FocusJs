@@ -1,3 +1,10 @@
+var Button = require('./components/Button/Button')
+var RateSlider = require('./components/RateSlider/RateSlider')
+var Slider = require('./components/Slider/Slider')
+var Grid = require('./components/Grid/Grid')
+var Scroller = require('./components/Scroller/Scroller')
+var WordMatch = require('./components/WordMatch/WordMatch')
+
 window.onload = function(){
     var jst = new Button('',{
         class: ['pouh'],

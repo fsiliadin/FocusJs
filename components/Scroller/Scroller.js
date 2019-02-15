@@ -1,4 +1,4 @@
-var focus = require('../focus')
+var focus = require('../focus.js')
 
 
 /**
@@ -44,7 +44,7 @@ function Scroller (parentSelector, obj) {
             descriptor.class.indexOf('goingDown') === -1 ? descriptor.class.push('goingDown'):''
             classes = descriptor.class.join(' ')
             var hash = focus.generateHash()
-            html = '<img id="' + descriptor.id + '" src="images/scroller_arrow_down.png" alt="scroller_arrow" data-index='+index+' class="'+classes+'" data-hash="'+hash+'">'
+            html = '<img id="' + descriptor.id + '" src="icons/scroller_arrow_down.png" alt="scroller_arrow" data-index='+index+' class="'+classes+'" data-hash="'+hash+'">'
             ret = self.__proto__.generate(html, item, positionInNodeList)
             if(typeof descriptor.events !== 'undefined'){
                 self.__proto__.delegateEvent(hash, descriptor.events)
