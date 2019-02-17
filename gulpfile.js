@@ -11,3 +11,9 @@ gulp.task('compressCss', function(){
         .pipe(gulp.dest('./'))
 
 })
+
+gulp.task('concatTests', function() {
+	return gulp.src('./test/components/*/*.js')
+		.pipe(concat('tests.js'))
+		.pipe(gulp.dest('./test/'))
+})
