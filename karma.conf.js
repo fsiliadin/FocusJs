@@ -6,9 +6,9 @@ module.exports = function(config) {
     port: 9876,  // karma web server port
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless','Chrome', 'Firefox'],
     autoWatch: false,
-    // singleRun: false, // Karma captures browsers, runs the tests and exits
-    concurrency: Infinity
+    singleRun: true, // Karma captures browsers, runs the tests and exits
+    concurrency: Infinity // Infinity is the default value
   })
 }

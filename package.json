@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Javascript lightweight component library",
   "scripts": {
-    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "test": "karma start karma.conf.js",
     "build": "gulp compressCss && gulp concatTests && browserify test.js -o vendorTest.js && browserify test/tests.js -o test/tests.js && npm test"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "karma": "^4.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.1.0",
     "karma-mocha": "^1.3.0",
     "mocha": "^5.2.0"
   }
