@@ -4,7 +4,9 @@
   "description": "Javascript lightweight component library",
   "scripts": {
     "test": "karma start karma.conf.js",
-    "build": "gulp compressCss && gulp concatTests && browserify test.js -o vendorTest.js && browserify test/tests.js -o test/tests.js && npm test"
+    "build": "gulp compressCss && gulp concatTests && browserify test.js -o vendorTest.js && browserify test/tests.js -o test/tests.js && npm test",
+    "start": "echo \">>>>>>>FOCUS JS<<<<<<<<<<\" && npm run build",
+    "postinstall": "npm start"
   },
   "repository": {
     "type": "git",
